@@ -1,0 +1,74 @@
+package com.cs446w18.a16.imadog.model;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * Created by lacie on 2018-02-17.
+ */
+
+public class Poll {
+    private ArrayList<String> names;
+    private Map<String, String> votes;
+    private Map<String, Integer> count;
+    private boolean isOpen;
+    private Game game;
+
+    public Poll(ArrayList<String> names, Game g) {
+        isOpen = true;
+        votes = new HashMap();
+        count = new HashMap();
+        this.names = names;
+        for (int i = 0; i < names.size(); i++) {
+            votes.put(names.get(i), null);
+            count.put(names.get(i), 0);
+        }
+        game = g;
+
+    }
+
+    public int getUserVote(String userName) {
+        return count.get(userName);
+    }
+
+    public void setVote(String userName, String voteName) {
+        if (!isOpen) return;
+
+        if (votes.get(userName) != null) {
+            String oldVote = votes.get(userName);
+            int oldCount = count.get(oldVote);
+            count.put(oldVote, oldCount-1);
+        }
+
+        int newCount = count.get(voteName);
+        count.put(voteName, newCount+1);
+        votes.put(userName, voteName);
+    }
+
+    public int getVoteCount(String userName) {
+        return count.get(userName);
+    }
+
+    public String getResult() {
+        ArrayList<String> maxNames = new ArrayList<String>();
+        int maxVotes = 0;
+        for (Map.Entry<String, Integer> vote : count.entrySet()) {
+            if (vote.getValue() > maxVotes) {
+                maxVotes = vote.getValue();
+                maxNames.clear();
+                maxNames.add(vote.getKey());
+            } else if (vote.getValue() == maxVotes) {
+                maxNames.add(vote.getKey());
+            }
+        }
+
+        if (maxNames.size() == 1) return maxNames.get(0);
+        return null;
+    }
+
+    public void closePoll() {
+        isOpen = false;
+        String result = getResult();
+        game.killPlayer(result);
+    }
+}
