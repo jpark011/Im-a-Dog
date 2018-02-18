@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <fragment
+        android:id="@+id/navigationBarFragment"
+        android:name="com.cs446w18.a16.imadog.fragments.NavigationBarFragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.cs446w18.a16.imadog.fragments.IntroFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/navigationBarFragment"/>
+
+</RelativeLayout>
