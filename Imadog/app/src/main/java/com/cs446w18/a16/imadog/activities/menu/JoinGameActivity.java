@@ -17,28 +17,24 @@ public class JoinGameActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-    // Join button
-    Button joinButton;
 
-
-    /* ----------------------------- METHODS ----------------------------- */
+    /* ----------------------------- SETUP ----------------------------- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
-
-        // Join button
-        joinButton = (Button) findViewById(R.id.joinButton);
-        joinButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
-                startActivity(joinIntent);
-            }
-        });
-
     }
+
+
+    /* ----------------------------- METHODS ----------------------------- */
+
+    /// CALLBACK: when the Join button is pressed
+    public void joinGame(View view) {
+        Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
+        startActivity(joinIntent);
+    }
+
 
 
 }

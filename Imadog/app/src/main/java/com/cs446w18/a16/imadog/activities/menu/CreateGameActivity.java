@@ -21,27 +21,23 @@ public class CreateGameActivity extends SuperActivity {
     // Name field
     EditText nameField;
 
-    // Create button
-    Button createButton;
 
-
-    /* ----------------------------- METHODS ----------------------------- */
+    /* ----------------------------- SETUP ----------------------------- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
-
-        // Create button
-        createButton = (Button) findViewById(R.id.createButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
-                startActivity(createIntent);
-            }
-        });
-
     }
+
+
+    /* ----------------------------- METHODS ----------------------------- */
+
+    /// CALLBACK: when the Create button is pressed
+    public void createGame(View view) {
+        Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
+        startActivity(createIntent);
+    }
+
 
 }

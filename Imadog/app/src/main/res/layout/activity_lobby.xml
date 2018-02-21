@@ -23,6 +23,7 @@
         android:layout_below="@+id/titleLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
+        android:onClick="startGame"
         android:text="Start" />
 
 </RelativeLayout>

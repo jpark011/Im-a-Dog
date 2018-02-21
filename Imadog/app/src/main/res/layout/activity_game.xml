@@ -5,18 +5,21 @@
 
 
     <fragment
-        android:id="@+id/navigationBarFragment"
+        android:id="@+id/navigationBar"
         android:name="com.cs446w18.a16.imadog.fragments.NavigationBarFragment"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/border_width"
+        android:layout_marginTop="@dimen/border_width" />
 
-    <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.cs446w18.a16.imadog.fragments.IntroFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/navigationBarFragment"/>
+    <FrameLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/navigationBar"
+        android:layout_marginBottom="@dimen/border_width"
+        android:layout_marginHorizontal="@dimen/border_width" />
 
 </RelativeLayout>

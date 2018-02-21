@@ -53,4 +53,19 @@ public class GameConstants {
 
     public static final int minPlayers = 4;
 
+    // Duration of the vote during the day, displayed on a counter (in seconds)
+    public static final int dayVoteDuration = 10;
+
+    // Duration of the vote during the night, displayed on a counter (in seconds)
+    public static final int nightVoteDuration = 5;
+
+
+    // KAREN: I used this boolean to replace the call of the model to change the pages in the navigation.
+    // When you start to link the model to the interface, set this to false.
+    // This will disable all the dummy calls I do in different places.
+    // If this is set to false and the model is not implemented, the app will just be stuck on one page, waiting...
+
+    // TEST boolean used for navigating in the interface without the model (created by JB)
+    public static final boolean INTERFACE_TEST = true;
+
 }

@@ -22,11 +22,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleLabel"
-        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
         android:ems="10"
+        android:hint="Room name"
         android:inputType="textPersonName"
-        android:text="Name"
         tools:layout_editor_absoluteX="84dp"
         tools:layout_editor_absoluteY="232dp" />
 
@@ -37,5 +37,6 @@
         android:layout_below="@+id/nameField"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="60dp"
+        android:onClick="createGame"
         android:text="Create" />
 </RelativeLayout>

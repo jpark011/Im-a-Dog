@@ -18,26 +18,23 @@ public class LobbyActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-    // Start button
-    Button startButton;
 
-
-    /* ----------------------------- METHODS ----------------------------- */
+    /* ----------------------------- SETUP ----------------------------- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
-
-        // Join button
-        startButton = (Button) findViewById(R.id.startButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
-                startActivity(startGameIntent);
-            }
-        });
     }
+
+
+    /* ----------------------------- METHODS ----------------------------- */
+
+    /// CALLBACK: when the Start button is pressed
+    public void startGame(View view) {
+        Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
+        startActivity(startGameIntent);
+    }
+
 
 }

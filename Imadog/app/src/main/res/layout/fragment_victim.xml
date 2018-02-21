@@ -3,14 +3,28 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/titleLabel"
+        android:id="@+id/nameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
         android:layout_centerHorizontal="true"
-        android:text="The victim is..."
+        android:layout_marginTop="77dp"
+        android:text="NAME has been killed"
+        android:textAlignment="center"
         android:textSize="36sp"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/roleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:text="He/she was... ROLE"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:textStyle="normal" />
+
 
 
 </RelativeLayout>
