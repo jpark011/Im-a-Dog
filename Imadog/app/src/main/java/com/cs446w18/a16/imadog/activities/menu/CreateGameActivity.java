@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
 
@@ -35,6 +36,7 @@ public class CreateGameActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
+        Global.user.createGame();
         Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
         startActivity(createIntent);
     }

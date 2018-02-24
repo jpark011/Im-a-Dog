@@ -10,11 +10,17 @@ public class Dog extends Player {
     }
 
     public String getRole() {
-        return "Dog";
+        return "DOG";
     }
 
     public String getQuestion() {
         int day = game.getCurrentDay();
         return game.getQuestion(true, day);
+    }
+
+    public void vote(String choice) {
+        if (!game.isNight()) {
+            game.vote(this.name, choice);
+        }
     }
 }

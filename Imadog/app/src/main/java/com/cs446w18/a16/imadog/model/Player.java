@@ -11,11 +11,9 @@ public abstract class Player {
     private boolean dead;
     protected Game game;
     private ArrayList<String> answers;
-    private Poll poll;
 
     public Player(String n, Game g) {
         answers = new ArrayList<>();
-        poll = null;
         name = n;
         game = g;
         dead = false;
@@ -26,27 +24,19 @@ public abstract class Player {
     }
 
     public String getAnswer(int day) {
+        if (answers.size() == day-1) {
+            answers.add("");
+        }
         return answers.get(day-1);
     }
 
     public void setAnswer(String ans) {
-        answers.add(ans);
-    }
+        int day = game.getCurrentDay();
+        if (answers.size() < day) {
+            answers.add(ans);
+        }
 
-    public ArrayList<String> getCurrentPlayerNames() {
-        return game.getPlayerNames(true, true, false);
-    }
-
-    public void setPoll(Poll p) {
-        poll = p;
-    }
-
-    public void clearPoll() {
-        poll = null;
-    }
-
-    public void vote(String n) {
-        poll.setVote(name, n);
+        answers.add(day-1, ans);
     }
 
     public void kill() {
@@ -58,4 +48,8 @@ public abstract class Player {
     }
 
     abstract public String getQuestion();
+
+    abstract public void vote(String choice);
+
+    abstract  public String getRole();
 }

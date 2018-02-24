@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.R;
+import com.cs446w18.a16.imadog.model.GameConstants;
 
 /**
  * Created by Jean-Baptiste on 18/02/2018.
@@ -38,14 +39,16 @@ public class VictimFragment extends SuperFragment {
         roleLabel = view.findViewById(R.id.roleLabel);
         roleLabel.setText("He/she was...\nA "+bundle.getString("victimRole")+"!");
 
-        // Delay the transition to the next page. To be replaced by an animation
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                getGameActivity().showNightPage();
-            }
-        }, 2000);
+        if (GameConstants.INTERFACE_TEST) {
+            // Delay the transition to the next page. To be replaced by an animation
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    getGameActivity().showNightPage();
+                }
+            }, 5000);
+        }
 
         return view;
     }
