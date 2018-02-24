@@ -66,6 +66,6 @@ public class GameConstants {
     // If this is set to false and the model is not implemented, the app will just be stuck on one page, waiting...
 
     // TEST boolean used for navigating in the interface without the model (created by JB)
-    public static final boolean INTERFACE_TEST = true;
+    public static final boolean INTERFACE_TEST = false;
 
 }

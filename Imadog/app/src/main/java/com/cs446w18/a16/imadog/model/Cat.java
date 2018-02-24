@@ -20,7 +20,7 @@ public class Cat extends Player{
     }
 
     public String getRole() {
-        return "Cat";
+        return "CAT";
     }
 
     public String getQuestion() {

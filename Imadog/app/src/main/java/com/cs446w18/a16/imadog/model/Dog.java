@@ -10,7 +10,7 @@ public class Dog extends Player {
     }
 
     public String getRole() {
-        return "Dog";
+        return "DOG";
     }
 
     public String getQuestion() {

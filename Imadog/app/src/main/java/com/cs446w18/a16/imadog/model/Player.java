@@ -57,5 +57,17 @@ public abstract class Player {
         return dead;
     }
 
+    public void readyToStart() {
+        game.readyToStart();
+    }
+
+    public void readyToAskQuestion() {
+        game.readyToAskQuestion();
+    }
+
+    public void readyForNight() {
+        game.readyForNight();
+    }
+
     abstract public String getQuestion();
 }

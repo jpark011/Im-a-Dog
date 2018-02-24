@@ -12,9 +12,8 @@ public class Poll {
     private Map<String, String> votes;
     private Map<String, Integer> count;
     private boolean isOpen;
-    private Game game;
 
-    public Poll(ArrayList<String> names, Game g) {
+    public Poll(ArrayList<String> names) {
         isOpen = true;
         votes = new HashMap();
         count = new HashMap();
@@ -23,8 +22,6 @@ public class Poll {
             votes.put(names.get(i), null);
             count.put(names.get(i), 0);
         }
-        game = g;
-
     }
 
     public int getUserVote(String userName) {
@@ -62,13 +59,12 @@ public class Poll {
             }
         }
 
-        if (maxNames.size() == 1) return maxNames.get(0);
+        if (maxNames.size() == 1 /*&& maxVotes > 0*/) return maxNames.get(0);
         return null;
     }
 
-    public void closePoll() {
+    public String closePoll() {
         isOpen = false;
-        String result = getResult();
-        game.killPlayer(result);
+        return getResult();
     }
 }

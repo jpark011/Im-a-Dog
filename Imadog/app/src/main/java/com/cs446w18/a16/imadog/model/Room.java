@@ -36,9 +36,9 @@ public class Room {
         return members.size();
     }
 
-    public Game createGame(User user) {
+    public Game startGame(User user) {
         if (isHost(user)) {
-            if (members.size() < GameConstants.minPlayers) return null;
+            //if (members.size() < GameConstants.minPlayers) return null;
             return new Game(members);
         }
 
