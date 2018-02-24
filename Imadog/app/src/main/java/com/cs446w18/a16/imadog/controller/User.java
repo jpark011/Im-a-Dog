@@ -20,16 +20,16 @@ import java.util.concurrent.TimeUnit;
 public class User {
     private String userName;
     private Room room;
-    private Game game;
     private Player role;
     private GameActivity view;
+    private GameController gameController;
 
     public User(String name) {
         userName = name;
         room = null;
-        game = null;
         role = null;
         view = null;
+        gameController = null;
     }
 
     public String getUserName() {
@@ -56,7 +56,7 @@ public class User {
     }
 
     public void startGame() {
-        game = room.startGame(this);
+        gameController = room.startGame(this);
     }
 
     public void initializeGame() {
@@ -66,7 +66,9 @@ public class User {
 
             public void run() {
                 view.showQuestionPage(getQuestion());
-                role.readyToAskQuestion();
+                if (gameController != null) {
+                    gameController.readyToAskQuestion();
+                }
             }
         }, 5000);
     }
@@ -75,8 +77,8 @@ public class User {
         this.role = role;
     }
 
-    public Player getRole() {
-        return role;
+    public String getRole() {
+        return role.getRole();
     }
 
     public void setView(GameActivity view) {
@@ -92,7 +94,9 @@ public class User {
     }
 
     public void readyToStart() {
-        role.readyToStart();
+        if (gameController != null) {
+            gameController.readyToStart();
+        }
     }
 
     public void readyForNight() {
@@ -100,7 +104,9 @@ public class User {
         timer.schedule(new TimerTask() {
 
             public void run() {
-                role.readyForNight();
+                if (gameController != null) {
+                    gameController.readyForNight();
+                }
             }
         }, 5000);
     }
@@ -109,14 +115,19 @@ public class User {
         view.showVotePage(question, answers);
     }
 
-    public void closePoll(String name, String role) {
+    public void closePoll(String name, String role, String winner) {
+        final String result = winner;
         view.showVictimPage(name, role);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
-                view.showNightPage();
-                readyForNight();
+                if (result == null) {
+                    view.showNightPage();
+                    readyForNight();
+                } else {
+                    view.showOutro(result);
+                }
             }
         }, 5000);
     }
@@ -125,14 +136,34 @@ public class User {
         view.showNightVotePage(title, names);
     }
 
-    public void closeNightPoll(String name,  String role) {
+    public void closeNightPoll(String name,  String role, String winner) {
+        final String result = winner;
         view.showVictimPage(name, role);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
-                initializeGame();
+                if (result == null) {
+                    initializeGame();
+                } else {
+                    view.showOutro(result);
+                }
             }
         }, 5000);
+    }
+
+    public void vote(String choice) {
+        role.vote(choice);
+    }
+
+    public void endGame(String winner) {
+        view.showOutro(winner);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            public void run() {
+//                view.
+//            }
+//        }, 5000);
     }
 }

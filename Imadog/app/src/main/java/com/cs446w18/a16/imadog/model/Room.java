@@ -1,5 +1,6 @@
 package com.cs446w18.a16.imadog.model;
 
+import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.ArrayList;
@@ -36,10 +37,10 @@ public class Room {
         return members.size();
     }
 
-    public Game startGame(User user) {
+    public GameController startGame(User user) {
         if (isHost(user)) {
             //if (members.size() < GameConstants.minPlayers) return null;
-            return new Game(members);
+            return new GameController(members);
         }
 
         return null;

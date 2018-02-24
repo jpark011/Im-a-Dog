@@ -1,16 +1,12 @@
 package com.cs446w18.a16.imadog.model;
 
-import android.util.Pair;
-
+import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * The game.
@@ -23,19 +19,17 @@ public class Game {
     private ArrayList<String> catQuestions;
     private ArrayList<Player> deceased;
     private int currentDay;
-    private ArrayList<User> users;
-    private int ready;
-    private Poll poll;
+    private GameController gameController;
+    private boolean night;
 
-    public Game(ArrayList<User> names) {
-        ready = 0;
-        users = new ArrayList<>(names);
+    public Game(ArrayList<User> names, GameController gameController) {
         currentDay = 1;
+        night = false;
         int n = names.size();
+        this.gameController = gameController;
         assignRoles(names);
-        setQuestions(20);
+        setQuestions(n);
         deceased = new ArrayList<>();
-        poll = null;
     }
 
     private void assignRoles(ArrayList<User> names) {
@@ -89,17 +83,22 @@ public class Game {
         return catQuestions.get(day-1);
     }
 
-    public ArrayList<Pair<String, String>> getAnswers(int day) {
-        ArrayList<Pair<String, String>> ans = new ArrayList<>();
-        for (int i = 0; i < cats.size(); i++) {
-            ans.add(new Pair<>(cats.get(i).getName(), cats.get(i).getAnswer(day)));
+    public HashMap<String, String> getAnswers(boolean getCats, boolean getDogs) {
+        HashMap<String, String> answers = new HashMap<>();
+
+        if (getCats) {
+            for (int i = 0; i < cats.size(); i++) {
+                answers.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
+            }
         }
 
-        for (int i = 0; i < dogs.size(); i++) {
-            ans.add(new Pair<>(dogs.get(i).getName(), dogs.get(i).getAnswer(day)));
+        if (getDogs) {
+            for (int i = 0; i < dogs.size(); i++) {
+                answers.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
+            }
         }
 
-        return ans;
+        return answers;
     }
 
     public ArrayList<String> getPlayerNames(boolean getCats, boolean getDogs, boolean getDead) {
@@ -151,6 +150,8 @@ public class Game {
             }
             dead = cats.remove(ind);
         }
+
+        dead.kill();
         deceased.add(dead);
         return role;
     }
@@ -159,131 +160,31 @@ public class Game {
         return currentDay;
     }
 
-    public void readyToStart() {
-        ready++;
-        int total = users.size();
-
-        if (ready == total) {
-            for (int i = 0; i < total; i++) {
-                final User user = users.get(i);
-                new Thread() {
-                    public void run() {
-                        user.initializeGame();
-                    }
-                }.start();
-            }
-            ready = 0;
-        }
+    public void nextDay() {
+        currentDay++;
     }
 
-    public void readyToAskQuestion() {
-        ready++;
-        final int total = users.size();
-
-        if (ready == total) {
-
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                public void run() {
-                    Map<String, String> ans = new HashMap<>();
-                    ArrayList<String> names = new ArrayList<>();
-
-                    for (int i = 0; i < dogs.size(); i++) {
-                        ans.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
-                        names.add(dogs.get(i).getName());
-                    }
-
-                    for (int i = 0; i < cats.size(); i++) {
-                        ans.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
-                        names.add(cats.get(i).getName());
-                    }
-
-                    final HashMap<String, String> answers = new HashMap<>(ans);
-
-                    poll = new Poll(names);
-
-                    for (int i = 0; i < total; i++) {
-                        final User user = users.get(i);
-                        new Thread() {
-                            public void run() {
-                                user.startPoll(dogQuestions.get(currentDay-1), answers);
-                            }
-                        }.start();
-                    }
-                }
-            }, 15000);
-
-            timer.schedule(new TimerTask() {
-
-                public void run() {
-                    String role = null;
-                    ready = 0;
-                    final String result = poll.closePoll();
-                    if (result != null) {
-                        role = "dog"; //killPlayer(result);
-                    }
-
-                    final String victimRole = role;
-                    for (int i = 0; i < users.size(); i++) {
-                        final User user = users.get(i);
-                        new Thread() {
-                            public void run() {
-                                user.closePoll(result, victimRole);
-                            }
-                        }.start();
-                    }
-                    poll = null;
-                }
-            }, 30000);
-        }
+    public boolean isNight() {
+        return night;
     }
 
-    public void readyForNight() {
-        ready++;
-        int total = users.size();
+    public void setNight(boolean night) {
+        this.night = night;
+    }
 
-        if (ready == total) {
-            final ArrayList<String> dogNames = getPlayerNames(false, true, false);
-            final ArrayList<String> names = getPlayerNames(true, true, true);
-            poll = new Poll(names);
-            for (int i = 0; i < total; i++) {
-                final User user = users.get(i);
-                new Thread() {
-                    public void run() {
-                        if (user.getRole().equals("CAT")) {
-                            user.startNightPoll("Vote for the dog to kill", names);
-                        } else {
-                            user.startNightPoll("Vote for the best answer", names);
-                        }
-                    }
-                }.start();
-            }
+    public void vote(String name, String choice) {
+        gameController.vote(name, choice);
+    }
 
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-
-                public void run() {
-                    String role = null;
-                    ready = 0;
-                    final String result = poll.closePoll();
-                    if (result != null) {
-                        role = "dog"; //killPlayer(result);
-                    }
-
-                    final String victimRole = role;
-                    for (int i = 0; i < users.size(); i++) {
-                        final User user = users.get(i);
-                        new Thread() {
-                            public void run() {
-                                user.closeNightPoll(result, victimRole);
-                            }
-                        }.start();
-                    }
-                    poll = null;
-                    currentDay++;
-                }
-            }, 15000);
+    public String getWinner() {
+        if (cats.size() == 0) {
+            return "dogs";
         }
+
+        if (dogs.size() == 0) {
+            return "cats";
+        }
+
+        return null;
     }
 }

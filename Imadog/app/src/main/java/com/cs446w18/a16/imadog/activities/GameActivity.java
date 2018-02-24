@@ -200,6 +200,6 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     public void changedVoteFor(String playerName) {
         Log.d("Imadog", "Voted for: "+playerName);
 
-        // Do something here
+        Global.user.vote(playerName);
     }
 }

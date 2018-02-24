@@ -27,4 +27,8 @@ public class Cat extends Player{
         int day = game.getCurrentDay();
         return game.getQuestion(false, day);
     }
+
+    public void vote(String choice) {
+        game.vote(this.name, choice);
+    }
 }

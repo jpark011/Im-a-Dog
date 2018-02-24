@@ -8,24 +8,25 @@ import java.util.Map;
  */
 
 public class Poll {
-    private ArrayList<String> names;
     private Map<String, String> votes;
     private Map<String, Integer> count;
     private boolean isOpen;
 
-    public Poll(ArrayList<String> names) {
+    public Poll(ArrayList<String> names, ArrayList<String> choices) {
         isOpen = true;
         votes = new HashMap();
         count = new HashMap();
-        this.names = names;
         for (int i = 0; i < names.size(); i++) {
             votes.put(names.get(i), null);
-            count.put(names.get(i), 0);
+        }
+
+        for (int i = 0; i < choices.size(); i++) {
+            count.put(choices.get(i), 0);
         }
     }
 
-    public int getUserVote(String userName) {
-        return count.get(userName);
+    public String getUserVote(String userName) {
+        return votes.get(userName);
     }
 
     public void setVote(String userName, String voteName) {
