@@ -1,9 +1,6 @@
 package com.cs446w18.a16.imadog.controller;
 
-import android.os.Handler;
-
 import com.cs446w18.a16.imadog.activities.GameActivity;
-import com.cs446w18.a16.imadog.model.Game;
 import com.cs446w18.a16.imadog.model.Player;
 import com.cs446w18.a16.imadog.model.Room;
 
@@ -11,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by lacie on 2018-02-18.
