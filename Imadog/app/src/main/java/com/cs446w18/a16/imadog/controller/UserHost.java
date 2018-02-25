@@ -1,14 +1,10 @@
 package com.cs446w18.a16.imadog.controller;
 
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 
-import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.model.Command;
 import com.cs446w18.a16.imadog.model.Player;
-import com.cs446w18.a16.imadog.model.Room;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -34,7 +30,6 @@ public class UserHost {
     public UserHost(BluetoothSocket socket, UserClient client, boolean isHost) {
         userName = null;
         role = null;
-        view = null;
         gameController = null;
         this.isHost = isHost;
         if (isHost) {
