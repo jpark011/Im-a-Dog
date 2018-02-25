@@ -1,11 +1,14 @@
 package com.cs446w18.a16.imadog.activities.menu;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.HelpActivity;
@@ -15,15 +18,31 @@ public class MainActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-
+    private BluetoothAdapter mBluetoothAdapter;
     /* ----------------------------- SETUP ----------------------------- */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get local Bluetooth adapter
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        int REQUEST_ENABLE_BT = 3;
+        // If BT is not on, request that it be enabled.
+        // setupChat() will then be called during onActivityResult
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        }
+    }
 
     /* ----------------------------- METHODS ----------------------------- */
 
