@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
 
@@ -107,6 +108,8 @@ public class CreateGameActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
+        Global.user.createGame();
+
         // Make it discoverable for 10 mins
 //        if (mBtAdapter.getScanMode() !=
 //                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {

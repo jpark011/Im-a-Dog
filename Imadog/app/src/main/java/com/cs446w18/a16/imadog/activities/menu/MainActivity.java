@@ -10,9 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.HelpActivity;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.controller.User;
 
 public class MainActivity extends SuperActivity {
 
@@ -28,6 +30,10 @@ public class MainActivity extends SuperActivity {
 
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        if (Global.user == null) {
+            Global.user = new User("SomeName");
+        }
     }
 
     @Override

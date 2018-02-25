@@ -1,9 +1,9 @@
 package com.cs446w18.a16.imadog.model;
 
-import android.util.Pair;
-
+import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.User;
 
+import java.util.HashMap;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,16 +19,17 @@ public class Game {
     private ArrayList<String> catQuestions;
     private ArrayList<Player> deceased;
     private int currentDay;
+    private GameController gameController;
+    private boolean night;
 
-    public Game(ArrayList<User> names) {
+    public Game(ArrayList<User> names, GameController gameController) {
         currentDay = 1;
+        night = false;
         int n = names.size();
+        this.gameController = gameController;
         assignRoles(names);
         setQuestions(n);
-        deceased = new ArrayList<Player>();
-        for (int i = 0; i < names.size(); i++) {
-            names.get(i).startGame(this);
-        }
+        deceased = new ArrayList<>();
     }
 
     private void assignRoles(ArrayList<User> names) {
@@ -58,18 +59,18 @@ public class Game {
     private void setQuestions(int n) {
         dogQuestions = new ArrayList<>();
         catQuestions = new ArrayList<>();
-        ArrayList<Integer> count = new ArrayList<>(n);
-        for (int i = 0; i < n; i++) {
-            count.set(i, i);
+        ArrayList<Integer> count = new ArrayList<>();
+        int total = GameConstants.dogQuestions.length;
+        for (int i = 0; i < total; i++) {
+            count.add(i);
         }
         Random r = new Random();
-
-        int total = count.size();
-        while (total > 0) {
+        for (int j = 0; j < n; j++) {
             int ind = r.nextInt(total);
             int i = count.get(ind);
             dogQuestions.add(GameConstants.dogQuestions[i]);
             catQuestions.add(GameConstants.catQuestions[i]);
+            count.remove(ind);
             total = count.size();
         }
     }
@@ -82,17 +83,22 @@ public class Game {
         return catQuestions.get(day-1);
     }
 
-    public ArrayList<Pair<String, String>> getAnswers(int day) {
-        ArrayList<Pair<String, String>> ans = new ArrayList<>();
-        for (int i = 0; i < cats.size(); i++) {
-            ans.add(new Pair<>(cats.get(i).getName(), cats.get(i).getAnswer(day)));
+    public HashMap<String, String> getAnswers(boolean getCats, boolean getDogs) {
+        HashMap<String, String> answers = new HashMap<>();
+
+        if (getCats) {
+            for (int i = 0; i < cats.size(); i++) {
+                answers.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
+            }
         }
 
-        for (int i = 0; i < dogs.size(); i++) {
-            ans.add(new Pair<>(dogs.get(i).getName(), dogs.get(i).getAnswer(day)));
+        if (getDogs) {
+            for (int i = 0; i < dogs.size(); i++) {
+                answers.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
+            }
         }
 
-        return ans;
+        return answers;
     }
 
     public ArrayList<String> getPlayerNames(boolean getCats, boolean getDogs, boolean getDead) {
@@ -119,11 +125,13 @@ public class Game {
         return names;
     }
 
-    public void killPlayer(String name) {
+    public String killPlayer(String name) {
         int ind = -1;
+        String role = null;
         for (int i = 0; i < dogs.size(); i++) {
             if (dogs.get(i).getName() == name) {
                 ind = i;
+                role = "dog";
                 break;
             }
         }
@@ -136,15 +144,47 @@ public class Game {
             for (int i = 0; i < cats.size(); i++) {
                 if (cats.get(i).getName() == name) {
                     ind = i;
+                    role = "cat";
                     break;
                 }
             }
             dead = cats.remove(ind);
         }
+
+        dead.kill();
         deceased.add(dead);
+        return role;
     }
 
     public int getCurrentDay() {
         return currentDay;
+    }
+
+    public void nextDay() {
+        currentDay++;
+    }
+
+    public boolean isNight() {
+        return night;
+    }
+
+    public void setNight(boolean night) {
+        this.night = night;
+    }
+
+    public void vote(String name, String choice) {
+        gameController.vote(name, choice);
+    }
+
+    public String getWinner() {
+        if (cats.size() == 0) {
+            return "dogs";
+        }
+
+        if (dogs.size() == 0) {
+            return "cats";
+        }
+
+        return null;
     }
 }
