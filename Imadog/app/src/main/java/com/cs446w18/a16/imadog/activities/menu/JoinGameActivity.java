@@ -49,7 +49,7 @@ public class JoinGameActivity extends SuperActivity {
 
     private Thread mThread;
 
-    private final String MY_UUID = getString(R.string.UUID);
+    private String MY_UUID;
 
     /**
      * The BroadcastReceiver that listens for discovered devices and changes the title when
@@ -84,6 +84,8 @@ public class JoinGameActivity extends SuperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        MY_UUID = getResources().getText(R.string.UUID).toString();
 
         // Setup the window
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);

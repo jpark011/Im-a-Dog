@@ -2,9 +2,13 @@ package com.cs446w18.a16.imadog.activities.menu;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -45,16 +49,44 @@ public class CreateGameActivity extends SuperActivity {
 
     private Thread mThread;
 
-    // server socket
+    // server socketc
     private BluetoothServerSocket mServer;
 
     // clients
     private ArrayList<BluetoothSocket> mClients;
 
-    private final String MY_UUID = getString(R.string.UUID);
+    private String MY_UUID;
     // Name field
     EditText nameField;
 
+    /**
+     * The BroadcastReceiver that listens for discovered devices and changes the title when
+     * discovery is finished
+     */
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+//                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE
+            // When discovery finds a device
+            if (action.equals(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED)) {
+                int mode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, BluetoothAdapter.ERROR);
+
+                if (mode == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+                    // Start Server Thread;
+                    mThread = new AcceptThread();
+
+                    // Ready to goto Lobby
+                    Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
+                    createIntent.putExtra("isHost", true);
+
+                    startActivity(createIntent);
+                }
+
+            }
+        }
+    };
 
     /* ----------------------------- SETUP ----------------------------- */
 
@@ -62,6 +94,10 @@ public class CreateGameActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
+
+        MY_UUID = getResources().getText(R.string.UUID).toString();
+
+        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 
         mClients = new ArrayList<>();
     }
@@ -72,21 +108,17 @@ public class CreateGameActivity extends SuperActivity {
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
         // Make it discoverable for 10 mins
-        if (mBtAdapter.getScanMode() !=
-                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+//        if (mBtAdapter.getScanMode() !=
+//                BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 600);
             startActivity(discoverableIntent);
-        }
+//        }
 
-        // Start Server Thread;
-        mThread = new AcceptThread();
 
-        // Ready to goto Lobby
-        Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
-        createIntent.putExtra("isHost", true);
-
-        startActivity(createIntent);
+        // Register for broadcasts when a device is discovered
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        this.registerReceiver(mReceiver, filter);
     }
 
     /**
