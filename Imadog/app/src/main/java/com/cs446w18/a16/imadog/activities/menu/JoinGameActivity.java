@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.services.ClientThread;
 
 import java.io.IOException;
 import java.util.Set;
@@ -48,8 +49,6 @@ public class JoinGameActivity extends SuperActivity {
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
 
     private Thread mThread;
-
-    private String MY_UUID;
 
     /**
      * The BroadcastReceiver that listens for discovered devices and changes the title when
@@ -84,8 +83,6 @@ public class JoinGameActivity extends SuperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        MY_UUID = getResources().getText(R.string.UUID).toString();
 
         // Setup the window
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
@@ -199,63 +196,12 @@ public class JoinGameActivity extends SuperActivity {
             // Attempt to connect to the device (can be block?)
 
             // Start network thread
-            mThread = new ConnectThread(device);
+            mThread = new ClientThread(device, getResources().getText(R.string.UUID).toString());
+            mThread.start();
 
             // Move forward to Lobby
             Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
-            joinIntent.putExtra("isHost", false);
             startActivity(joinIntent);
         }
     };
-
-    /**
-     * This thread runs while attempting to make an outgoing connection
-     * with a device. It runs straight through; the connection either
-     * succeeds or fails.
-     */
-    private class ConnectThread extends Thread {
-        private final BluetoothSocket mmSocket;
-
-        public ConnectThread(BluetoothDevice device) {
-            BluetoothSocket tmp = null;
-
-            // Get a BluetoothSocket for a connection with the
-            // given BluetoothDevice
-            try {
-                tmp = device.createRfcommSocketToServiceRecord(UUID.fromString(MY_UUID));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            mmSocket = tmp;
-        }
-
-        public void run() {
-            // Make a connection to the BluetoothSocket
-            try {
-                // This is a blocking call and will only return on a
-                // successful connection or an exception
-                mmSocket.connect();
-            } catch (IOException e) {
-                // Close the socket
-                e.printStackTrace();
-                try {
-                    mmSocket.close();
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                }
-                return;
-            }
-
-
-        }
-
-        // Used when Game End
-        public void cancel() {
-            try {
-                mmSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }
