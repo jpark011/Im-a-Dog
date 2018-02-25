@@ -32,7 +32,7 @@ public class UserHost {
     UserClient client;
 
     public UserHost(BluetoothSocket socket, UserClient client, boolean isHost) {
-        room = null;
+        userName = null;
         role = null;
         view = null;
         gameController = null;
@@ -50,36 +50,41 @@ public class UserHost {
         }
     }
 
-    public void getInput() throws Exception{
+    public void getInput() {
         if (!isHost) {
-            Command command = (Command) ois.readObject();
-            switch (command.getCommand()) {
-                case "SET_USERNAME":
-                    setUserName((String) command.getArgs().get(0));
-                    break;
-                case "SUBMIT_ANSWER":
-                    submitAnswer((String) command.getArgs().get(0));
-                    break;
-                case "GET_QUESTION":
-                    getQuestion();
-                    break;
-                case "READY_TO_START":
-                    readyToStart();
-                    break;
-                case "READY_FOR_NIGHT":
-                    readyForNight();
-                    break;
-                case "VOTE":
-                    vote((String) command.getArgs().get(0));
-                    break;
-                case "READY_TO_ASK_QUESTION":
-                    readyToAskQuestion();
-                    break;
-            }
+            try {
+                Command command = (Command) ois.readObject();
+                switch (command.getCommand()) {
+                    case "SET_USERNAME":
+                        setUserName((String) command.getArgs().get(0));
+                        break;
+                    case "SUBMIT_ANSWER":
+                        submitAnswer((String) command.getArgs().get(0));
+                        break;
+                    case "GET_QUESTION":
+                        getQuestion();
+                        break;
+                    case "READY_TO_START":
+                        readyToStart();
+                        break;
+                    case "READY_FOR_NIGHT":
+                        readyForNight();
+                        break;
+                    case "VOTE":
+                        vote((String) command.getArgs().get(0));
+                        break;
+                    case "READY_TO_ASK_QUESTION":
+                        readyToAskQuestion();
+                        break;
+                }
+            } catch (Exception e) {}
         }
     }
 
     public String getUserName() {
+        if (userName == null) {
+
+        }
         return userName;
     }
 
@@ -91,13 +96,12 @@ public class UserHost {
         gameController = g;
     }
 
-    public void initializeGame() throws IOException {
+    public void initializeGame() {
         if (isHost) {
             client.initializeGame();
         } else {
             ArrayList<Object> args = new ArrayList<>();
-            Command command = new Command("INITIALIZE_GAME", args);
-            oos.writeObject(command);
+            sendCommand("INITIALIZE_GAME", args);
         }
     }
 
@@ -117,14 +121,13 @@ public class UserHost {
         role.setAnswer(answer);
     }
 
-    public String getQuestion() throws Exception {
+    public String getQuestion() {
         if (isHost) {
             return role.getQuestion();
         }
         ArrayList<Object> args = new ArrayList<>();
         args.add(role.getQuestion());
-        Command command = new Command("RECEIVE_QUESTION", args);
-        oos.writeObject(command);
+        sendCommand("RECEIVE_QUESTION", args);
         return null;
     }
 
@@ -146,19 +149,18 @@ public class UserHost {
         }, 5000);
     }
 
-    public void startPoll(String question, HashMap<String, String> answers) throws IOException {
+    public void startPoll(String question, HashMap<String, String> answers) {
         if (isHost) {
             client.startPoll(question, answers);
         } else {
             ArrayList<Object> args = new ArrayList<>();
             args.add(question);
             args.add(answers);
-            Command command = new Command("START_DAY_POLL", args);
-            oos.writeObject(command);
+            sendCommand("START_DAY_POLL", args);
         }
     }
 
-    public void closePoll(String name, String role, String winner) throws IOException {
+    public void closePoll(String name, String role, String winner) {
         if (isHost) {
             client.closePoll(name, role, winner);
         } else {
@@ -166,24 +168,22 @@ public class UserHost {
             args.add(name);
             args.add(role);
             args.add(winner);
-            Command command = new Command("CLOSE_DAY_POLL", args);
-            oos.writeObject(command);
+            sendCommand("CLOSE_DAY_POLL", args);
         }
     }
 
-    public void startNightPoll(String title, ArrayList<String> names) throws IOException {
+    public void startNightPoll(String title, ArrayList<String> names) {
         if (isHost) {
             client.startNightPoll(title, names);
         } else {
             ArrayList<Object> args = new ArrayList<>();
             args.add(title);
             args.add(names);
-            Command command = new Command("START_NIGHT_POLL", args);
-            oos.writeObject(command);
+            sendCommand("START_NIGHT_POLL", args);
         }
     }
 
-    public void closeNightPoll(String name,  String role, String winner) throws IOException {
+    public void closeNightPoll(String name,  String role, String winner) {
         if (isHost) {
             client.closeNightPoll(name, role, winner);
         } else {
@@ -191,8 +191,7 @@ public class UserHost {
             args.add(name);
             args.add(role);
             args.add(winner);
-            Command command = new Command("CLOSE_NIGHT_POLL", args);
-            oos.writeObject(command);
+            sendCommand("CLOSE_NIGHT_POLL", args);
         }
     }
 
@@ -200,14 +199,20 @@ public class UserHost {
         role.vote(choice);
     }
 
-    public void endGame(String winner) throws IOException {
+    public void endGame(String winner) {
         if (isHost)  {
             client.endGame(winner);
         } else {
             ArrayList<Object> args = new ArrayList<>();
             args.add(winner);
-            Command command = new Command("END_GAME", args);
-            oos.writeObject(command);
+            sendCommand("END_GAME", args);
         }
+    }
+
+    private void sendCommand(String comm, ArrayList<Object> args) {
+        try {
+            Command c = new Command(comm, args);
+            oos.writeObject(c);
+        } catch(Exception e) {}
     }
 }
