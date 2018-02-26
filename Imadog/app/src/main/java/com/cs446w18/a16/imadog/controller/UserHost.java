@@ -46,8 +46,10 @@ public class UserHost {
     }
 
     public void startClientGame() {
-        ArrayList<Object> args = new ArrayList<>();
-        sendCommand("START_CLIENT_GAME", args);
+        if (!isHost) {
+            ArrayList<Object> args = new ArrayList<>();
+            sendCommand("START_CLIENT_GAME", args);
+        }
     }
 
     public void getInput() {
@@ -83,12 +85,17 @@ public class UserHost {
 
     public String getUserName() {
         if (userName == null) {
-            ArrayList<Object> wArgs = new ArrayList<>();
-            sendCommand("GET_USERNAME", wArgs);
-            try {
-                Command command = (Command) ois.readObject();
-                userName = (String)command.getArgs().get(0);
-            } catch (Exception e) {}
+            if (isHost) {
+                userName = client.getUserName();
+            }else {
+                ArrayList<Object> wArgs = new ArrayList<>();
+                sendCommand("GET_USERNAME", wArgs);
+                try {
+                    Command command = (Command) ois.readObject();
+                    userName = (String) command.getArgs().get(0);
+                } catch (Exception e) {
+                }
+            }
         }
         return userName;
     }

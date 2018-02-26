@@ -56,7 +56,9 @@ public class UserClient {
     }
 
     public void startClientGame() {
-        lobbyView.startClientGame();
+        if (!isHost) {
+            lobbyView.startClientGame();
+        }
     }
 
     public void getInput() {

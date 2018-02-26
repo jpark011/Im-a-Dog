@@ -73,7 +73,7 @@ public class ServerThread extends Thread {
             if (socket != null) {
                 UserHost client = new UserHost(socket , null, false);
                 mClients.add(client);
-                mRoom.addMember(server);
+                mRoom.addMember(client);
             }
         }
 
