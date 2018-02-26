@@ -1,7 +1,12 @@
 package com.cs446w18.a16.imadog.model;
 
+import android.bluetooth.BluetoothAdapter;
+
 import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.User;
+import com.cs446w18.a16.imadog.controller.UserClient;
+import com.cs446w18.a16.imadog.controller.UserHost;
+import com.cs446w18.a16.imadog.services.ServerThread;
 
 import java.util.ArrayList;
 
@@ -10,26 +15,31 @@ import java.util.ArrayList;
  */
 
 public class Room {
-    private User host;
-    private ArrayList<User> members;
+    private UserHost host;
+    private ArrayList<UserHost> members;
+    private ServerThread thread;
 
-    public Room(User host) {
-        this.host = host;
+    public Room(BluetoothAdapter btAdapter, String MY_UUID) {
         members = new ArrayList<>();
-        members.add(host);
+        thread = new ServerThread(btAdapter, MY_UUID, this);
+        thread.start();
     }
 
-    public boolean addMember(User member) {
-        if (members.contains(member)) return false;
+    public void setHost(UserHost host) {
+        this.host = host;
+    }
+
+    public void addMember(UserHost member) {
+//        if (members.contains(member)) return false;
         members.add(member);
-        return true;
+//        return true;
     }
 
-    public void removeMember(User member) {
+    public void removeMember(UserHost member) {
         members.remove(member);
     }
 
-    public ArrayList<User> getMembers() {
+    public ArrayList<UserHost> getMembers() {
         return members;
     }
 
@@ -37,16 +47,9 @@ public class Room {
         return members.size();
     }
 
-    public GameController startGame(User user) {
-        if (isHost(user)) {
-            //if (members.size() < GameConstants.minPlayers) return null;
-            return new GameController(members);
-        }
-
-        return null;
-    }
-
-    public boolean isHost(User user) {
-        return user.getUserName() == host.getUserName();
+    public UserHost startGame() {
+        thread.stopAccepting();
+        host.setGame(new GameController(members));
+        return host;
     }
 }

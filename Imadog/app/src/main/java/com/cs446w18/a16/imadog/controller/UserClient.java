@@ -5,11 +5,9 @@ import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.model.Command;
-import com.cs446w18.a16.imadog.model.Player;
 import com.cs446w18.a16.imadog.model.Room;
 import com.cs446w18.a16.imadog.services.ServerThread;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -24,9 +22,7 @@ import java.util.TimerTask;
 public class UserClient {
     private String userName;
     private Room room;
-    private Player role;
     private GameActivity view;
-    private GameController gameController;
     private BluetoothSocket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -37,9 +33,8 @@ public class UserClient {
     public UserClient(String name) {
         userName = name;
         room = null;
-        role = null;
         view = null;
-        gameController = null;
+        isHost = false;
         this.socket = socket;
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
@@ -106,11 +101,12 @@ public class UserClient {
     }
 
     public void createGame(BluetoothAdapter btAdapter, String MY_UUID) {
-        ServerThread thread = new ServerThread(btAdapter, MY_UUID);
+        isHost = true;
+        room = new Room(btAdapter, MY_UUID);
     }
 
     public void startGame() {
-        gameController = room.startGame(this);
+        host = room.startGame();
     }
 
     public void initializeGame() {
@@ -119,18 +115,9 @@ public class UserClient {
         timer.schedule(new TimerTask() {
 
             public void run() {
-                try {
-                    view.showQuestionPage(getQuestion());
-                    if (gameController != null) {
-                        if (isHost) {
-                            host.readyToAskQuestion();
-                        }
-                        ArrayList<Object> args = new ArrayList<>();
-                        Command command = new Command("READY_TO_ASK_QUESTION", args);
-                        oos.writeObject(command);
-                    }
-                } catch (Exception e) {
-
+                view.showQuestionPage(getQuestion());
+                if (isHost) {
+                    host.readyToAskQuestion();
                 }
             }
         }, 5000);
@@ -146,40 +133,37 @@ public class UserClient {
         } else {
             ArrayList<Object> args = new ArrayList<>();
             args.add(answer);
-            Command command = new Command("SUBMIT_ANSWER", args);
-            oos.writeObject(command);
+            sendCommand("SUBMIT_ANSWER", args);
         }
     }
 
-    public String getQuestion() throws Exception {
+    public String getQuestion() {
         if (isHost) {
             return host.getQuestion();
         }
 
-        ArrayList<Object> args = new ArrayList<>();
-        Command wcom = new Command("GET_QUESTION", args);
-        oos.writeObject(wcom);
-        Command rcom = (Command) ois.readObject();
-        return (String) rcom.getArgs().get(0);
+        try {
+            ArrayList<Object> args = new ArrayList<>();
+            sendCommand("GET_QUESTION", args);
+            Command rcom = (Command) ois.readObject();
+            return (String) rcom.getArgs().get(0);
+        } catch (Exception e) {}
+
+        return null;
     }
 
-    public void readyToStart() throws Exception {
+    public void readyToStart() {
         if (isHost) {
             host.readyToStart();
-        } else {
-            ArrayList<Object> args = new ArrayList<>();
-            Command wcom = new Command("READY_TO_START", args);
-            oos.writeObject(wcom);
         }
     }
 
-    public void readyForNight() throws Exception {
+    public void readyForNight() {
         if (isHost) {
             host.readyForNight();
         } else {
             ArrayList<Object> args = new ArrayList<>();
-            Command wcom = new Command("READY_FOR_NIGHT", args);
-            oos.writeObject(wcom);
+            sendCommand("READY_FOR_NIGHT", args);
         }
     }
 
@@ -228,14 +212,13 @@ public class UserClient {
         }, 5000);
     }
 
-    public void vote(String choice) throws Exception {
+    public void vote(String choice) {
         if (isHost) {
             host.vote(choice);
         } else {
             ArrayList<Object> args = new ArrayList<>();
             args.add(choice);
-            Command wcom = new Command("VOTE", args);
-            oos.writeObject(wcom);
+            sendCommand("VOTE", args);
         }
     }
 
@@ -248,5 +231,12 @@ public class UserClient {
 //                view.
 //            }
 //        }, 5000);
+    }
+
+    private void sendCommand(String comm, ArrayList<Object> args) {
+        try {
+            Command c = new Command(comm, args);
+            oos.writeObject(c);
+        } catch(Exception e) {}
     }
 }
