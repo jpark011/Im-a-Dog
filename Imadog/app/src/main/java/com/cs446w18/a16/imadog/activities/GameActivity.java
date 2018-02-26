@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.fragments.DayFragment;
 import com.cs446w18.a16.imadog.fragments.IntroFragment;
@@ -42,6 +43,7 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        Global.user.setView(this);
 
         switchToFragment(new IntroFragment(), null);
     }
@@ -193,7 +195,7 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
             showVotePage(GameConstants.dogQuestions[0], answers);
         }
 
-        // Do something here
+        Global.user.submitAnswer(answer);
     }
 
     /**
@@ -210,7 +212,7 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     public void changedVoteFor(String playerName) {
         Log.d("Imadog", "Voted for: "+playerName);
 
-        // Do something here
+        Global.user.vote(playerName);
     }
 
     /**

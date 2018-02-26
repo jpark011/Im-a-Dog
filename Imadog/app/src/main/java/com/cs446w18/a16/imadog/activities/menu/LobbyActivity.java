@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
@@ -32,6 +33,7 @@ public class LobbyActivity extends SuperActivity {
 
     /// CALLBACK: when the Start button is pressed
     public void startGame(View view) {
+        Global.user.startGame();
         Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
         startActivity(startGameIntent);
     }
