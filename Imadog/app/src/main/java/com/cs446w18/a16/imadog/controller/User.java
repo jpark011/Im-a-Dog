@@ -14,152 +14,152 @@ import java.util.TimerTask;
  */
 
 public class User {
-    private String userName;
-    private Room room;
-    private Player role;
-    private GameActivity view;
-    private GameController gameController;
-
-    public User(String name) {
-        userName = name;
-        room = null;
-        role = null;
-        view = null;
-        gameController = null;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String name) {
-        userName = name;
-    }
-
-    public void joinRoom(Room room) {
-        boolean result = room.addMember(this);
-        if (result) {
-            this.room = room;
-        }
-    }
-
-    public void leaveRoom() {
-        this.room.removeMember(this);
-    }
-
-    public void createGame() {
-        this.room = new Room(this);
-    }
-
-    public void startGame() {
-        gameController = room.startGame(this);
-    }
-
-    public void initializeGame() {
-        view.showDayPage();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                view.showQuestionPage(getQuestion());
-                if (gameController != null) {
-                    gameController.readyToAskQuestion();
-                }
-            }
-        }, 5000);
-    }
-
-    public void setRole(Player role) {
-        this.role = role;
-    }
-
-    public String getRole() {
-        return role.getRole();
-    }
-
-    public void setView(GameActivity view) {
-        this.view = view;
-    }
-
-    public void submitAnswer(String answer) {
-        role.setAnswer(answer);
-    }
-
-    public String getQuestion() {
-        return role.getQuestion();
-    }
-
-    public void readyToStart() {
-        if (gameController != null) {
-            gameController.readyToStart();
-        }
-    }
-
-    public void readyForNight() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                if (gameController != null) {
-                    gameController.readyForNight();
-                }
-            }
-        }, 5000);
-    }
-
-    public void startPoll(String question, HashMap<String, String> answers) {
-        view.showVotePage(question, answers);
-    }
-
-    public void closePoll(String name, String role, String winner) {
-        final String result = winner;
-        view.showVictimPage(name, role);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                if (result == null) {
-                    view.showNightPage();
-                    readyForNight();
-                } else {
-                    view.showOutro(result);
-                }
-            }
-        }, 5000);
-    }
-
-    public void startNightPoll(String title, ArrayList<String> names) {
-        view.showNightVotePage(title, names);
-    }
-
-    public void closeNightPoll(String name,  String role, String winner) {
-        final String result = winner;
-        view.showVictimPage(name, role);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                if (result == null) {
-                    initializeGame();
-                } else {
-                    view.showOutro(result);
-                }
-            }
-        }, 5000);
-    }
-
-    public void vote(String choice) {
-        role.vote(choice);
-    }
-
-    public void endGame(String winner) {
-        view.showOutro(winner);
+//    private String userName;
+//    private Room room;
+//    private Player role;
+//    private GameActivity view;
+//    private GameController gameController;
+//
+//    public User(String name) {
+//        userName = name;
+//        room = null;
+//        role = null;
+//        view = null;
+//        gameController = null;
+//    }
+//
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    public void setUserName(String name) {
+//        userName = name;
+//    }
+//
+//    public void joinRoom(Room room) {
+//        boolean result = room.addMember(this);
+//        if (result) {
+//            this.room = room;
+//        }
+//    }
+//
+//    public void leaveRoom() {
+//        this.room.removeMember(this);
+//    }
+//
+//    public void createGame() {
+//        this.room = new Room(this);
+//    }
+//
+//    public void startGame() {
+//        gameController = room.startGame(this);
+//    }
+//
+//    public void initializeGame() {
+//        view.showDayPage();
 //        Timer timer = new Timer();
 //        timer.schedule(new TimerTask() {
 //
 //            public void run() {
-//                view.
+//                view.showQuestionPage(getQuestion());
+//                if (gameController != null) {
+//                    gameController.readyToAskQuestion();
+//                }
 //            }
 //        }, 5000);
-    }
+//    }
+//
+//    public void setRole(Player role) {
+//        this.role = role;
+//    }
+//
+//    public String getRole() {
+//        return role.getRole();
+//    }
+//
+//    public void setView(GameActivity view) {
+//        this.view = view;
+//    }
+//
+//    public void submitAnswer(String answer) {
+//        role.setAnswer(answer);
+//    }
+//
+//    public String getQuestion() {
+//        return role.getQuestion();
+//    }
+//
+//    public void readyToStart() {
+//        if (gameController != null) {
+//            gameController.readyToStart();
+//        }
+//    }
+//
+//    public void readyForNight() {
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            public void run() {
+//                if (gameController != null) {
+//                    gameController.readyForNight();
+//                }
+//            }
+//        }, 5000);
+//    }
+//
+//    public void startPoll(String question, HashMap<String, String> answers) {
+//        view.showVotePage(question, answers);
+//    }
+//
+//    public void closePoll(String name, String role, String winner) {
+//        final String result = winner;
+//        view.showVictimPage(name, role);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            public void run() {
+//                if (result == null) {
+//                    view.showNightPage();
+//                    readyForNight();
+//                } else {
+//                    view.showOutro(result);
+//                }
+//            }
+//        }, 5000);
+//    }
+//
+//    public void startNightPoll(String title, ArrayList<String> names) {
+//        view.showNightVotePage(title, names);
+//    }
+//
+//    public void closeNightPoll(String name,  String role, String winner) {
+//        final String result = winner;
+//        view.showVictimPage(name, role);
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//
+//            public void run() {
+//                if (result == null) {
+//                    initializeGame();
+//                } else {
+//                    view.showOutro(result);
+//                }
+//            }
+//        }, 5000);
+//    }
+//
+//    public void vote(String choice) {
+//        role.vote(choice);
+//    }
+//
+//    public void endGame(String winner) {
+//        view.showOutro(winner);
+////        Timer timer = new Timer();
+////        timer.schedule(new TimerTask() {
+////
+////            public void run() {
+////                view.
+////            }
+////        }, 5000);
+//    }
 }

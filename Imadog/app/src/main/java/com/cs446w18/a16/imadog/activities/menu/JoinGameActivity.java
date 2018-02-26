@@ -24,6 +24,7 @@ import com.cs446w18.a16.imadog.services.ClientThread;
 
 import java.io.IOException;
 import java.util.Set;
+import java.util.Timer;
 import java.util.UUID;
 
 /**
@@ -85,7 +86,8 @@ public class JoinGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
 
         // Setup the window
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        try {Thread.sleep(1000);} catch (Exception e) {}
         setContentView(R.layout.activity_join_game);
 
         // Set result CANCELED in case the user backs out
@@ -194,10 +196,6 @@ public class JoinGameActivity extends SuperActivity {
             // Get the BluetoothDevice object
             BluetoothDevice device = mBtAdapter.getRemoteDevice(address);
             // Attempt to connect to the device (can be block?)
-
-            // Start network thread
-            mThread = new ClientThread(device, getResources().getText(R.string.UUID).toString());
-            mThread.start();
 
             // Move forward to Lobby
             Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);

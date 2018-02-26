@@ -1,11 +1,13 @@
 package com.cs446w18.a16.imadog.controller;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.model.Command;
 import com.cs446w18.a16.imadog.model.Room;
+import com.cs446w18.a16.imadog.services.ClientThread;
 import com.cs446w18.a16.imadog.services.ServerThread;
 
 import java.io.ObjectInputStream;
@@ -28,13 +30,15 @@ public class UserClient {
     private ObjectInputStream ois;
     private boolean isHost;
     private UserHost host;
-    ServerThread thread;
+    ClientThread thread;
+    private boolean inGame;
 
     public UserClient(String name) {
         userName = name;
         room = null;
         view = null;
         isHost = false;
+        inGame = false;
         this.socket = socket;
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
@@ -44,9 +48,16 @@ public class UserClient {
         }
     }
 
-    public void getInput() throws Exception{
+    public void getInput() {
         if (!isHost) {
-            Command command = (Command) ois.readObject();
+            Command command = null;
+            try {
+                command = (Command) ois.readObject();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             ArrayList<Object> args = command.getArgs();
             switch (command.getCommand()) {
                 case "INITIALIZE_GAME":
@@ -89,15 +100,19 @@ public class UserClient {
         userName = name;
     }
 
-    public void joinRoom(Room room) {
-        boolean result = room.addMember(this);
-        if (result) {
-            this.room = room;
-        }
+    public boolean isInGame() {
+        return inGame;
+    }
+
+    public void joinRoom(BluetoothDevice device, String UUID) {
+        inGame = true;
+        isHost = false;
+        this.thread = new ClientThread(device, UUID, this);
+        this.thread.start();
     }
 
     public void leaveRoom() {
-        this.room.removeMember(this);
+        inGame = false;
     }
 
     public void createGame(BluetoothAdapter btAdapter, String MY_UUID) {
@@ -106,7 +121,9 @@ public class UserClient {
     }
 
     public void startGame() {
-        host = room.startGame();
+        if (isHost) {
+            host = room.startGame();
+        }
     }
 
     public void initializeGame() {
@@ -127,7 +144,7 @@ public class UserClient {
         this.view = view;
     }
 
-    public void submitAnswer(String answer) throws Exception {
+    public void submitAnswer(String answer) {
         if (isHost) {
             host.submitAnswer(answer);
         } else {

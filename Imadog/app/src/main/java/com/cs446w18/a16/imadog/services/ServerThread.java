@@ -52,6 +52,7 @@ public class ServerThread extends Thread {
     public void run() {
         // Add myself (server as a client)
         UserHost server = new UserHost(null, Global.user, true);
+        mRoom.setHost(server);
         mClients.add(server);
         mRoom.addMember(server);
 

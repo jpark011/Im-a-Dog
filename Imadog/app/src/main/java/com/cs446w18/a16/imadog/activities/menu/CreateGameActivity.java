@@ -44,8 +44,6 @@ public class CreateGameActivity extends SuperActivity {
      */
     private BluetoothAdapter mBtAdapter;
 
-    private Thread mThread;
-
     private final int BT_DISCOVERABLE = 3;
 
 
@@ -63,9 +61,6 @@ public class CreateGameActivity extends SuperActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == BT_DISCOVERABLE && resultCode != RESULT_CANCELED) {
-            mThread = new ServerThread(mBtAdapter, getResources().getText(R.string.UUID).toString());
-            mThread.start();
-
             // Move forward to Lobby
             Intent joinIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
             startActivity(joinIntent);
@@ -76,7 +71,7 @@ public class CreateGameActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
-        Global.user.createGame();
+        Global.user.createGame(mBtAdapter, getResources().getText(R.string.UUID).toString());
 
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 600);

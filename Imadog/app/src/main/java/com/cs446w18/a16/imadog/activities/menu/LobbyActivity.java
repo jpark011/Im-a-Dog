@@ -18,7 +18,7 @@ import com.cs446w18.a16.imadog.activities.SuperActivity;
 public class LobbyActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
-
+    Button startButton;
     /* ----------------------------- SETUP ----------------------------- */
 
     @Override
@@ -26,6 +26,10 @@ public class LobbyActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
 
+        startButton = (Button) findViewById(R.id.startButton);
+        if (Global.user.getIsHost()) {
+            startButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
