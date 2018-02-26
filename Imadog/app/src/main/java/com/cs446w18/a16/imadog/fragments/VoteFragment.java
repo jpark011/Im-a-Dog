@@ -8,10 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.model.GameConstants;
+import com.cs446w18.a16.imadog.views.VoteListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +24,7 @@ import java.util.Map;
  * Created by Jean-Baptiste on 18/02/2018.
  */
 
-public class VoteFragment extends SuperFragment {
+public class VoteFragment extends SuperFragment implements VoteListView.Delegate {
 
     public interface Delegate {
         void changedVoteFor(String playerName);
@@ -31,6 +34,8 @@ public class VoteFragment extends SuperFragment {
 
     TextView questionLabel;
     TextView timerLabel;
+
+    VoteListView playersListView;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -49,28 +54,20 @@ public class VoteFragment extends SuperFragment {
         questionLabel.setText(bundle.getString("title"));
 
         // Set the people/answers list
-        final String firstPlayer;
+        playersListView = view.findViewById(R.id.voteListView);
         if (isNightVote) {
             List<String> players = bundle.getStringArrayList("players");
-            firstPlayer = players.get(0);
+            playersListView.setup(players, this);
         }
         else {
             Map<String, String> answers = (Map<String, String>) bundle.getSerializable("answers");
-            List<String> players = new ArrayList<String>(answers.keySet());
-            firstPlayer = players.get(0);
+            playersListView.setup(answers, this);
         }
 
-        // TEST: make a dummy vote for a player (the first) after 2 seconds.
-        if (GameConstants.INTERFACE_TEST) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getGameActivity().changedVoteFor(firstPlayer);
-                }
-            }, 2000);
+        // Lock the view if player is dead
+        if (false) { // KAREN: Replace by "if player is dead"
+            playersListView.lock();
         }
-
 
         // Set the countdown timer
         long duration = isNightVote ? GameConstants.nightVoteDuration : GameConstants.dayVoteDuration;
@@ -87,9 +84,9 @@ public class VoteFragment extends SuperFragment {
             @Override
             public void onFinish() {
                 // TEST: to be replaced by a direct call from the model.
-                if (GameConstants.INTERFACE_TEST) {
-                    getGameActivity().showVictimPage("Player1", "Cat");
-                }
+//                if (GameConstants.INTERFACE_TEST) {
+//                    getGameActivity().showVictimPage("Player1", "Cat");
+//                }
 
                 // TODO: show "Waiting for results..."
             }
@@ -108,5 +105,9 @@ public class VoteFragment extends SuperFragment {
         timerLabel.setText(minutes + ":" + String.format("%02d", seconds));
     }
 
-
+    @Override
+    public void playerWasSelected(String name) {
+        System.out.println("Voted for "+name);
+        getGameActivity().changedVoteFor(name);
+    }
 }

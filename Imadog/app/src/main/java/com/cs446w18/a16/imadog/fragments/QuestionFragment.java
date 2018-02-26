@@ -48,6 +48,11 @@ public class QuestionFragment extends SuperFragment {
         answerField = view.findViewById(R.id.answerField);
         answerField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
+        // Lock the view if player is dead
+        if (false) { // KAREN: Replace by "if player is dead"
+            answerField.setEnabled(false);
+        }
+
         // Set the return action
         TextView.OnEditorActionListener fieldListener = new TextView.OnEditorActionListener() {
             @Override
@@ -59,6 +64,7 @@ public class QuestionFragment extends SuperFragment {
                                 keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
                     // When the user press enter
+                    getGameActivity().hideSystemUI();
                     getGameActivity().answeredQuestion(textView.getText().toString());
 
                 }

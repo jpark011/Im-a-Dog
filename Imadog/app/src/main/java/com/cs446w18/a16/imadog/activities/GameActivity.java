@@ -1,14 +1,19 @@
 package com.cs446w18.a16.imadog.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.fragments.DayFragment;
 import com.cs446w18.a16.imadog.fragments.IntroFragment;
+import com.cs446w18.a16.imadog.fragments.NavigationBarFragment;
 import com.cs446w18.a16.imadog.fragments.NightFragment;
 import com.cs446w18.a16.imadog.fragments.OutroFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
@@ -106,8 +111,8 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      * Shows the victim page.
      * The app will wait until either showNightPage() (if game continues) or showOutro() (if game over) is called.
      *
-     * @param victimName: the name of the victim, e.g. Player1
-     * @param victimRole: the role of the victim, e.g. Cat
+     * @param victimName: the name of the victim, e.g. Player1. Pass "" if no one was killed.
+     * @param victimRole: the role of the victim, e.g. Cat. Pass "" if no one was killed.
      */
     public void showVictimPage(String victimName, String victimRole) {
         Bundle arguments = new Bundle();
@@ -156,6 +161,13 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
         switchToFragment(new OutroFragment(), arguments);
     }
 
+    /**
+     * Finish the game and go back to lobby.
+     */
+    public void finishGame() {
+        finish();
+    }
+
 
     /* ----------------------------- CONTROLLER METHODS ----------------------------- */
 
@@ -199,5 +211,21 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
         Log.d("Imadog", "Voted for: "+playerName);
 
         // Do something here
+    }
+
+    /**
+     * Called when the left button of the navigation bar is pressed
+     */
+    public void leftBarButtonWasPressed(View view) {
+        Intent helpIntent = new Intent(GameActivity.this, HelpActivity.class);
+        startActivity(helpIntent);
+    }
+
+    /**
+     * Called when the right button of the navigation bar is pressed
+     */
+    public void rightBarButtonWasPressed(View view) {
+        Intent profileIntent = new Intent(GameActivity.this, ProfileActivity.class);
+        startActivity(profileIntent);
     }
 }
