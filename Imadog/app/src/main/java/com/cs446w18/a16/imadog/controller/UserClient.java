@@ -60,6 +60,11 @@ public class UserClient {
 
             ArrayList<Object> args = command.getArgs();
             switch (command.getCommand()) {
+                case "GET_USERNAME":
+                    String n = getUserName();
+                    ArrayList<Object> nameArgs = new ArrayList<>();
+                    nameArgs.add(n);
+                    sendCommand("SET_USERNAME", nameArgs);
                 case "INITIALIZE_GAME":
                     initializeGame();
                     break;
@@ -248,6 +253,10 @@ public class UserClient {
 //                view.
 //            }
 //        }, 5000);
+    }
+
+    public boolean getIsHost() {
+        return isHost;
     }
 
     private void sendCommand(String comm, ArrayList<Object> args) {

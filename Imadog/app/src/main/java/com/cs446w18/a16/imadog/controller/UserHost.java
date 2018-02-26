@@ -78,7 +78,12 @@ public class UserHost {
 
     public String getUserName() {
         if (userName == null) {
-
+            ArrayList<Object> wArgs = new ArrayList<>();
+            sendCommand("GET_USERNAME", wArgs);
+            try {
+                Command command = (Command) ois.readObject();
+                userName = (String)command.getArgs().get(0);
+            } catch (Exception e) {}
         }
         return userName;
     }
