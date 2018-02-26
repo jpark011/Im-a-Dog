@@ -24,9 +24,6 @@ public class MainActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (Global.user == null) {
-            Global.user = new User("SomeName");
-        }
     }
 
 

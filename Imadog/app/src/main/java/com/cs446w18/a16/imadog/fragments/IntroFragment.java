@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
@@ -26,6 +27,11 @@ public class IntroFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_intro, container, false);
+
+        // Title label
+        TextView titleLabel = view.findViewById(R.id.titleLabel);
+        titleLabel.setText("Let's start the game!\nYou are a "+"cat"+"!"); // KAREN: replace the cat string by the user's role
 
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();
@@ -39,10 +45,10 @@ public class IntroFragment extends SuperFragment {
                     Global.user.readyToStart();
                 }
             }
-        }, 2000);
+        }, 4000);
 
 
-        return inflater.inflate(R.layout.fragment_intro, container, false);
+        return view;
     }
 
     /* ----------------------------- METHODS ----------------------------- */

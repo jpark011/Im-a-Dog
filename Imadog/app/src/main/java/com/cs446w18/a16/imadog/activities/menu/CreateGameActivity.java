@@ -36,6 +36,7 @@ public class CreateGameActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
+        hideSystemUI();
         Global.user.createGame();
         Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
         startActivity(createIntent);
