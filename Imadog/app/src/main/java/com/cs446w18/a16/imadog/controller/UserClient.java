@@ -57,7 +57,7 @@ public class UserClient {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+            if (command == null) return;
             ArrayList<Object> args = command.getArgs();
             switch (command.getCommand()) {
                 case "GET_USERNAME":
@@ -147,6 +147,16 @@ public class UserClient {
 
     public void setView(GameActivity view) {
         this.view = view;
+    }
+
+    public void setSocket(BluetoothSocket socket) {
+        this.socket = socket;
+        try {
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());
+        } catch(Exception e) {
+
+        }
     }
 
     public void submitAnswer(String answer) {

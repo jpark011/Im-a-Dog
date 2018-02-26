@@ -34,6 +34,7 @@ public class ClientThread extends Thread {
             e.printStackTrace();
         }
         mSocket = tmp;
+        client.setSocket(mSocket);
     }
 
     public void run() {

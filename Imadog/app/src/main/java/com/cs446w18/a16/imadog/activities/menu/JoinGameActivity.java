@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
 import com.cs446w18.a16.imadog.services.ClientThread;
@@ -195,7 +196,8 @@ public class JoinGameActivity extends SuperActivity {
 
             // Get the BluetoothDevice object
             BluetoothDevice device = mBtAdapter.getRemoteDevice(address);
-            // Attempt to connect to the device (can be block?)
+            // Join room
+            Global.user.joinRoom(device, getResources().getText(R.string.UUID).toString());
 
             // Move forward to Lobby
             Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);

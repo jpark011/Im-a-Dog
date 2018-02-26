@@ -33,6 +33,7 @@ public class GameController {
                     user.initializeGame();
                 }
             }.start();
+            System.out.println(i);
         }
     }
 

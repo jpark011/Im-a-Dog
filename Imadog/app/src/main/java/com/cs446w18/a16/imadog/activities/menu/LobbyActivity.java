@@ -27,7 +27,7 @@ public class LobbyActivity extends SuperActivity {
         setContentView(R.layout.activity_lobby);
 
         startButton = (Button) findViewById(R.id.startButton);
-        if (Global.user.getIsHost()) {
+        if (!Global.user.getIsHost()) {
             startButton.setVisibility(View.INVISIBLE);
         }
     }
