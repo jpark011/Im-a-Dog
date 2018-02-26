@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.activities.GameActivity;
+import com.cs446w18.a16.imadog.activities.menu.LobbyActivity;
 import com.cs446w18.a16.imadog.model.Command;
 import com.cs446w18.a16.imadog.model.Room;
 import com.cs446w18.a16.imadog.services.ClientThread;
@@ -25,6 +26,7 @@ public class UserClient {
     private String userName;
     private Room room;
     private GameActivity view;
+    private LobbyActivity lobbyView;
     private BluetoothSocket socket;
     private ObjectOutputStream oos;
     private ObjectInputStream ois;
@@ -37,6 +39,7 @@ public class UserClient {
         userName = name;
         room = null;
         view = null;
+        lobbyView = null;
         isHost = false;
         inGame = false;
         this.socket = socket;
@@ -46,6 +49,14 @@ public class UserClient {
         } catch(Exception e) {
 
         }
+    }
+
+    public void setLobbyView(LobbyActivity view) {
+        lobbyView = view;
+    }
+
+    public void startClientGame() {
+        lobbyView.startClientGame();
     }
 
     public void getInput() {
@@ -65,6 +76,10 @@ public class UserClient {
                     ArrayList<Object> nameArgs = new ArrayList<>();
                     nameArgs.add(n);
                     sendCommand("SET_USERNAME", nameArgs);
+                    break;
+                case "START_CLIENT_GAME":
+                    startClientGame();
+                    break;
                 case "INITIALIZE_GAME":
                     initializeGame();
                     break;

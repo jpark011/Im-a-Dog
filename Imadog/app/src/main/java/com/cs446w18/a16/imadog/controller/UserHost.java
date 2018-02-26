@@ -45,6 +45,11 @@ public class UserHost {
         }
     }
 
+    public void startClientGame() {
+        ArrayList<Object> args = new ArrayList<>();
+        sendCommand("START_CLIENT_GAME", args);
+    }
+
     public void getInput() {
         if (!isHost) {
             try {

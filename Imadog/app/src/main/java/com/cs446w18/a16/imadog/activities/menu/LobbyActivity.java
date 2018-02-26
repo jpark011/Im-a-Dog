@@ -28,6 +28,7 @@ public class LobbyActivity extends SuperActivity {
 
         startButton = (Button) findViewById(R.id.startButton);
         if (!Global.user.getIsHost()) {
+            Global.user.setLobbyView(this);
             startButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -52,5 +53,9 @@ public class LobbyActivity extends SuperActivity {
         startActivity(startGameIntent);
     }
 
+    public void startClientGame() {
+        Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
+        startActivity(startGameIntent);
+    }
 
 }

@@ -30,6 +30,7 @@ public class GameController {
             final UserHost user = users.get(i);
             new Thread() {
                 public void run() {
+                    user.startClientGame();
                     user.initializeGame();
                 }
             }.start();
