@@ -7,8 +7,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.controller.User;
 
 /**
  * Created by Jean-Baptiste on 25/02/2018.
@@ -28,6 +30,10 @@ public class LoginActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        if (Global.user == null) {
+            Global.user = new User("SomeName");
+        }
+
         // Answer field
         nameField = findViewById(R.id.nameField);
         nameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -46,7 +52,7 @@ public class LoginActivity extends SuperActivity {
                     hideSystemUI();
 
                     String name = textView.getText().toString();
-                    // KAREN: Save the name?
+                    Global.user.setUserName(name);
 
                     Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(menuIntent);

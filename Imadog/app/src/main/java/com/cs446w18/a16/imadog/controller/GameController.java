@@ -18,9 +18,34 @@ public class GameController {
     Poll poll;
 
     public GameController(ArrayList<User> users) {
+        addUsersForDemo(users);
         this.users = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
+        setAnswersForDemo();
+    }
+
+    public void addUsersForDemo(ArrayList<User> users) {
+        users.add(new User("Abby"));
+        users.add(new User("Bob"));
+        users.add(new User("Claire"));
+        users.add(new User("Danny"));
+    }
+
+    public void setAnswersForDemo() {
+        for (int i = 1; i < users.size(); i++) {
+            if (users.get(i).getRole().equals("DOG")) {
+                users.get(i).submitAnswer("This is a dog answer");
+                users.get(i).submitAnswer("This is a dog answer");
+                users.get(i).submitAnswer("This is a dog answer");
+                users.get(i).submitAnswer("This is a dog answer");
+            } else {
+                users.get(i).submitAnswer("This is a cat answer");
+                users.get(i).submitAnswer("This is a cat answer");
+                users.get(i).submitAnswer("This is a cat answer");
+                users.get(i).submitAnswer("This is a cat answer");
+            }
+        }
     }
 
     public void readyToStart() {
@@ -87,13 +112,13 @@ public class GameController {
         game.setNight(true);
         final ArrayList<String> dogNames = game.getPlayerNames(false, true, false);
         final ArrayList<String> names = game.getPlayerNames(true, true, false);
-        poll = new Poll(names, names);
+        poll = new Poll(names, dogNames);
         for (int i = 0; i < users.size(); i++) {
             final User user = users.get(i);
             new Thread() {
                 public void run() {
                     if (user.getRole().equals("CAT")) {
-                        user.startNightPoll("Vote for the dog to kill", names);
+                        user.startNightPoll("Vote for the dog to kill", dogNames);
                     } else {
                         user.startNightPoll("Vote for the best answer", names);
                     }

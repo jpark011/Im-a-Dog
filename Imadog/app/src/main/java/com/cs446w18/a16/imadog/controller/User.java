@@ -56,6 +56,7 @@ public class User {
     }
 
     public void initializeGame() {
+        if (view == null) return;
         view.showDayPage();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -108,10 +109,12 @@ public class User {
     }
 
     public void startPoll(String question, HashMap<String, String> answers) {
+        if (view == null) return;
         view.showVotePage(question, answers);
     }
 
     public void closePoll(String name, String role, String winner) {
+        if (view == null) return;
         final String result = winner;
         view.showVictimPage(name, role);
         Timer timer = new Timer();
@@ -129,10 +132,12 @@ public class User {
     }
 
     public void startNightPoll(String title, ArrayList<String> names) {
+        if (view == null) return;
         view.showNightVotePage(title, names);
     }
 
     public void closeNightPoll(String name,  String role, String winner) {
+        if (view == null) return;
         final String result = winner;
         view.showVictimPage(name, role);
         Timer timer = new Timer();
@@ -154,12 +159,9 @@ public class User {
 
     public void endGame(String winner) {
         view.showOutro(winner);
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//
-//            public void run() {
-//                view.
-//            }
-//        }, 5000);
+    }
+
+    public boolean isDead() {
+        return role.isDead();
     }
 }

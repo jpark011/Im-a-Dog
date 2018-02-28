@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
@@ -35,7 +36,6 @@ public class IntroFragment extends SuperFragment {
                 if (GameConstants.INTERFACE_TEST) {
                     getGameActivity().showDayPage();
                 } else {
-                    System.out.println("ready to start view");
                     Global.user.readyToStart();
                 }
             }

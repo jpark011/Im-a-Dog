@@ -2,6 +2,7 @@ package com.cs446w18.a16.imadog.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 
 /**
@@ -27,6 +29,7 @@ public class QuestionFragment extends SuperFragment {
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
     TextView questionLabel;
+    TextView timerLabel;
 
     EditText answerField;
 
@@ -49,7 +52,7 @@ public class QuestionFragment extends SuperFragment {
         answerField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         // Lock the view if player is dead
-        if (false) { // KAREN: Replace by "if player is dead"
+        if (Global.user.isDead()) { // KAREN: Replace by "if player is dead"
             answerField.setEnabled(false);
         }
 
@@ -74,12 +77,38 @@ public class QuestionFragment extends SuperFragment {
         };
         answerField.setOnEditorActionListener(fieldListener);
 
+        timerLabel = view.findViewById(R.id.timerLabel);
+
+        long duration = 15;
+
+        CountDownTimer timer = new CountDownTimer(duration*1000, 1000) {
+            @Override
+            public void onTick(long l) {
+                setTimerLabel(l);
+            }
+
+            @Override
+            public void onFinish() {
+                // TEST: to be replaced by a direct call from the model.
+//                if (GameConstants.INTERFACE_TEST) {
+//                    getGameActivity().showVictimPage("Player1", "Cat");
+//                }
+
+                // TODO: show "Waiting for results..."
+            }
+        }.start();
+
         return view;
     }
 
 
     /* ----------------------------- METHODS ----------------------------- */
 
-
+    /// Updates the timer label with the given time
+    private void setTimerLabel(long time) {
+        int minutes = (int) time / 60000;
+        int seconds = (int) time % 60000 / 1000;
+        timerLabel.setText(minutes + ":" + String.format("%02d", seconds));
+    }
 
 }

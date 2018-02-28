@@ -54,10 +54,10 @@ public class GameConstants {
     public static final int minPlayers = 4;
 
     // Duration of the vote during the day, displayed on a counter (in seconds)
-    public static final int dayVoteDuration = 10;
+    public static final int dayVoteDuration = 15;
 
     // Duration of the vote during the night, displayed on a counter (in seconds)
-    public static final int nightVoteDuration = 5;
+    public static final int nightVoteDuration = 15;
 
 
     // KAREN: I used this boolean to replace the call of the model to change the pages in the navigation.

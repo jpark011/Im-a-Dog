@@ -1,5 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
+import com.cs446w18.a16.imadog.Global;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +50,8 @@ public class Poll {
     }
 
     public String getResult() {
-        ArrayList<String> maxNames = new ArrayList<String>();
+        String defName = null;
+        ArrayList<String> maxNames = new ArrayList<>();
         int maxVotes = 0;
         for (Map.Entry<String, Integer> vote : count.entrySet()) {
             if (vote.getValue() > maxVotes) {
@@ -58,10 +61,13 @@ public class Poll {
             } else if (vote.getValue() == maxVotes) {
                 maxNames.add(vote.getKey());
             }
+            if (!vote.getKey().equals(Global.user.getUserName())) {
+                defName = vote.getKey();
+            }
         }
 
         if (maxNames.size() == 1 /*&& maxVotes > 0*/) return maxNames.get(0);
-        return null;
+        return defName;
     }
 
     public String closePoll() {

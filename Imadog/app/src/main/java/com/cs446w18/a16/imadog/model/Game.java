@@ -1,5 +1,6 @@
 package com.cs446w18.a16.imadog.model;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.User;
 
@@ -38,6 +39,21 @@ public class Game {
         int total = names.size();
         int numSoFar = 0;
         Random r = new Random();
+
+        // Demo
+        for (int i = 0; i < names.size(); i++) {
+            String name = names.get(i).getUserName();
+            if (name.equals(Global.user.getUserName())) {
+                Cat cat = new Cat(name, this);
+                cats.add(cat);
+                names.get(i).setRole(cat);
+                names.remove(i);
+                total = names.size();
+                numSoFar++;
+            }
+        }
+
+
         while (total > 0) {
             int ind = r.nextInt(total);
             String name = names.get(ind).getUserName();
