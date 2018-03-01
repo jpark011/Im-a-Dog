@@ -44,11 +44,11 @@ public class DayFragment extends SuperFragment {
         TextView nameLabel = view.findViewById(R.id.titleLabel);
         String str;
         if (Global.user.getRole() == "DOG") {
-            str = "Find the cats!";
+            str = "There are cats lurking around.\nFind them and get rid of them!";
         } else {
-            str = "Try to blend in.";
+            str = "Your mission is to go undercover and kill all the dogs.\nRemember to blend in!";
         }
-        nameLabel.setText("It's the day! \n You are a " + Global.user.getRole() + ". \n " + str);
+        nameLabel.setText("It's the day!\nYou are a " + Global.user.getRole() + ". \n" + str);
 
         return view;
     }

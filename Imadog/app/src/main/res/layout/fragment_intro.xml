@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_light">
+    android:background="@android:color/holo_red_light">
 
     <TextView
         android:id="@+id/titleLabel"
@@ -10,8 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Intro"
+        android:text="Let's start the game!!"
         android:textSize="36sp"
+        android:textColor="@android:color/white"
         android:textStyle="normal" />
 
 

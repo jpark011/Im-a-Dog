@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@android:color/holo_blue_light">
 
     <TextView
         android:id="@+id/titleLabel"
@@ -10,7 +11,8 @@
         android:layout_centerHorizontal="true"
         android:text="Question"
         android:textSize="36sp"
-        android:textStyle="normal"/>
+        android:textStyle="normal"
+        android:textColor="@android:color/white"/>
 
     <EditText
         android:id="@+id/answerField"
@@ -21,7 +23,10 @@
         android:layout_marginTop="60dp"
         android:ems="10"
         android:hint="Answer"
-        android:inputType="text" />
+        android:textColorHint="@android:color/white"
+        android:inputType="text"
+        android:textColor="@android:color/white"
+        />
     <TextView
         android:id="@+id/timerLabel"
         android:layout_width="wrap_content"
@@ -31,7 +36,9 @@
         android:layout_alignParentBottom="true"
         android:text="00:00"
         android:textSize="36sp"
-        android:textStyle="normal"/>
+        android:textStyle="normal"
+        android:textColor="@android:color/white"
+        />
 
 
 </RelativeLayout>
