@@ -18,6 +18,9 @@ Imadog/out/
 Imadog/.gradle/
 Imadog/build/
 
+# Design files
+Design/
+
 # Local configuration file (sdk path, etc)
 Imadog/local.properties
 
