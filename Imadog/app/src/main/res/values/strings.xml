@@ -1,3 +1,20 @@
 <resources>
     <string name="app_name">I\'m a dog!</string>
+
+
+    <!-- Menu Pages -->
+
+    <string name="main_title">I\'m a dog!</string>
+    <string name="main_subtitle">An original party game</string>
+
+    <string name="create_game_title">Create a Game</string>
+    <string name="create_game_placeholder">Name of the room</string>
+
+    <string name="join_game_title">Join a Game</string>
+
+    <string name="settings_title">Settings</string>
+
+    <string name="lobby_title">Lobby</string>
+
+
 </resources>

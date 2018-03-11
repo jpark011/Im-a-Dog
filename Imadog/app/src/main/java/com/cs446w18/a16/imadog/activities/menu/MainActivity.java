@@ -2,16 +2,13 @@ package com.cs446w18.a16.imadog.activities.menu;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
-import com.cs446w18.a16.imadog.activities.HelpActivity;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
 import com.cs446w18.a16.imadog.controller.User;
+import com.cs446w18.a16.imadog.views.CustomButton;
 
 public class MainActivity extends SuperActivity {
 
@@ -24,6 +21,16 @@ public class MainActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CustomButton joinButton = (CustomButton) findViewById(R.id.joinButton);
+        joinButton.updateBackgroundColor(this, R.color.yellow);
+
+        CustomButton createButton = (CustomButton) findViewById(R.id.createButton);
+        createButton.updateBackgroundColor(this, R.color.green);
+
+        CustomButton settingsButton = (CustomButton) findViewById(R.id.settingsButton);
+        settingsButton.updateBackgroundColor(this, R.color.red);
+
     }
 
 

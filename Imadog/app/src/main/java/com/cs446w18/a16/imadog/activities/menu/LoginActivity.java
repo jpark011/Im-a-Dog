@@ -63,6 +63,9 @@ public class LoginActivity extends SuperActivity {
         };
         nameField.setOnEditorActionListener(fieldListener);
 
+        // Setups the fonts
+        Global.initFonts(getApplicationContext());
+
     }
 
 
