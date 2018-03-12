@@ -35,7 +35,7 @@ public class VoteListView extends ListView {
 
     private Delegate delegate;
 
-    private boolean mIsEnabled;
+    public boolean isEnabled;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -62,7 +62,7 @@ public class VoteListView extends ListView {
         this.delegate = delegate;
         setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setSelector(R.drawable.row_selector);
-        mIsEnabled = true;
+        isEnabled = true;
 
         // Set the row action
         this.setOnItemClickListener(new OnItemClickListener() {
@@ -79,7 +79,7 @@ public class VoteListView extends ListView {
     /// Locks the view to prevent the player from voting
     public void lock() {
         Log.d("Imadog", "Lock");
-        mIsEnabled = false;
+        isEnabled = false;
     }
 
 
@@ -109,7 +109,7 @@ public class VoteListView extends ListView {
         }
 
         @Override
-        public boolean isEnabled(int position) { return mIsEnabled; }
+        public boolean isEnabled(int position) { return isEnabled; }
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {

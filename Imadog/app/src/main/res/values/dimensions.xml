@@ -3,4 +3,7 @@
 
     <dimen name="border_width">8dp</dimen>
 
+    <dimen name="button_height">60dp</dimen>
+    <dimen name="separator_width">48dp</dimen>
+
 </resources>
