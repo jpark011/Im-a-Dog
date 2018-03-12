@@ -1,7 +1,10 @@
 package com.cs446w18.a16.imadog.activities.menu;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.lang.UCharacter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -12,9 +15,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
+import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
+import com.cs446w18.a16.imadog.bluetooth.DiscoveryCallback;
+import com.cs446w18.a16.imadog.commands.Command;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +36,11 @@ public class JoinGameActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-    private List<String> mRooms;
+    private List<BluetoothDevice> mRooms;
 
     private ListView roomsListView;
+
+    private Toast mToast;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -43,25 +54,30 @@ public class JoinGameActivity extends SuperActivity {
         roomsListView = findViewById(R.id.roomsListView);
 
         // TODO: Replace with real rooms
-        ArrayList<String> testList = new ArrayList<>();
-        testList.add("Alice's Room");
-        testList.add("Room 45");
+        ArrayList<BluetoothDevice> testList = new ArrayList<>();
+//        testList.add("Alice's Room");
+//        testList.add("Room 45");
         mRooms = testList;
         roomsListView.setAdapter(new RoomsListAdapter(this));
         roomsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         roomsListView.setSelector(R.drawable.row_selector);
 
 
-
         // Set row selection action
         roomsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Global.user.joinRoom(mRooms.get(i));
                 Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
                 startActivity(joinIntent);
             }
         });
 
+        Bluetooth client = Global.user.getClient();
+        client.setDiscoveryCallback(new DiscoveryCallBackClient());
+        List<BluetoothDevice> pairedDevices = client.getPairedDevices();
+        mRooms.addAll(pairedDevices);
+        Global.user.searchRoom();
     }
 
 
@@ -105,12 +121,51 @@ public class JoinGameActivity extends SuperActivity {
 
             // Change the name
             TextView nameLabel = row.findViewById(R.id.nameLabel);
-            nameLabel.setText(mRooms.get(i));
+            BluetoothDevice device = mRooms.get(i);
+            nameLabel.setText(device.getName() + "\n" + device.getAddress());
 
             return row;
         }
     }
 
+    private class DiscoveryCallBackClient implements DiscoveryCallback {
+        @Override
+        public void onFinish() {
+        }
 
+        @Override
+        public void onDevice(BluetoothDevice device) {
+            mRooms.add(device);
+        }
+
+        @Override
+        public void onPair(BluetoothDevice device) {
+            mToast = Toast.makeText(JoinGameActivity.this,
+                    getText(R.string.bluetooth_paired),
+                    Toast.LENGTH_SHORT);
+            mToast.show();
+        }
+
+        @Override
+        public void onUnpair(BluetoothDevice device) {
+            mToast = Toast.makeText(JoinGameActivity.this,
+                    getText(R.string.bluetooth_warning),
+                    Toast.LENGTH_SHORT);
+            mToast.show();
+        }
+
+        @Override
+        public void onError(String message) {
+            mToast = Toast.makeText(JoinGameActivity.this,
+                    getText(R.string.bluetooth_warning),
+                    Toast.LENGTH_SHORT);
+            mToast.show();
+
+        }
+
+        @Override
+        public void onDiscoverable() {
+        }
+    }
 }
 

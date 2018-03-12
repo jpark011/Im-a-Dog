@@ -49,7 +49,7 @@ public class Bluetooth {
     protected boolean runOnUi;
 
     public Bluetooth(Context context){
-        initialize(context, UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+        initialize(context, UUID.fromString("00000000-0000-1000-8000-00805F9B34FB"));
         onStart();
         if (!isEnabled()) {
             enable();
@@ -111,7 +111,7 @@ public class Bluetooth {
         this.runOnUi = true;
     }
 
-    public void onActivityResult(int requestCode, final int resultCode){
+    public void onActivityResult(int requestCode, final int resultCode, Intent intent){
         if(bluetoothCallback!=null){
             if(requestCode==REQUEST_ENABLE_BT){
                 ThreadHelper.run(runOnUi, activity, new Runnable() {

@@ -8,4 +8,5 @@ public interface DiscoveryCallback{
     void onPair(BluetoothDevice device);
     void onUnpair(BluetoothDevice device);
     void onError(String message);
+    void onDiscoverable();
 }

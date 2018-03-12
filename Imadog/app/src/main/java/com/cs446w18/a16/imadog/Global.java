@@ -3,6 +3,7 @@ package com.cs446w18.a16.imadog;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.HashMap;

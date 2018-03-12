@@ -11,6 +11,5 @@ public interface CommunicationCallback{
     void onMessage(Command command);
     void onError(String message);
     void onConnectError(BluetoothDevice device, String message);
-    void onAccept(BluetoothSocket socket);
-    void onRequest(Command command);
+    void onAccept(String playerName);
 }

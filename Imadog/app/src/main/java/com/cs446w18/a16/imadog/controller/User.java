@@ -1,5 +1,7 @@
 package com.cs446w18.a16.imadog.controller;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 
 import com.cs446w18.a16.imadog.activities.GameActivity;
@@ -25,6 +27,7 @@ public class User {
     private GameController gameController;
     private Bluetooth client;   // if client
     private BluetoothServer server;   // if server
+    private boolean isServer;
 
     public User(String name) {
         userName = name;
@@ -44,12 +47,34 @@ public class User {
         userName = name;
     }
 
-    public void searchRoom(Context context) {
-        this.client = new Bluetooth(context);
+    public Bluetooth getClient() {
+        return this.client;
+    }
+
+    public BluetoothServer getServer() {
+        return this.server;
+    }
+
+    public void setClient(Bluetooth client) {
+        this.isServer = false;
+        this.client = client;
+    }
+
+    public void setServer(BluetoothServer server) {
+        this.isServer = true;
+        this.server = server;
+    }
+
+    public boolean isServer() {
+        return this.isServer;
+    }
+
+    public void searchRoom() {
         this.client.startScanning();
     }
 
-    public void joinRoom(Room room) {
+    public void joinRoom(BluetoothDevice device) {
+        this.client.connectToDevice(device, false);
         boolean result = room.addMember(this);
         if (result) {
             this.room = room;
@@ -60,9 +85,12 @@ public class User {
         this.room.removeMember(this);
     }
 
-    public void createGame(Context context, String roomName) {
+    public void openRoom(Activity activity) {
+        server.open(activity);
+    }
+
+    public void createGame(String roomName) {
         this.room = new Room(this);
-        this.server = new BluetoothServer(context);
         this.server.accept(roomName, false);
     }
 
