@@ -39,6 +39,7 @@ public class MainActivity extends SuperActivity {
     /// CALLBACK: when the Join button is pressed
     public void joinGame(View view) {
         Intent joinGameIntent = new Intent(MainActivity.this, JoinGameActivity.class);
+        Global.user.searchRoom();
         startActivity(joinGameIntent);
     }
 

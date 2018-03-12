@@ -32,7 +32,7 @@ public class CreateGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
-        EditText nameField = findViewById(R.id.nameField);
+        nameField = findViewById(R.id.nameField);
         nameField.setTypeface(Global.fonts.get("OSSemibold"));
 
         GradientDrawable background = (GradientDrawable)nameField.getBackground().getConstantState().newDrawable().mutate();;
@@ -47,7 +47,8 @@ public class CreateGameActivity extends SuperActivity {
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
         hideSystemUI();
-        Global.user.createGame();
+        String roomName = nameField.getText().toString();
+        Global.user.createGame(getApplicationContext(), roomName);
         Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
         startActivity(createIntent);
     }
