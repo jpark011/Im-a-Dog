@@ -13,11 +13,11 @@ import java.util.TimerTask;
  */
 
 public class GameController {
-    private ArrayList<User> users;
+    private ArrayList<PlayerController> users;
     private Game game;
     Poll poll;
 
-    public GameController(ArrayList<User> users) {
+    public GameController(ArrayList<PlayerController> users) {
         this.users = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
@@ -27,7 +27,7 @@ public class GameController {
         int total = users.size();
 
         for (int i = 0; i < total; i++) {
-            final User user = users.get(i);
+            final PlayerController user = users.get(i);
             new Thread() {
                 public void run() {
                     user.initializeGame();
@@ -49,7 +49,7 @@ public class GameController {
                 final String dogQuestion = game.getQuestion(true, game.getCurrentDay());
 
                 for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
+                    final PlayerController user = users.get(i);
                     new Thread() {
                         public void run() {
                             user.startPoll(dogQuestion, answers);
@@ -71,7 +71,7 @@ public class GameController {
                 final String winner = game.getWinner();
                 final String victimRole = role;
                 for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
+                    final PlayerController user = users.get(i);
                     new Thread() {
                         public void run() {
                             user.closePoll(result, victimRole, winner);
@@ -89,7 +89,7 @@ public class GameController {
         final ArrayList<String> names = game.getPlayerNames(true, true, false);
         poll = new Poll(names, names);
         for (int i = 0; i < users.size(); i++) {
-            final User user = users.get(i);
+            final PlayerController user = users.get(i);
             new Thread() {
                 public void run() {
                     if (user.getRole().equals("CAT")) {
@@ -114,7 +114,7 @@ public class GameController {
                 final String winner = game.getWinner();
                 final String victimRole = role;
                 for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
+                    final PlayerController user = users.get(i);
                     new Thread() {
                         public void run() {
                             user.closeNightPoll(result, victimRole, winner);

@@ -9,10 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.controller.GameController;
+import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -54,6 +58,30 @@ public class BluetoothServer extends Bluetooth {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void send(Command cmd, BluetoothSocket socket) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            send(cmd, out);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public PlayerController startGame(UserController hostUser) {
+        ArrayList<PlayerController> players = new ArrayList<>();
+        PlayerController host = new PlayerController(this, null);
+        players.add(host);
+
+        for (BluetoothSocket client : clients.values()) {
+            PlayerController player = new PlayerController(this, client);
+            players.add(player);
+        }
+
+        GameController game = new GameController(players);
+        host.setHost(game, hostUser);
+        return host;
     }
 
     @Override

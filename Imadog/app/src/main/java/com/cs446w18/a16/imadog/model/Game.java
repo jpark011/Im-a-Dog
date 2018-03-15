@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
 import com.cs446w18.a16.imadog.controller.GameController;
+import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.HashMap;
@@ -22,7 +23,7 @@ public class Game {
     private GameController gameController;
     private boolean night;
 
-    public Game(ArrayList<User> names, GameController gameController) {
+    public Game(ArrayList<PlayerController> names, GameController gameController) {
         currentDay = 1;
         night = false;
         int n = names.size();
@@ -32,7 +33,7 @@ public class Game {
         deceased = new ArrayList<>();
     }
 
-    private void assignRoles(ArrayList<User> names) {
+    private void assignRoles(ArrayList<PlayerController> names) {
         dogs = new ArrayList<>();
         cats = new ArrayList<>();
         int total = names.size();
