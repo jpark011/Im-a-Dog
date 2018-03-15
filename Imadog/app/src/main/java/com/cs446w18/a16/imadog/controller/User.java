@@ -15,6 +15,7 @@ import java.util.TimerTask;
 
 public class User {
     private String userName;
+    private String userId;
     private Room room;
     private Player role;
     private GameActivity view;
@@ -34,6 +35,14 @@ public class User {
 
     public void setUserName(String name) {
         userName = name;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void joinRoom(Room room) {

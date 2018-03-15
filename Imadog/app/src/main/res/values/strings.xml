@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">I\'m a dog!</string>
+    <string name="facebook_app_id">2154728577875575</string>
+    <string name="fb_login_protocol_scheme">fb2154728577875575</string>
 </resources>

@@ -7,8 +7,21 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.controller.User;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * Created by Jean-Baptiste on 25/02/2018.
@@ -19,6 +32,9 @@ public class LoginActivity extends SuperActivity {
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
     EditText nameField;
+    private static final String EMAIL = "email";
+    private static final String PUBLIC_PROFILE = "public_profile";
+    private CallbackManager callbackManager;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -46,7 +62,9 @@ public class LoginActivity extends SuperActivity {
                     hideSystemUI();
 
                     String name = textView.getText().toString();
-                    // KAREN: Save the name?
+                    if (Global.user == null) {
+                        Global.user = new User(name);
+                    }
 
                     Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(menuIntent);
@@ -58,10 +76,62 @@ public class LoginActivity extends SuperActivity {
         };
         nameField.setOnEditorActionListener(fieldListener);
 
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            private String firstName;
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                firstName = object.optString("first_name");
+                                String userId = object.optString("id");
+
+                                if (Global.user == null) {
+                                    Global.user = new User(firstName);
+                                }
+                                Global.user.setUserId(userId);
+                                Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(menuIntent);
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,first_name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                System.out.println("Cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                System.out.println("Error");
+            }
+        });
+
     }
 
 
     /* ----------------------------- METHODS ----------------------------- */
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

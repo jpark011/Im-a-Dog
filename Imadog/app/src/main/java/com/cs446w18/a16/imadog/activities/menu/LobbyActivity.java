@@ -10,6 +10,13 @@ import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
+import com.cs446w18.a16.imadog.controller.BotTask;
+
+import java.io.DataOutputStream;
+import java.net.URL;
+import java.net.URLEncoder;
+
+import javax.net.ssl.HttpsURLConnection;
 
 /**
  * Created by Jean-Baptiste on 17/02/2018.
@@ -26,6 +33,9 @@ public class LobbyActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        String url = "https://clvuoevymn.localtunnel.me/cats";
+        new BotTask().execute(url, Global.user.getUserId());
+
     }
 
 
