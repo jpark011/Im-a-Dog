@@ -43,7 +43,7 @@ public class BluetoothServer extends Bluetooth {
     }
 
     public void accept(String roomName, boolean insecureConnection) {
-        new AcceptThread(roomName, insecureConnection);
+        new AcceptThread(roomName, insecureConnection).start();
     }
 
     @Override
@@ -106,8 +106,8 @@ public class BluetoothServer extends Bluetooth {
                     final String clientName = "Player" + ++clientCount;
                     clients.put(clientName, client);
 
-                    ObjectInputStream input = (ObjectInputStream)client.getInputStream();
-                    new ReceiveThread(input);
+                    ObjectInputStream input = new ObjectInputStream(client.getInputStream());
+                    new ReceiveThread(input).start();
 
                     if(communicationCallback!=null) {
                         ThreadHelper.run(runOnUi, activity, new Runnable() {

@@ -70,7 +70,11 @@ public class UserController {
     }
 
     public void joinRoom(BluetoothDevice device) {
+        if (!isServer) {
+            client.setCommunicationCallback(new ClientCommunicationCallback());
+        }
         this.client.connectToDevice(device, false);
+
     }
 
     public void leaveRoom() {}
@@ -91,9 +95,7 @@ public class UserController {
     public void initializeGame(String question) {
         final String q = question;
         lobby.openGameActivity();
-        if (!isServer) {
-            client.setCommunicationCallback(new ClientCommunicationCallback());
-        }
+
         sendCommand("SET_USERNAME", userName);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
