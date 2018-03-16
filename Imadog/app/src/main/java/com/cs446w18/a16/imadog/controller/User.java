@@ -69,8 +69,8 @@ public class User {
         return this.isServer;
     }
 
-    public void searchRoom() {
-        this.client.startScanning();
+    public void searchRoom(Activity activity) {
+        this.client.startScanning(activity);
     }
 
     public void joinRoom(BluetoothDevice device) {

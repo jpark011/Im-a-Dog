@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import com.cs446w18.a16.imadog.commands.Command;
@@ -29,7 +31,9 @@ import java.util.UUID;
  * Created by Omar on 14/07/2015.
  */
 public class Bluetooth {
-    private static final int REQUEST_ENABLE_BT = 1111;
+    protected static final int REQUEST_ENABLE_BT = 1111;
+    protected static final int REQUEST_DISCOVERABLE_BT = 2222;
+    protected static final int REQUEST_CODE_LOC = 3333;
 
     protected Activity activity;
     protected Context context;
@@ -51,9 +55,6 @@ public class Bluetooth {
     public Bluetooth(Context context){
         initialize(context, UUID.fromString("00000000-0000-1000-8000-00805F9B34FB"));
         onStart();
-        if (!isEnabled()) {
-            enable();
-        }
     }
 
     public Bluetooth(Context context, UUID uuid){
@@ -79,20 +80,14 @@ public class Bluetooth {
         context.unregisterReceiver(bluetoothReceiver);
     }
 
-    public void showEnableDialog(Activity activity){
-        if (!bluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-        }
-    }
-
-    public void enable(){
+   public void enable(Activity activity){
         if(bluetoothAdapter!=null) {
             if (!bluetoothAdapter.isEnabled()) {
-                bluetoothAdapter.enable();
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                activity.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
-    }
+   }
 
     public void disable(){
         if(bluetoothAdapter!=null) {
@@ -122,9 +117,41 @@ public class Bluetooth {
                         }
                     }
                 });
+            } else if (requestCode==REQUEST_DISCOVERABLE_BT) {
+                ThreadHelper.run(runOnUi, activity, new Runnable() {
+                    @Override
+                    public void run() {
+                        if(resultCode != Activity.RESULT_CANCELED){
+                            discoveryCallback.onDiscoverable();
+                        } else {
+                            discoveryCallback.onError("User denied");
+                        }
+                    }
+                });
             }
         }
     }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_CODE_LOC:
+//                if (grantResults.length > 0) {
+//                    for (int gr : grantResults) {
+//                        // Check if request is granted or not
+//                        if (gr != PackageManager.PERMISSION_GRANTED) {
+//                            return;
+//                        }
+//                    }
+//
+//                    //TODO - Add your code here to start Discovery
+//
+//                }
+//                break;
+//            default:
+//                return;
+//        }
+//    }
 
     public void connectToAddress(String address, boolean insecureConnection) {
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
@@ -201,7 +228,21 @@ public class Bluetooth {
         return devices;
     }
 
-    public void startScanning(){
+    public void startScanning(Activity activity){
+        // for Android Mashmallow and above
+        if (23 <= Build.VERSION.SDK_INT) {
+            int accessCoarseLocation = activity.checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            List<String> listRequestPermission = new ArrayList<String>();
+            if (accessCoarseLocation != PackageManager.PERMISSION_GRANTED) {
+                listRequestPermission.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+
+            if (!listRequestPermission.isEmpty()) {
+                String[] strRequestPermission = listRequestPermission.toArray(new String[listRequestPermission.size()]);
+                activity.requestPermissions(strRequestPermission, REQUEST_CODE_LOC);
+            }
+        }
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);

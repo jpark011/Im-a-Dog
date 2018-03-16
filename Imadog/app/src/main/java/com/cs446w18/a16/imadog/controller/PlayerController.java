@@ -1,8 +1,10 @@
 package com.cs446w18.a16.imadog.controller;
 
+import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
+import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.model.Player;
 
@@ -46,6 +48,7 @@ public class PlayerController {
     }
 
     public void initializeGame() {
+        server.setCommunicationCallback(new ServerCommunicatonCallback());
         sendCommand("INITIALIZE_GAME", getQuestion());
     }
 
@@ -123,6 +126,39 @@ public class PlayerController {
             hostUser.notify(cmd);
         } else {
             server.send(cmd, socket);
+        }
+    }
+
+    private class ServerCommunicatonCallback implements CommunicationCallback {
+
+        @Override
+        public void onConnect(BluetoothDevice device) {
+
+        }
+
+        @Override
+        public void onDisconnect(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onMessage(Command command) {
+            PlayerController.this.notify(command);
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onConnectError(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onAccept(String playerName) {
+
         }
     }
 }

@@ -48,7 +48,7 @@ public class MainActivity extends SuperActivity {
         client.setBluetoothCallback(new BluetoothCallbackClient());
         Global.user.setClient(client);
         if (!client.isEnabled()) {
-            client.enable();
+            client.enable(this);
         } else {
             Intent joinGameIntent = new Intent(MainActivity.this, JoinGameActivity.class);
             startActivity(joinGameIntent);
@@ -61,7 +61,7 @@ public class MainActivity extends SuperActivity {
         server.setBluetoothCallback(new BluetoothCallbackClient());
         Global.user.setServer(server);
         if (!server.isEnabled()) {
-            server.enable();
+            server.enable(this);
         } else {
             Intent createGameIntent = new Intent(MainActivity.this, CreateGameActivity.class);
             startActivity(createGameIntent);

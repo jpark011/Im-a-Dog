@@ -7,6 +7,7 @@ import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.activities.menu.LobbyActivity;
 import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
+import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
 
 import java.util.ArrayList;
@@ -64,8 +65,8 @@ public class UserController {
         return this.isServer;
     }
 
-    public void searchRoom() {
-        this.client.startScanning();
+    public void searchRoom(Activity activity) {
+        this.client.startScanning(activity);
     }
 
     public void joinRoom(BluetoothDevice device) {
@@ -88,9 +89,12 @@ public class UserController {
     }
 
     public void initializeGame(String question) {
-        sendCommand("SET_USERNAME", userName);
         final String q = question;
         lobby.openGameActivity();
+        if (!isServer) {
+            client.setCommunicationCallback(new ClientCommunicationCallback());
+        }
+        sendCommand("SET_USERNAME", userName);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -233,6 +237,38 @@ public class UserController {
             hostPlayer.notify(cmd);
         } else {
             client.send(cmd);
+        }
+    }
+
+    private class ClientCommunicationCallback implements CommunicationCallback {
+        @Override
+        public void onConnect(BluetoothDevice device) {
+
+        }
+
+        @Override
+        public void onDisconnect(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onMessage(Command command) {
+            UserController.this.notify(command);
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onConnectError(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onAccept(String playerName) {
+
         }
     }
 }

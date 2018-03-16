@@ -24,8 +24,6 @@ import java.util.HashMap;
  */
 
 public class BluetoothServer extends Bluetooth {
-    private static final int REQUEST_DISCOVERABLE_BT = 2222;
-
     private BluetoothServerSocket serverSocket;
     private HashMap<String, BluetoothSocket> clients;
     int clientCount; // TODO: Need to change to some kind of Player format
@@ -82,24 +80,6 @@ public class BluetoothServer extends Bluetooth {
         GameController game = new GameController(players);
         host.setHost(game, hostUser);
         return host;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, final int resultCode, Intent intent){
-        if(bluetoothCallback!=null){
-            if(requestCode==REQUEST_DISCOVERABLE_BT){
-                ThreadHelper.run(runOnUi, activity, new Runnable() {
-                    @Override
-                    public void run() {
-                        if(resultCode != Activity.RESULT_CANCELED){
-                            discoveryCallback.onDiscoverable();
-                        } else {
-                            discoveryCallback.onError("User denied");
-                        }
-                    }
-                });
-            }
-        }
     }
 
     private class AcceptThread extends Thread {

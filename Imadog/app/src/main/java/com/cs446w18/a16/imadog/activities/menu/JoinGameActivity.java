@@ -36,6 +36,7 @@ public class JoinGameActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
+    private RoomsListAdapter adapter;
     private List<BluetoothDevice> mRooms;
 
     private ListView roomsListView;
@@ -58,7 +59,8 @@ public class JoinGameActivity extends SuperActivity {
 //        testList.add("Alice's Room");
 //        testList.add("Room 45");
         mRooms = testList;
-        roomsListView.setAdapter(new RoomsListAdapter(this));
+        adapter = new RoomsListAdapter(this);
+        roomsListView.setAdapter(adapter);
         roomsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         roomsListView.setSelector(R.drawable.row_selector);
 
@@ -77,7 +79,7 @@ public class JoinGameActivity extends SuperActivity {
         client.setDiscoveryCallback(new DiscoveryCallBackClient());
         List<BluetoothDevice> pairedDevices = client.getPairedDevices();
         mRooms.addAll(pairedDevices);
-        Global.user.searchRoom();
+        Global.user.searchRoom(this);
     }
 
 
@@ -136,6 +138,8 @@ public class JoinGameActivity extends SuperActivity {
         @Override
         public void onDevice(BluetoothDevice device) {
             mRooms.add(device);
+            adapter.notifyDataSetChanged();
+
         }
 
         @Override
