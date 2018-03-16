@@ -42,7 +42,6 @@ public class IntroFragment extends SuperFragment {
                     getGameActivity().showDayPage();
                 } else {
                     System.out.println("ready to start view");
-                    Global.user.readyToStart();
                 }
             }
         }, 4000);

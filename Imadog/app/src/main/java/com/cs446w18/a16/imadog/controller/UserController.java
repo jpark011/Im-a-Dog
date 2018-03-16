@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 
 import com.cs446w18.a16.imadog.activities.GameActivity;
+import com.cs446w18.a16.imadog.activities.menu.LobbyActivity;
 import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.commands.Command;
@@ -24,6 +25,7 @@ public class UserController {
     private BluetoothServer server;
     private boolean isServer;
     private PlayerController hostPlayer;
+    private LobbyActivity lobby;
 
     public UserController(String name) {
         userName = name;
@@ -82,15 +84,28 @@ public class UserController {
 
     public void startGame() {
         hostPlayer = this.server.startGame(this);
+        hostPlayer.readyToStart();
     }
 
     public void initializeGame(String question) {
         sendCommand("SET_USERNAME", userName);
-        readyForDay(question);
+        final String q = question;
+        lobby.openGameActivity();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                readyForDay(q);
+            }
+        }, 5000);
     }
 
     public void setView(GameActivity view) {
         this.view = view;
+    }
+
+    public void setLobby(LobbyActivity lobby) {
+        this.lobby = lobby;
     }
 
     public void submitAnswer(String answer) {

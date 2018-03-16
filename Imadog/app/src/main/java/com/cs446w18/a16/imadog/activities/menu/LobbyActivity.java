@@ -36,6 +36,7 @@ public class LobbyActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lobby);
+        Global.user.setLobby(this);
 
         // Players list
         VoteListView playersList = findViewById(R.id.playersListView);
@@ -61,6 +62,10 @@ public class LobbyActivity extends SuperActivity {
     /// CALLBACK: when the Start button is pressed
     public void startGame(View view) {
         Global.user.startGame();
+    }
+
+    public void openGameActivity() {
+        System.out.println("OPEN GAME");
         Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
         startActivity(startGameIntent);
     }
