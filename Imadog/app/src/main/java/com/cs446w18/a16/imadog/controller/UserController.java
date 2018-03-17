@@ -70,9 +70,6 @@ public class UserController {
     }
 
     public void joinRoom(BluetoothDevice device) {
-        if (!isServer) {
-            client.setCommunicationCallback(new ClientCommunicationCallback());
-        }
         this.client.connectToDevice(device, false);
 
     }
@@ -95,7 +92,9 @@ public class UserController {
     public void initializeGame(String question) {
         final String q = question;
         lobby.openGameActivity();
-
+        if (!isServer) {
+            client.setCommunicationCallback(new ClientCommunicationCallback());
+        }
         sendCommand("SET_USERNAME", userName);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -214,6 +213,7 @@ public class UserController {
         switch(action) {
             case "INITIALIZE_GAME":
                 initializeGame((String)payload[0]);
+
                 break;
             case "START_POLL":
                 startPoll((String)payload[0], (HashMap<String, String>)payload[1]);
@@ -236,6 +236,7 @@ public class UserController {
     public void sendCommand(String action, Object... payload) {
         Command cmd = new Command(action, payload);
         if (isServer) {
+            System.out.println("IS SERVER: " + userName);
             hostPlayer.notify(cmd);
         } else {
             client.send(cmd);

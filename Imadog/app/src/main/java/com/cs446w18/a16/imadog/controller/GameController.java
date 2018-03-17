@@ -93,7 +93,7 @@ public class GameController {
             new Thread() {
                 public void run() {
                     if (user.getRole().equals("CAT")) {
-                        user.startNightPoll("Vote for the dog to kill", names);
+                        user.startNightPoll("Vote for the dog to kill", dogNames);
                     } else {
                         user.startNightPoll("Vote for the best answer", names);
                     }

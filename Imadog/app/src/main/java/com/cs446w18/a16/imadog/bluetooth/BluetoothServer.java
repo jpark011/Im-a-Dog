@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by JayP on 2018-03-11.
@@ -26,12 +27,14 @@ import java.util.HashMap;
 public class BluetoothServer extends Bluetooth {
     private BluetoothServerSocket serverSocket;
     private HashMap<String, BluetoothSocket> clients;
+    private HashMap<String, CommunicationCallback> communicationCallbacks;
     int clientCount; // TODO: Need to change to some kind of Player format
 
     public BluetoothServer(Context context) {
         super(context);
         serverSocket = null;
         clients = new HashMap();
+        communicationCallbacks = new HashMap();
         clientCount = 0;
     }
 
@@ -67,13 +70,19 @@ public class BluetoothServer extends Bluetooth {
         }
     }
 
+    public void setCommunicationCallbacks(String clientName, CommunicationCallback cc) {
+        this.communicationCallbacks.put(clientName, cc);
+    }
+
     public PlayerController startGame(UserController hostUser) {
         ArrayList<PlayerController> players = new ArrayList<>();
-        PlayerController host = new PlayerController(this, null);
+        PlayerController host = new PlayerController(this, null, null);
         players.add(host);
 
-        for (BluetoothSocket client : clients.values()) {
-            PlayerController player = new PlayerController(this, client);
+        Iterator it = clients.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry)it.next();
+            PlayerController player = new PlayerController(this, (BluetoothSocket)pair.getValue(), (String)pair.getKey());
             players.add(player);
         }
 
@@ -107,7 +116,7 @@ public class BluetoothServer extends Bluetooth {
                     clients.put(clientName, client);
 
                     ObjectInputStream input = new ObjectInputStream(client.getInputStream());
-                    new ReceiveThread(input).start();
+                    new ReceiveThread(input, clientName).start();
 
                     if(communicationCallback!=null) {
                         ThreadHelper.run(runOnUi, activity, new Runnable() {
@@ -147,8 +156,10 @@ public class BluetoothServer extends Bluetooth {
 
     private class ReceiveThread extends Thread implements Runnable{
         private ObjectInputStream input;
+        private String name;
 
-        public ReceiveThread(ObjectInputStream input) {
+        public ReceiveThread(ObjectInputStream input, String name) {
+            this.name = name;
             this.input = input;
         }
 
@@ -156,23 +167,23 @@ public class BluetoothServer extends Bluetooth {
             Command msg;
             try {
                 while((msg = (Command)input.readObject()) != null) {
-                    if(communicationCallback != null){
+                    if(communicationCallbacks.get(name) != null){
                         final Command msgCopy = msg;
                         ThreadHelper.run(runOnUi, activity, new Runnable() {
                             @Override
                             public void run() {
-                                communicationCallback.onMessage(msgCopy);
+                                communicationCallbacks.get(name).onMessage(msgCopy);
                             }
                         });
                     }
                 }
             } catch (final IOException e) {
                 connected=false;
-                if(communicationCallback != null){
+                if(communicationCallbacks.get(name) != null){
                     ThreadHelper.run(runOnUi, activity, new Runnable() {
                         @Override
                         public void run() {
-                            communicationCallback.onDisconnect(device, e.getMessage());
+                            communicationCallbacks.get(name).onDisconnect(device, e.getMessage());
                         }
                     });
                 }

@@ -5,8 +5,8 @@ package com.cs446w18.a16.imadog.model;
  */
 
 public class Dog extends Player {
-    public Dog(String n, Game g) {
-        super(n, g);
+    public Dog(Game g) {
+        super(g);
     }
 
     public String getRole() {
@@ -20,7 +20,7 @@ public class Dog extends Player {
 
     public void vote(String choice) {
         if (!game.isNight()) {
-            game.vote(this.name, choice);
+            game.vote(this.getName(), choice);
         }
     }
 }

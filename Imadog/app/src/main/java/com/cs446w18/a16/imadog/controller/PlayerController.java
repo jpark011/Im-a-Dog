@@ -8,6 +8,8 @@ import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.model.Player;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,17 +22,26 @@ public class PlayerController {
     private Player role;
     private GameController gameController;
     private BluetoothServer server;
-    private BluetoothSocket socket;
+    private ObjectOutputStream out;
     private boolean isServer;
     private UserController hostUser;
+    private String clientName;
 
-    public PlayerController(BluetoothServer server, BluetoothSocket socket) {
+    public PlayerController(BluetoothServer server, BluetoothSocket socket, String clientName) {
+        this.clientName = clientName;
         this.server = server;
-        this.socket = socket;
         hostUser = null;
         isServer = false;
         role = null;
         gameController = null;
+
+        if (socket != null) {
+            try {
+                this.out = new ObjectOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void setHost(GameController gameController, UserController hostUser) {
@@ -45,10 +56,14 @@ public class PlayerController {
 
     public void setUserName(String name) {
         userName = name;
+        role.setName(name);
+        System.out.println("SET USERNAME: "+name);
     }
 
     public void initializeGame() {
-        server.setCommunicationCallback(new ServerCommunicatonCallback());
+        if (!isServer) {
+            server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback(this));
+        }
         sendCommand("INITIALIZE_GAME", getQuestion());
     }
 
@@ -125,11 +140,16 @@ public class PlayerController {
         if (isServer) {
             hostUser.notify(cmd);
         } else {
-            server.send(cmd, socket);
+            server.send(cmd, out);
         }
     }
 
-    private class ServerCommunicatonCallback implements CommunicationCallback {
+    private class ServerCommunicationCallback implements CommunicationCallback {
+        PlayerController playerController;
+
+        public ServerCommunicationCallback(PlayerController playerController) {
+            this.playerController = playerController;
+        }
 
         @Override
         public void onConnect(BluetoothDevice device) {
@@ -143,7 +163,7 @@ public class PlayerController {
 
         @Override
         public void onMessage(Command command) {
-            PlayerController.this.notify(command);
+            playerController.notify(command);
         }
 
         @Override

@@ -41,13 +41,12 @@ public class Game {
         Random r = new Random();
         while (total > 0) {
             int ind = r.nextInt(total);
-            String name = names.get(ind).getUserName();
             if (numSoFar % 5 == 0) {
-                Cat cat = new Cat(name, this);
+                Cat cat = new Cat(this);
                 cats.add(cat);
                 names.get(ind).setRole(cat);
             } else {
-                Dog dog = new Dog(name, this);
+                Dog dog = new Dog(this);
                 dogs.add(dog);
                 names.get(ind).setRole(dog);
             }
@@ -89,12 +88,14 @@ public class Game {
 
         if (getCats) {
             for (int i = 0; i < cats.size(); i++) {
+                System.out.println("Name: "+ cats.get(i).getName());
                 answers.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
             }
         }
 
         if (getDogs) {
             for (int i = 0; i < dogs.size(); i++) {
+                System.out.println("Name: "+ dogs.get(i).getName());
                 answers.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
             }
         }

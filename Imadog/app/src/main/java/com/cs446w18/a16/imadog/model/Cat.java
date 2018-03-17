@@ -7,8 +7,8 @@ import java.util.ArrayList;
  */
 
 public class Cat extends Player{
-    public Cat(String n, Game g) {
-        super(n, g);
+    public Cat(Game g) {
+        super(g);
     }
 
     public ArrayList<String> getCatNames() {
@@ -29,6 +29,6 @@ public class Cat extends Player{
     }
 
     public void vote(String choice) {
-        game.vote(this.name, choice);
+        game.vote(this.getName(), choice);
     }
 }

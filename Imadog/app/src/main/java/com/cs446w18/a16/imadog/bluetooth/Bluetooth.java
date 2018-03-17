@@ -381,6 +381,8 @@ public class Bluetooth {
                         });
                     }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

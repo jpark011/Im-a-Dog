@@ -7,14 +7,13 @@ import java.util.ArrayList;
  */
 
 public abstract class Player {
-    protected String name;
+    private String name;
     private boolean dead;
     protected Game game;
     private ArrayList<String> answers;
 
-    public Player(String n, Game g) {
+    public Player(Game g) {
         answers = new ArrayList<>();
-        name = n;
         game = g;
         dead = false;
     }
@@ -23,8 +22,13 @@ public abstract class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+        System.out.println("ROLE SET NAME: " + name);
+    }
+
     public String getAnswer(int day) {
-        if (answers.size() == day-1) {
+        if (answers.size() < day) {
             answers.add("");
         }
         return answers.get(day-1);
@@ -35,8 +39,9 @@ public abstract class Player {
         if (answers.size() < day) {
             answers.add(ans);
         }
+        System.out.println("SET ANSWER: " + name + " : " + ans);
 
-        answers.add(day-1, ans);
+        answers.set(day-1, ans);
     }
 
     public void kill() {
