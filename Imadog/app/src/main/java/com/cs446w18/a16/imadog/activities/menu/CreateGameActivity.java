@@ -36,7 +36,10 @@ public class CreateGameActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
+        nameField = findViewById(R.id.nameField);
+        String link = nameField.getText().toString();
         Global.user.createGame();
+        Global.user.setFbLink(link);
         Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
         startActivity(createIntent);
     }

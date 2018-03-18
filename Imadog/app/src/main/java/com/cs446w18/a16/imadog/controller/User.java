@@ -3,6 +3,7 @@ package com.cs446w18.a16.imadog.controller;
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.model.Player;
 import com.cs446w18.a16.imadog.model.Room;
+import com.facebook.AccessToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ public class User {
     private Player role;
     private GameActivity view;
     private GameController gameController;
+    private AccessToken accessToken;
+    private String fbLink;
 
     public User(String name) {
         userName = name;
@@ -43,6 +46,22 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getFbLink() {
+        return fbLink;
+    }
+
+    public void setFbLink(String fbLink) {
+        this.fbLink = fbLink;
+    }
+
+    public AccessToken getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(AccessToken accessToken) {
+        this.accessToken = accessToken;
     }
 
     public void joinRoom(Room room) {

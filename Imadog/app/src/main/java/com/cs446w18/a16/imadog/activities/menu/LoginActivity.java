@@ -88,6 +88,7 @@ public class LoginActivity extends SuperActivity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
+                final LoginResult result = loginResult;
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
@@ -102,6 +103,7 @@ public class LoginActivity extends SuperActivity {
                                     Global.user = new User(firstName);
                                 }
                                 Global.user.setUserId(userId);
+                                Global.user.setAccessToken(result.getAccessToken());
                                 Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(menuIntent);
                             }
