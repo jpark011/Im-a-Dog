@@ -3,9 +3,6 @@ package com.cs446w18.a16.imadog.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-/**
- * Created by lacie on 2018-02-17.
- */
 
 public class Poll {
     private Map<String, String> votes;
@@ -60,7 +57,7 @@ public class Poll {
             }
         }
 
-        if (maxNames.size() == 1 /*&& maxVotes > 0*/) return maxNames.get(0);
+        if (maxNames.size() == 1 && maxVotes > 0) return maxNames.get(0);
         return null;
     }
 

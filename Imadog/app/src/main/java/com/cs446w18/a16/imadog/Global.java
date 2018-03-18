@@ -3,16 +3,14 @@ package com.cs446w18.a16.imadog;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.controller.User;
+import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.util.HashMap;
 
-/**
- * Created by lacie on 2018-02-23.
- */
-
 public class Global {
-    public static User user = null;
+    public static UserController user = null;
 
     // Global array of fonts
     public static HashMap<String, Typeface> fonts;

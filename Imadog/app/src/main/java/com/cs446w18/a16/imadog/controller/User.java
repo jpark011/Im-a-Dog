@@ -1,6 +1,12 @@
 package com.cs446w18.a16.imadog.controller;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+
 import com.cs446w18.a16.imadog.activities.GameActivity;
+import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
+import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.model.Player;
 import com.cs446w18.a16.imadog.model.Room;
 
@@ -9,16 +15,15 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by lacie on 2018-02-18.
- */
-
 public class User {
     private String userName;
     private Room room;
     private Player role;
     private GameActivity view;
     private GameController gameController;
+    private Bluetooth client;   // if client
+    private BluetoothServer server;   // if server
+    private boolean isServer;
 
     public User(String name) {
         userName = name;
@@ -26,6 +31,8 @@ public class User {
         role = null;
         view = null;
         gameController = null;
+        client = null;
+        server = null;
     }
 
     public String getUserName() {
@@ -36,7 +43,34 @@ public class User {
         userName = name;
     }
 
-    public void joinRoom(Room room) {
+    public Bluetooth getClient() {
+        return this.client;
+    }
+
+    public BluetoothServer getServer() {
+        return this.server;
+    }
+
+    public void setClient(Bluetooth client) {
+        this.isServer = false;
+        this.client = client;
+    }
+
+    public void setServer(BluetoothServer server) {
+        this.isServer = true;
+        this.server = server;
+    }
+
+    public boolean isServer() {
+        return this.isServer;
+    }
+
+    public void searchRoom(Activity activity) {
+        this.client.startScanning(activity);
+    }
+
+    public void joinRoom(BluetoothDevice device) {
+        this.client.connectToDevice(device, false);
         boolean result = room.addMember(this);
         if (result) {
             this.room = room;
@@ -47,8 +81,13 @@ public class User {
         this.room.removeMember(this);
     }
 
-    public void createGame() {
+    public void openRoom(Activity activity) {
+        server.open(activity);
+    }
+
+    public void createGame(String roomName) {
         this.room = new Room(this);
+        this.server.accept(roomName, false);
     }
 
     public void startGame() {

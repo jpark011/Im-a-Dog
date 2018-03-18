@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
-import com.cs446w18.a16.imadog.controller.User;
+import com.cs446w18.a16.imadog.controller.UserController;
 
 /**
  * Created by Jean-Baptiste on 25/02/2018.
@@ -49,7 +49,7 @@ public class LoginActivity extends SuperActivity {
 
                     String name = textView.getText().toString();
                     if (Global.user == null) {
-                        Global.user = new User(name);
+                        Global.user = new UserController(name);
                     }
 
 

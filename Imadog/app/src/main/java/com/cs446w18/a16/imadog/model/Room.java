@@ -40,7 +40,7 @@ public class Room {
     public GameController startGame(User user) {
         if (isHost(user)) {
             //if (members.size() < GameConstants.minPlayers) return null;
-            return new GameController(members);
+            return null; //new GameController(members);
         }
 
         return null;

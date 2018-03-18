@@ -2,13 +2,9 @@ package com.cs446w18.a16.imadog.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by lacie on 2018-02-16.
- */
-
 public class Cat extends Player{
-    public Cat(String n, Game g) {
-        super(n, g);
+    public Cat(Game g) {
+        super(g);
     }
 
     public ArrayList<String> getCatNames() {
@@ -29,6 +25,14 @@ public class Cat extends Player{
     }
 
     public void vote(String choice) {
-        game.vote(this.name, choice);
+        game.vote(this.getName(), choice);
+    }
+
+    public String getNightPollTitle() {
+        return "Vote for the dog to kill";
+    }
+
+    public ArrayList<String> getNightPollChoices() {
+        return game.getPlayerNames(false, true, false);
     }
 }

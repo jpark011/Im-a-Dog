@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.controller;
 
 import com.cs446w18.a16.imadog.model.Game;
+import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
@@ -8,123 +9,115 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by lacie on 2018-02-24.
- */
-
 public class GameController {
-    private ArrayList<User> users;
+    private ArrayList<PlayerController> observers;
     private Game game;
     Poll poll;
 
-    public GameController(ArrayList<User> users) {
-        this.users = new ArrayList<>(users);
+    public GameController(ArrayList<PlayerController> users) {
+        this.observers = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
     }
 
-    public void readyToStart() {
-        int total = users.size();
+    public void registerObserver(PlayerController observer) {
+        if (!observers.contains(observer)) {
+            observers.add(observer);
+        }
+    }
 
-        for (int i = 0; i < total; i++) {
-            final User user = users.get(i);
+    public void unRegisterObserver(PlayerController observer) {
+        if (observers.contains(observer)) {
+            observers.remove(observer);
+        }
+    }
+
+    private void notifyObservers() {
+        for (int i = 0; i < observers.size(); i++) {
+            final PlayerController observer = observers.get(i);
             new Thread() {
                 public void run() {
-                    user.initializeGame();
+                    observer.update();
                 }
             }.start();
         }
+    }
+
+    public void readyToStart() {
+        game.setGameState("INITIALIZE");
+        notifyObservers();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                readyToAskQuestion();
+            }
+        }, 10000);
     }
 
     public void readyToAskQuestion() {
         game.setNight(false);
+        game.resetVictim();
+        int duration = GameConstants.questionPageDuration;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
-                final HashMap<String, String> answers = game.getAnswers(true,true);
                 ArrayList<String> names = game.getPlayerNames(true,true, false);
-
                 poll = new Poll(names, names);
-                final String dogQuestion = game.getQuestion(true, game.getCurrentDay());
-
-                for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
-                    new Thread() {
-                        public void run() {
-                            user.startPoll(dogQuestion, answers);
-                        }
-                    }.start();
-                }
+                game.setGameState("STARTING_DAY_POLL");
+                notifyObservers();
             }
-        }, 15000);
-
+        }, duration);
+        duration += GameConstants.dayPollPageDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
-                String role = null;
                 final String result = poll.closePoll();
-                if (result != null) {
-                    role = game.killPlayer(result);
-                }
-
-                final String winner = game.getWinner();
-                final String victimRole = role;
-                for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
-                    new Thread() {
-                        public void run() {
-                            user.closePoll(result, victimRole, winner);
-                        }
-                    }.start();
-                }
+                game.killPlayer(result);
+                game.setGameState("CLOSING_DAY_POLL");
+                notifyObservers();
                 poll = null;
             }
-        }, 30000);
+        }, duration);
+        duration += GameConstants.victimPageDuration;
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                if (game.getWinner() == null) readyForNight();
+            }
+        }, duration);
     }
 
     public void readyForNight() {
         game.setNight(true);
+        game.resetVictim();
         final ArrayList<String> dogNames = game.getPlayerNames(false, true, false);
         final ArrayList<String> names = game.getPlayerNames(true, true, false);
-        poll = new Poll(names, names);
-        for (int i = 0; i < users.size(); i++) {
-            final User user = users.get(i);
-            new Thread() {
-                public void run() {
-                    if (user.getRole().equals("CAT")) {
-                        user.startNightPoll("Vote for the dog to kill", names);
-                    } else {
-                        user.startNightPoll("Vote for the best answer", names);
-                    }
-                }
-            }.start();
-        }
+        poll = new Poll(names, dogNames);
+        game.setGameState("STARTING_NIGHT_POLL");
+        notifyObservers();
 
+        int duration = GameConstants.nightPollPageDuration;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
-                String role = null;
                 final String result = poll.closePoll();
-                if (result != null) {
-                    role = game.killPlayer(result);
-                }
-
-                final String winner = game.getWinner();
-                final String victimRole = role;
-                for (int i = 0; i < users.size(); i++) {
-                    final User user = users.get(i);
-                    new Thread() {
-                        public void run() {
-                            user.closeNightPoll(result, victimRole, winner);
-                        }
-                    }.start();
-                }
+                game.killPlayer(result);
+                game.setGameState("CLOSING_NIGHT_POLL");
+                notifyObservers();
                 poll = null;
                 game.nextDay();
             }
-        }, 15000);
+        }, duration);
+        duration += GameConstants.victimPageDuration;
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                if (game.getWinner() == null) readyToAskQuestion();
+            }
+        }, duration);
     }
 
     public void vote(String name, String choice) {

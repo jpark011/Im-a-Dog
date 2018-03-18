@@ -16,5 +16,9 @@
 
     <string name="lobby_title">Lobby</string>
 
+    <string name="bluetooth_warning">Bluetooth should be enabled</string>
+    <string name="bluetooth_paired">Paired with </string>
+    <string name="bluetooth_connect_fail">Failed to connect</string>
+
 
 </resources>
