@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 public class BluetoothServer extends Bluetooth {
     private BluetoothServerSocket serverSocket;
-    private HashMap<String, BluetoothSocket> clients;
+    private HashMap<String, ObjectOutputStream> clients;
     private HashMap<String, CommunicationCallback> communicationCallbacks;
     int clientCount; // TODO: Need to change to some kind of Player format
 
@@ -51,22 +51,8 @@ public class BluetoothServer extends Bluetooth {
 
     @Override
     public void send(Command cmd) {
-        for (BluetoothSocket client : clients.values()) {
-            try {
-                ObjectOutputStream out = new ObjectOutputStream(client.getOutputStream());
-                send(cmd, out);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void send(Command cmd, BluetoothSocket socket) {
-        try {
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        for (ObjectOutputStream client : clients.values()) {
             send(cmd, out);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -82,7 +68,7 @@ public class BluetoothServer extends Bluetooth {
         Iterator it = clients.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
-            PlayerController player = new PlayerController(this, (BluetoothSocket)pair.getValue(), (String)pair.getKey());
+            PlayerController player = new PlayerController(this, (ObjectOutputStream)pair.getValue(), (String)pair.getKey());
             players.add(player);
         }
 
@@ -113,7 +99,8 @@ public class BluetoothServer extends Bluetooth {
                 while (true) {
                     final BluetoothSocket client = serverSocket.accept();
                     final String clientName = "Player" + ++clientCount;
-                    clients.put(clientName, client);
+                    ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
+                    clients.put(clientName, output);
 
                     ObjectInputStream input = new ObjectInputStream(client.getInputStream());
                     new ReceiveThread(input, clientName).start();

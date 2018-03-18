@@ -56,7 +56,7 @@ public class VictimFragment extends SuperFragment {
         roleLabel.setText("He/she was...\nA "+role+"!");
 
         // Case where nobody was killed
-        if (name == "") {
+        if (name == null) {
             nameLabel.setText("Nobody\nwas killed");
             roleLabel.setText("");
         }

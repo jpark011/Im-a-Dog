@@ -5,7 +5,12 @@ import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
+import com.cs446w18.a16.imadog.commands.CloseDayPollCommand;
+import com.cs446w18.a16.imadog.commands.CloseNightPollCommand;
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.commands.InitializeCommand;
+import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
+import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
 import com.cs446w18.a16.imadog.model.Player;
 
 import java.io.IOException;
@@ -27,7 +32,7 @@ public class PlayerController {
     private UserController hostUser;
     private String clientName;
 
-    public PlayerController(BluetoothServer server, BluetoothSocket socket, String clientName) {
+    public PlayerController(BluetoothServer server, ObjectOutputStream out, String clientName) {
         this.clientName = clientName;
         this.server = server;
         hostUser = null;
@@ -35,13 +40,7 @@ public class PlayerController {
         role = null;
         gameController = null;
 
-        if (socket != null) {
-            try {
-                this.out = new ObjectOutputStream(socket.getOutputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        this.out = out;
     }
 
     public void setHost(GameController gameController, UserController hostUser) {
@@ -64,7 +63,8 @@ public class PlayerController {
         if (!isServer) {
             server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback(this));
         }
-        sendCommand("INITIALIZE_GAME", getQuestion());
+        Command cmd = new InitializeCommand(getQuestion());
+        sendCommand(cmd);
     }
 
     public void readyToAskQuestion() {
@@ -96,49 +96,32 @@ public class PlayerController {
     }
 
     public void startPoll(String question, HashMap<String, String> answers) {
-        sendCommand("START_POLL", question, answers);
+        Command cmd = new StartDayPollCommand(question, answers);
+        sendCommand(cmd);
     }
 
     public void closePoll(String name, String role, String winner) {
-        sendCommand("CLOSE_POLL", name, role, winner);
+        Command cmd = new CloseDayPollCommand(name, role, winner);
+        sendCommand(cmd);
     }
 
     public void startNightPoll(String title, ArrayList<String> names) {
-        sendCommand("START_NIGHT_POLL", title, names);
+        Command cmd = new StartNightPollCommand(title, names);
+        sendCommand(cmd);
     }
 
     public void closeNightPoll(String name,  String role, String winner) {
-        sendCommand("CLOSE_NIGHT_POLL", name, role, winner, getQuestion());
+        Command cmd = new CloseNightPollCommand(name, role, winner, getQuestion());
+        sendCommand(cmd);
     }
 
     public void vote(String choice) {
         role.vote(choice);
     }
 
-    public void endGame(String winner) {
-        sendCommand("END_GAME", winner);
-    }
-
-    public void notify(Command cmd) {
-        String action = cmd.getAction();
-        Object[] payload = cmd.getPayload();
-        switch(action) {
-            case "SET_USERNAME":
-                setUserName((String)payload[0]);
-                break;
-            case "SUBMIT_ANSWER":
-                submitAnswer((String)payload[0]);
-                break;
-            case "VOTE":
-                vote((String)payload[0]);
-                break;
-        }
-    }
-
-    public void sendCommand(String action, Object... payload) {
-        Command cmd = new Command(action, payload);
+    public void sendCommand(Command cmd) {
         if (isServer) {
-            hostUser.notify(cmd);
+            cmd.execute();
         } else {
             server.send(cmd, out);
         }
@@ -163,7 +146,7 @@ public class PlayerController {
 
         @Override
         public void onMessage(Command command) {
-            playerController.notify(command);
+            command.execute(PlayerController.this);
         }
 
         @Override

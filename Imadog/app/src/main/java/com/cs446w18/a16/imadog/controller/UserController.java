@@ -9,6 +9,9 @@ import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.commands.SetUsernameCommand;
+import com.cs446w18.a16.imadog.commands.SubmitAnswerCommand;
+import com.cs446w18.a16.imadog.commands.VoteCommand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +98,8 @@ public class UserController {
         if (!isServer) {
             client.setCommunicationCallback(new ClientCommunicationCallback());
         }
-        sendCommand("SET_USERNAME", userName);
+        Command cmd = new SetUsernameCommand(userName);
+        sendCommand(cmd);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -114,13 +118,8 @@ public class UserController {
     }
 
     public void submitAnswer(String answer) {
-        sendCommand("SUBMIT_ANSWER", answer);
-    }
-
-    public void readyToStart() {
-        if (isServer) {
-            hostPlayer.readyToStart();
-        }
+        Command cmd = new SubmitAnswerCommand(answer);
+        sendCommand(cmd);
     }
 
     public void readyForDay(String question) {
@@ -193,51 +192,14 @@ public class UserController {
     }
 
     public void vote(String choice) {
-        sendCommand("VOTE", choice);
+        Command cmd = new VoteCommand(choice);
+        sendCommand(cmd);
     }
 
-    public void endGame(String winner) {
-        view.showOutro(winner);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                view.finishGame();
-            }
-        }, 5000);
-    }
-
-    public void notify(Command cmd) {
-        String action = cmd.getAction();
-        Object[] payload = cmd.getPayload();
-        switch(action) {
-            case "INITIALIZE_GAME":
-                initializeGame((String)payload[0]);
-
-                break;
-            case "START_POLL":
-                startPoll((String)payload[0], (HashMap<String, String>)payload[1]);
-                break;
-            case "CLOSE_POLL":
-                closePoll((String)payload[0], (String)payload[1], (String)payload[2]);
-                break;
-            case "START_NIGHT_POLL":
-                startNightPoll((String)payload[0], (ArrayList<String>)payload[1]);
-                break;
-            case "CLOSE_NIGHT_POLL":
-                closeNightPoll((String)payload[0], (String)payload[1], (String)payload[2], (String)payload[3]);
-                break;
-            case "END_GAME":
-                endGame((String)payload[0]);
-                break;
-        }
-    }
-
-    public void sendCommand(String action, Object... payload) {
-        Command cmd = new Command(action, payload);
+    public void sendCommand(Command cmd) {
         if (isServer) {
             System.out.println("IS SERVER: " + userName);
-            hostPlayer.notify(cmd);
+            cmd.execute(hostPlayer);
         } else {
             client.send(cmd);
         }
@@ -256,7 +218,7 @@ public class UserController {
 
         @Override
         public void onMessage(Command command) {
-            UserController.this.notify(command);
+            command.execute();
         }
 
         @Override

@@ -111,11 +111,7 @@ public class LobbyActivity extends SuperActivity {
 
         @Override
         public void onMessage(Command cmd) {
-            String action = cmd.getAction();
-            Object[] payload = cmd.getPayload();
-            if (action.equals("INITIALIZE_GAME")) {
-                Global.user.initializeGame((String)payload[0]);
-            }
+            cmd.execute();
         }
 
         @Override
