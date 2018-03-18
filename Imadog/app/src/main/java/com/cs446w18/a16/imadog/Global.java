@@ -9,10 +9,6 @@ import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.util.HashMap;
 
-/**
- * Created by lacie on 2018-02-23.
- */
-
 public class Global {
     public static UserController user = null;
 

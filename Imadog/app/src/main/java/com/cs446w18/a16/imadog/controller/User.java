@@ -15,10 +15,6 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by lacie on 2018-02-18.
- */
-
 public class User {
     private String userName;
     private Room room;

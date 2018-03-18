@@ -9,10 +9,6 @@ import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * The game.
- */
-
 public class Game {
     private ArrayList<Dog> dogs;
     private ArrayList<Cat> cats;

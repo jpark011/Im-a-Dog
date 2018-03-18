@@ -3,10 +3,6 @@ package com.cs446w18.a16.imadog.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * A player of the game, either a cat or dog
- */
-
 public abstract class Player {
     private String name;
     private boolean dead;

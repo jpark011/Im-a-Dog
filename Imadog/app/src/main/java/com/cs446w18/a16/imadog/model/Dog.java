@@ -2,10 +2,6 @@ package com.cs446w18.a16.imadog.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by lacie on 2018-02-16.
- */
-
 public class Dog extends Player {
     public Dog(Game g) {
         super(g);

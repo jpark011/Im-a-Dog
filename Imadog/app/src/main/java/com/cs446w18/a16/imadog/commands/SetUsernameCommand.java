@@ -7,10 +7,6 @@ import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.io.Serializable;
 
-/**
- * Created by lacie on 2018-03-18.
- */
-
 public class SetUsernameCommand implements Command, Serializable {
     private String clientName;
     private String username;

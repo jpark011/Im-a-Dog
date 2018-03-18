@@ -19,10 +19,6 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by lacie on 2018-03-15.
- */
-
 public class UserController {
     private String clientName;
     private String userName;

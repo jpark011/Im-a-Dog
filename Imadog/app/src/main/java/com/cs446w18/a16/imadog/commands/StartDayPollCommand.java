@@ -8,10 +8,6 @@ import com.cs446w18.a16.imadog.controller.UserController;
 import java.io.Serializable;
 import java.util.HashMap;
 
-/**
- * Created by lacie on 2018-03-18.
- */
-
 public class StartDayPollCommand implements Command, Serializable {
     private String question;
     private HashMap<String, String> answers;

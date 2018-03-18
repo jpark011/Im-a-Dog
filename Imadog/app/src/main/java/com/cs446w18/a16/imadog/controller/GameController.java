@@ -1,16 +1,13 @@
 package com.cs446w18.a16.imadog.controller;
 
 import com.cs446w18.a16.imadog.model.Game;
+import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
-/**
- * Created by lacie on 2018-02-24.
- */
 
 public class GameController {
     private ArrayList<PlayerController> observers;
@@ -61,6 +58,7 @@ public class GameController {
     public void readyToAskQuestion() {
         game.setNight(false);
         game.resetVictim();
+        int duration = GameConstants.questionPageDuration;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -70,8 +68,8 @@ public class GameController {
                 game.setGameState("STARTING_DAY_POLL");
                 notifyObservers();
             }
-        }, 15000);
-
+        }, duration);
+        duration += GameConstants.dayPollPageDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
@@ -81,14 +79,14 @@ public class GameController {
                 notifyObservers();
                 poll = null;
             }
-        }, 30000);
-
+        }, duration);
+        duration += GameConstants.victimPageDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
                 if (game.getWinner() == null) readyForNight();
             }
-        }, 40000);
+        }, duration);
     }
 
     public void readyForNight() {
@@ -100,6 +98,7 @@ public class GameController {
         game.setGameState("STARTING_NIGHT_POLL");
         notifyObservers();
 
+        int duration = GameConstants.nightPollPageDuration;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -111,13 +110,14 @@ public class GameController {
                 poll = null;
                 game.nextDay();
             }
-        }, 15000);
+        }, duration);
+        duration += GameConstants.victimPageDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
                 if (game.getWinner() == null) readyToAskQuestion();
             }
-        }, 25000);
+        }, duration);
     }
 
     public void vote(String name, String choice) {
