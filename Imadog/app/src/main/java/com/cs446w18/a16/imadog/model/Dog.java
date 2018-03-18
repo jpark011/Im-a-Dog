@@ -1,5 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
+import java.util.ArrayList;
+
 /**
  * Created by lacie on 2018-02-16.
  */
@@ -22,5 +24,13 @@ public class Dog extends Player {
         if (!game.isNight()) {
             game.vote(this.getName(), choice);
         }
+    }
+
+    public String getNightPollTitle() {
+        return "Vote for the best answer";
+    }
+
+    public ArrayList<String> getNightPollChoices() {
+        return game.getPlayerNames(true, true, false);
     }
 }

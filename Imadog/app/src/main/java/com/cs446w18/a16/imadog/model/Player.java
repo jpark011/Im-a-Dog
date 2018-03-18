@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A player of the game, either a cat or dog
@@ -52,9 +53,37 @@ public abstract class Player {
         return dead;
     }
 
+    public String getGameState() {
+        return game.getGameState();
+    }
+
+    public String getDayPollTitle() {
+        return game.getQuestion(true, game.getCurrentDay());
+    }
+
+    public HashMap<String, String> getDayPollAnswers() {
+        return game.getAnswers(true,true);
+    }
+
+    public String getVictimName() {
+        return game.getVictimName();
+    }
+
+    public String getVictimRole() {
+        return game.getVictimRole();
+    }
+
+    public String getWinner() {
+        return game.getWinner();
+    }
+
     abstract public String getQuestion();
 
     abstract public void vote(String choice);
 
     abstract  public String getRole();
+
+    abstract public String getNightPollTitle();
+
+    abstract public ArrayList<String> getNightPollChoices();
 }

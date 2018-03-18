@@ -31,4 +31,12 @@ public class Cat extends Player{
     public void vote(String choice) {
         game.vote(this.getName(), choice);
     }
+
+    public String getNightPollTitle() {
+        return "Vote for the dog to kill";
+    }
+
+    public ArrayList<String> getNightPollChoices() {
+        return game.getPlayerNames(false, true, false);
+    }
 }

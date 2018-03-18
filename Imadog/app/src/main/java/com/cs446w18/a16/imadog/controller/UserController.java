@@ -98,7 +98,7 @@ public class UserController {
         gameController.readyToStart();
     }
 
-    public void initializeGame(String question) {
+    public void initializeGame(String question, String role) {
         final String q = question;
         lobby.openGameActivity();
         if (!isServer) {

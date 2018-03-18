@@ -60,7 +60,7 @@ public class Poll {
             }
         }
 
-        if (maxNames.size() == 1 /*&& maxVotes > 0*/) return maxNames.get(0);
+        if (maxNames.size() == 1 && maxVotes > 0) return maxNames.get(0);
         return null;
     }
 

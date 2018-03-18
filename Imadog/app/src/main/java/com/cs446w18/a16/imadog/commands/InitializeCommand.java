@@ -12,10 +12,12 @@ import java.io.Serializable;
  */
 
 public class InitializeCommand implements Command, Serializable {
+    private String role;
     private String question;
     private UserController receiver;
 
-    public InitializeCommand(String question) {
+    public InitializeCommand(String question, String role) {
+        this.role = role;
         this.question = question;
         this.receiver = null;
     }

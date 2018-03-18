@@ -42,7 +42,7 @@ public class PlayerController {
         if (server != null) {
             server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback(this));
         }
-        Command cmd = new InitializeCommand(getQuestion());
+        Command cmd = new InitializeCommand(getQuestion(), role.getRole());
         sendCommand(cmd);
     }
 
@@ -62,23 +62,34 @@ public class PlayerController {
         return role.getQuestion();
     }
 
-    public void startPoll(String question, HashMap<String, String> answers) {
+    public void startPoll() {
+        String question = role.getDayPollTitle();
+        HashMap<String, String> answers = role.getDayPollAnswers();
         Command cmd = new StartDayPollCommand(question, answers);
         sendCommand(cmd);
     }
 
-    public void closePoll(String name, String role, String winner) {
-        Command cmd = new CloseDayPollCommand(name, role, winner);
+    public void closePoll() {
+        String victimName = role.getVictimName();
+        String victimRole = role.getVictimRole();
+        String winner = role.getWinner();
+        Command cmd = new CloseDayPollCommand(victimName, victimRole, winner);
         sendCommand(cmd);
     }
 
-    public void startNightPoll(String title, ArrayList<String> names) {
+    public void startNightPoll() {
+        String title = role.getNightPollTitle();
+        ArrayList<String> names = role.getNightPollChoices();
         Command cmd = new StartNightPollCommand(title, names);
         sendCommand(cmd);
     }
 
-    public void closeNightPoll(String name,  String role, String winner) {
-        Command cmd = new CloseNightPollCommand(name, role, winner, getQuestion());
+    public void closeNightPoll() {
+        String victimName = role.getVictimName();
+        String victimRole = role.getVictimRole();
+        String winner = role.getWinner();
+        String question = getQuestion();
+        Command cmd = new CloseNightPollCommand(victimName, victimRole, winner, question);
         sendCommand(cmd);
     }
 
@@ -92,6 +103,26 @@ public class PlayerController {
             cmd.execute();
         } else {
             server.send(cmd, clientName);
+        }
+    }
+
+    public void update() {
+        switch(role.getGameState()) {
+            case "INITIALIZE":
+                initializeGame();
+                break;
+            case "STARTING_DAY_POLL":
+                startPoll();
+                break;
+            case "CLOSING_DAY_POLL":
+                closePoll();
+                break;
+            case "STARTING_NIGHT_POLL":
+                startNightPoll();
+                break;
+            case "CLOSING_NIGHT_POLL":
+                closeNightPoll();
+                break;
         }
     }
 

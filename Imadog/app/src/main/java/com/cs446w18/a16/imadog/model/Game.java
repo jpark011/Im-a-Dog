@@ -22,6 +22,9 @@ public class Game {
     private int currentDay;
     private GameController gameController;
     private boolean night;
+    private String gameState;
+    private String victimName;
+    private String victimRole;
 
     public Game(ArrayList<PlayerController> names, GameController gameController) {
         currentDay = 1;
@@ -31,6 +34,9 @@ public class Game {
         assignRoles(names);
         setQuestions(n);
         deceased = new ArrayList<>();
+        gameState = "CREATED";
+        victimName = null;
+        victimRole = null;
     }
 
     private void assignRoles(ArrayList<PlayerController> names) {
@@ -127,7 +133,11 @@ public class Game {
         return names;
     }
 
-    public String killPlayer(String name) {
+    public void killPlayer(String name) {
+        if (name == null) {
+            return;
+        }
+
         int ind = -1;
         String role = null;
         for (int i = 0; i < dogs.size(); i++) {
@@ -155,7 +165,8 @@ public class Game {
 
         dead.kill();
         deceased.add(dead);
-        return role;
+        victimName = name;
+        victimRole = dead.getRole();
     }
 
     public int getCurrentDay() {
@@ -188,5 +199,26 @@ public class Game {
         }
 
         return null;
+    }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    public void resetVictim() {
+        victimName = null;
+        victimRole = null;
+    }
+
+    public String getVictimName() {
+        return victimName;
+    }
+
+    public String getVictimRole() {
+        return victimRole;
     }
 }
