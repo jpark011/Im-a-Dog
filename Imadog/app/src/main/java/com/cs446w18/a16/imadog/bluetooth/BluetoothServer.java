@@ -56,24 +56,28 @@ public class BluetoothServer extends Bluetooth {
         }
     }
 
+    public void send(Command cmd, String clientName) {
+        send(cmd, clients.get(clientName));
+    }
+
     public void setCommunicationCallbacks(String clientName, CommunicationCallback cc) {
         this.communicationCallbacks.put(clientName, cc);
     }
 
     public PlayerController startGame(UserController hostUser) {
         ArrayList<PlayerController> players = new ArrayList<>();
-        PlayerController host = new PlayerController(this, null, null);
+        PlayerController host = new PlayerController(null, null);
         players.add(host);
 
         Iterator it = clients.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
-            PlayerController player = new PlayerController(this, (ObjectOutputStream)pair.getValue(), (String)pair.getKey());
+            PlayerController player = new PlayerController(this, (String)pair.getKey());
             players.add(player);
         }
 
         GameController game = new GameController(players);
-        host.setHost(game, hostUser);
+        hostUser.setGameController(game);
         return host;
     }
 

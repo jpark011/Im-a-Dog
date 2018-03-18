@@ -3,6 +3,7 @@ package com.cs446w18.a16.imadog.controller;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.CloseDayPollCommand;
@@ -23,52 +24,26 @@ import java.util.HashMap;
  */
 
 public class PlayerController {
-    private String userName;
     private Player role;
-    private GameController gameController;
     private BluetoothServer server;
-    private ObjectOutputStream out;
-    private boolean isServer;
-    private UserController hostUser;
     private String clientName;
 
-    public PlayerController(BluetoothServer server, ObjectOutputStream out, String clientName) {
+    public PlayerController(BluetoothServer server, String clientName) {
         this.clientName = clientName;
         this.server = server;
-        hostUser = null;
-        isServer = false;
         role = null;
-        gameController = null;
-
-        this.out = out;
-    }
-
-    public void setHost(GameController gameController, UserController hostUser) {
-        this.gameController = gameController;
-        this.hostUser = hostUser;
-        isServer = true;
-    }
-
-    public String getUserName() {
-        return userName;
     }
 
     public void setUserName(String name) {
-        userName = name;
         role.setName(name);
-        System.out.println("SET USERNAME: "+name);
     }
 
     public void initializeGame() {
-        if (!isServer) {
+        if (server != null) {
             server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback(this));
         }
         Command cmd = new InitializeCommand(getQuestion());
         sendCommand(cmd);
-    }
-
-    public void readyToAskQuestion() {
-        gameController.readyToAskQuestion();
     }
 
     public void setRole(Player role) {
@@ -85,14 +60,6 @@ public class PlayerController {
 
     public String getQuestion() {
         return role.getQuestion();
-    }
-
-    public void readyToStart() {
-        gameController.readyToStart();
-    }
-
-    public void startNight() {
-        gameController.readyForNight();
     }
 
     public void startPoll(String question, HashMap<String, String> answers) {
@@ -120,10 +87,11 @@ public class PlayerController {
     }
 
     public void sendCommand(Command cmd) {
-        if (isServer) {
+        if (server == null) {
+            cmd.setReceiver(Global.user);
             cmd.execute();
         } else {
-            server.send(cmd, out);
+            server.send(cmd, clientName);
         }
     }
 
@@ -146,7 +114,8 @@ public class PlayerController {
 
         @Override
         public void onMessage(Command command) {
-            command.execute(PlayerController.this);
+            command.setReceiver(PlayerController.this);
+            command.execute();
         }
 
         @Override

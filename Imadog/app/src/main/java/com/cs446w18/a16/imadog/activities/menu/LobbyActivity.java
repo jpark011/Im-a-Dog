@@ -111,6 +111,7 @@ public class LobbyActivity extends SuperActivity {
 
         @Override
         public void onMessage(Command cmd) {
+            cmd.setReceiver(Global.user);
             cmd.execute();
         }
 

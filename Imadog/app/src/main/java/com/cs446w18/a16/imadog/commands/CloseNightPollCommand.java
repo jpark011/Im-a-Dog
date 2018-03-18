@@ -2,6 +2,7 @@ package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.io.Serializable;
 
@@ -14,6 +15,7 @@ public class CloseNightPollCommand implements Command, Serializable {
     private String role;
     private String winner;
     private String question;
+    private UserController receiver;
 
     public CloseNightPollCommand(String name,  String role, String winner, String question) {
         this.name = name;
@@ -22,8 +24,13 @@ public class CloseNightPollCommand implements Command, Serializable {
         this.question = question;
     }
 
-    public void execute() {
-        Global.user.closeNightPoll(name, role, winner, question);
+    public void setReceiver(UserController user) {
+        this.receiver = user;
     }
-    public void execute(PlayerController pc) {}
+
+    public void setReceiver(PlayerController player) {}
+
+    public void execute() {
+        this.receiver.closeNightPoll(name, role, winner, question);
+    }
 }

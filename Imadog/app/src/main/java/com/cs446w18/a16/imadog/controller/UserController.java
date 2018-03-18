@@ -3,6 +3,7 @@ package com.cs446w18.a16.imadog.controller;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.activities.GameActivity;
 import com.cs446w18.a16.imadog.activities.menu.LobbyActivity;
 import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
@@ -30,6 +31,7 @@ public class UserController {
     private boolean isServer;
     private PlayerController hostPlayer;
     private LobbyActivity lobby;
+    private GameController gameController;
 
     public UserController(String name) {
         userName = name;
@@ -83,13 +85,17 @@ public class UserController {
         server.open(activity);
     }
 
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
     public void createGame(String roomName) {
         this.server.accept(roomName, false);
     }
 
     public void startGame() {
         hostPlayer = this.server.startGame(this);
-        hostPlayer.readyToStart();
+        gameController.readyToStart();
     }
 
     public void initializeGame(String question) {
@@ -131,7 +137,7 @@ public class UserController {
             public void run() {
                 view.showQuestionPage(q);
                 if (isServer) {
-                    hostPlayer.readyToAskQuestion();
+                    gameController.readyToAskQuestion();
                 }
             }
         }, 5000);
@@ -143,7 +149,7 @@ public class UserController {
 
             public void run() {
                 if (isServer) {
-                    hostPlayer.startNight();
+                    gameController.readyForNight();
                 }
             }
         }, 5000);
@@ -198,8 +204,8 @@ public class UserController {
 
     public void sendCommand(Command cmd) {
         if (isServer) {
-            System.out.println("IS SERVER: " + userName);
-            cmd.execute(hostPlayer);
+            cmd.setReceiver(hostPlayer);
+            cmd.execute();
         } else {
             client.send(cmd);
         }
@@ -218,6 +224,7 @@ public class UserController {
 
         @Override
         public void onMessage(Command command) {
+            command.setReceiver(Global.user);
             command.execute();
         }
 

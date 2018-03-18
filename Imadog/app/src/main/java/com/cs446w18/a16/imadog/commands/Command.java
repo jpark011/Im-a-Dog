@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,5 +12,6 @@ import java.util.ArrayList;
 
 public interface Command {
     void execute();
-    void execute(PlayerController pc);
+    void setReceiver(PlayerController player);
+    void setReceiver(UserController user);
 }
