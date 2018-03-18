@@ -40,12 +40,16 @@ public class LobbyActivity extends SuperActivity {
 
         // Players list
         VoteListView playersList = findViewById(R.id.playersListView);
-        // TODO: Replace with real players
-        ArrayList<String> testList = new ArrayList<>();
-        testList.add("Alice");
-        testList.add("Bob");
-        testList.add("Carol");
-        playersList.setup(testList, null);
+        ArrayList<String> players;
+        if (Global.user.isServer()) {
+             players = Global.user.getRoomMembers();
+
+        } else {
+            players = new ArrayList<>();
+            players.add("Loading room members...");
+        }
+
+        playersList.setup(players, null);
         playersList.isEnabled = false;
 
         mPlayers = new ArrayList<>();
@@ -68,6 +72,18 @@ public class LobbyActivity extends SuperActivity {
         System.out.println("OPEN GAME");
         Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
         startActivity(startGameIntent);
+    }
+
+    public void updateLobbyMembers(ArrayList<String> members) {
+        final ArrayList<String> players = members;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VoteListView playersList = findViewById(R.id.playersListView);
+                playersList.setup(players, null);
+                playersList.isEnabled = false;
+            }
+        });
     }
 
     private class CommunicationCallbackServer implements CommunicationCallback {

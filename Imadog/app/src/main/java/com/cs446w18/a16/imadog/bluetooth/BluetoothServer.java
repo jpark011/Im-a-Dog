@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
+import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
 import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.UserController;
@@ -27,15 +29,24 @@ import java.util.Iterator;
 public class BluetoothServer extends Bluetooth {
     private BluetoothServerSocket serverSocket;
     private HashMap<String, ObjectOutputStream> clients;
+    private HashMap<String, String> clientNames;
+    private UserController hostUser;
+    private CommunicationCallback serverCallback;
     private HashMap<String, CommunicationCallback> communicationCallbacks;
     int clientCount; // TODO: Need to change to some kind of Player format
 
-    public BluetoothServer(Context context) {
+    public BluetoothServer(Context context, UserController hostUser) {
         super(context);
         serverSocket = null;
         clients = new HashMap();
+        clientNames = new HashMap();
         communicationCallbacks = new HashMap();
         clientCount = 0;
+        serverCallback = new ServerCommunicationCallback();
+        this.hostUser = hostUser;
+        String username = hostUser.getUserName();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(username);
     }
 
     public void open(Activity activity) {
@@ -52,7 +63,7 @@ public class BluetoothServer extends Bluetooth {
     @Override
     public void send(Command cmd) {
         for (ObjectOutputStream client : clients.values()) {
-            send(cmd, out);
+            send(cmd, client);
         }
     }
 
@@ -64,15 +75,31 @@ public class BluetoothServer extends Bluetooth {
         this.communicationCallbacks.put(clientName, cc);
     }
 
-    public PlayerController startGame(UserController hostUser) {
+    public ArrayList<String> getMembers() {
+        ArrayList<String> names = new ArrayList<>(this.clientNames.values());
+        names.add(hostUser.getUserName());
+        hostUser.updateRoomMembers(names);
+        return names;
+    }
+
+    public void setUserName(String clientName, String username) {
+        this.clientNames.put(clientName, username);
+        ArrayList<String> names = getMembers();
+        Command cmd = new UpdateLobbyCommand(names);
+        send(cmd);
+    }
+
+    public PlayerController startGame() {
         ArrayList<PlayerController> players = new ArrayList<>();
         PlayerController host = new PlayerController(null, null);
+        host.setUserName(hostUser.getUserName());
         players.add(host);
 
         Iterator it = clients.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
             PlayerController player = new PlayerController(this, (String)pair.getKey());
+            player.setUserName(clientNames.get(pair.getKey()));
             players.add(player);
         }
 
@@ -105,6 +132,9 @@ public class BluetoothServer extends Bluetooth {
                     final String clientName = "Player" + ++clientCount;
                     ObjectOutputStream output = new ObjectOutputStream(client.getOutputStream());
                     clients.put(clientName, output);
+                    communicationCallbacks.put(clientName, serverCallback);
+                    Command cmd = new SetClientNameCommand(clientName);
+                    send(cmd, output);
 
                     ObjectInputStream input = new ObjectInputStream(client.getInputStream());
                     new ReceiveThread(input, clientName).start();
@@ -181,6 +211,43 @@ public class BluetoothServer extends Bluetooth {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private class ServerCommunicationCallback implements CommunicationCallback {
+
+        public ServerCommunicationCallback() {
+        }
+
+        @Override
+        public void onConnect(BluetoothDevice device) {
+
+        }
+
+        @Override
+        public void onDisconnect(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onMessage(Command command) {
+            command.setReceiver(BluetoothServer.this);
+            command.execute();
+        }
+
+        @Override
+        public void onError(String message) {
+
+        }
+
+        @Override
+        public void onConnectError(BluetoothDevice device, String message) {
+
+        }
+
+        @Override
+        public void onAccept(String playerName) {
+
         }
     }
 }

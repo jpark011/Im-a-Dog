@@ -57,7 +57,7 @@ public class MainActivity extends SuperActivity {
 
     /// CALLBACK: when the Create button is pressed
     public void createGame(View view) {
-        BluetoothServer server = new BluetoothServer(this);
+        BluetoothServer server = new BluetoothServer(this, Global.user);
         server.setBluetoothCallback(new BluetoothCallbackClient());
         Global.user.setServer(server);
         if (!server.isEnabled()) {

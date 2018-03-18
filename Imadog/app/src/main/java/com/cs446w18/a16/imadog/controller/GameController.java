@@ -49,6 +49,13 @@ public class GameController {
     public void readyToStart() {
         game.setGameState("INITIALIZE");
         notifyObservers();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                readyToAskQuestion();
+            }
+        }, 10000);
     }
 
     public void readyToAskQuestion() {
@@ -75,6 +82,13 @@ public class GameController {
                 poll = null;
             }
         }, 30000);
+
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                if (game.getWinner() == null) readyForNight();
+            }
+        }, 40000);
     }
 
     public void readyForNight() {
@@ -98,6 +112,12 @@ public class GameController {
                 game.nextDay();
             }
         }, 15000);
+        timer.schedule(new TimerTask() {
+
+            public void run() {
+                if (game.getWinner() == null) readyToAskQuestion();
+            }
+        }, 25000);
     }
 
     public void vote(String name, String choice) {

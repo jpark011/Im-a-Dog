@@ -139,11 +139,9 @@ public class Game {
         }
 
         int ind = -1;
-        String role = null;
         for (int i = 0; i < dogs.size(); i++) {
             if (dogs.get(i).getName() == name) {
                 ind = i;
-                role = "dog";
                 break;
             }
         }
@@ -156,7 +154,6 @@ public class Game {
             for (int i = 0; i < cats.size(); i++) {
                 if (cats.get(i).getName() == name) {
                     ind = i;
-                    role = "cat";
                     break;
                 }
             }

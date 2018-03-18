@@ -24,6 +24,7 @@ import java.util.TimerTask;
  */
 
 public class UserController {
+    private String clientName;
     private String userName;
     private GameActivity view;
     private Bluetooth client;
@@ -38,6 +39,17 @@ public class UserController {
         view = null;
         client = null;
         server = null;
+        clientName = null;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+        Command cmd = new SetUsernameCommand(clientName, userName);
+        client.send(cmd);
     }
 
     public String getUserName() {
@@ -85,6 +97,14 @@ public class UserController {
         server.open(activity);
     }
 
+    public ArrayList<String> getRoomMembers() {
+        return server.getMembers();
+    }
+
+    public void updateRoomMembers(ArrayList<String> members) {
+        lobby.updateLobbyMembers(members);
+    }
+
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
@@ -94,18 +114,18 @@ public class UserController {
     }
 
     public void startGame() {
-        hostPlayer = this.server.startGame(this);
+        hostPlayer = this.server.startGame();
         gameController.readyToStart();
     }
 
-    public void initializeGame(String question, String role) {
+    public void initializeGame(String question) {
         final String q = question;
         lobby.openGameActivity();
         if (!isServer) {
             client.setCommunicationCallback(new ClientCommunicationCallback());
         }
-        Command cmd = new SetUsernameCommand(userName);
-        sendCommand(cmd);
+//        Command cmd = new SetUsernameCommand(userName);
+//        sendCommand(cmd);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -136,21 +156,6 @@ public class UserController {
 
             public void run() {
                 view.showQuestionPage(q);
-                if (isServer) {
-                    gameController.readyToAskQuestion();
-                }
-            }
-        }, 5000);
-    }
-
-    public void readyForNight() {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                if (isServer) {
-                    gameController.readyForNight();
-                }
             }
         }, 5000);
     }
@@ -168,7 +173,6 @@ public class UserController {
             public void run() {
                 if (result == null) {
                     view.showNightPage();
-                    readyForNight();
                 } else {
                     view.showOutro(result);
                 }

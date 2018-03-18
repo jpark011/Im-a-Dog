@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.Global;
+import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.UserController;
 
@@ -25,8 +26,8 @@ public class CloseDayPollCommand implements Command, Serializable {
     public void setReceiver(UserController user) {
         this.receiver = user;
     }
-
     public void setReceiver(PlayerController player) {}
+    public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
         this.receiver.closePoll(name,role,winner);

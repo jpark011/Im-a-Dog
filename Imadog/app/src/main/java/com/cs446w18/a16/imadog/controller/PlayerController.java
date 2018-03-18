@@ -1,7 +1,6 @@
 package com.cs446w18.a16.imadog.controller;
 
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
@@ -14,16 +13,11 @@ import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
 import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
 import com.cs446w18.a16.imadog.model.Player;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
- * Created by lacie on 2018-03-15.
- */
-
 public class PlayerController {
+    private String username;
     private Player role;
     private BluetoothServer server;
     private String clientName;
@@ -35,7 +29,7 @@ public class PlayerController {
     }
 
     public void setUserName(String name) {
-        role.setName(name);
+        this.username = name;
     }
 
     public void initializeGame() {
@@ -48,6 +42,7 @@ public class PlayerController {
 
     public void setRole(Player role) {
         this.role = role;
+        role.setName(username);
     }
 
     public String getRole() {
