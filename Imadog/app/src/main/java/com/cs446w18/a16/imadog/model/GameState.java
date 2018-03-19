@@ -11,6 +11,7 @@ import java.util.HashMap;
 public class GameState {
     private String role;
     private boolean inGame;
+    private boolean dead;
     private String gameFragment;
     private String currentQuestion;
     private String currentPollTitle;
@@ -24,6 +25,7 @@ public class GameState {
     public GameState(String role) {
         this.role = role;
         inGame = false;
+        dead = false;
     }
 
     public String getRole() {
@@ -36,6 +38,14 @@ public class GameState {
 
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead() {
+        dead = true;
     }
 
     public String getGameFragment() {

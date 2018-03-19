@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.views.VoteListView;
@@ -65,7 +66,7 @@ public class VoteFragment extends SuperFragment implements VoteListView.Delegate
         }
 
         // Lock the view if player is dead
-        if (false) { // KAREN: Replace by "if player is dead"
+        if (Global.user.isDead()) {
             playersListView.lock();
         }
 

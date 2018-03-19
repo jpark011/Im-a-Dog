@@ -143,6 +143,14 @@ public class UserController {
         return gameState.getRole();
     }
 
+    public boolean isDead() {
+        return gameState.isDead();
+    }
+
+    public void setDead() {
+        gameState.setDead();
+    }
+
     public void submitAnswer(String answer) {
         Command cmd = new SubmitAnswerCommand(answer);
         sendCommand(cmd);

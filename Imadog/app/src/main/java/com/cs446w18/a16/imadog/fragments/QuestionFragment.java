@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 
 /**
@@ -49,7 +50,7 @@ public class QuestionFragment extends SuperFragment {
         answerField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         // Lock the view if player is dead
-        if (false) { // KAREN: Replace by "if player is dead"
+        if (Global.user.isDead()) {
             answerField.setEnabled(false);
         }
 

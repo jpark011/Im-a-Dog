@@ -9,6 +9,7 @@ import com.cs446w18.a16.imadog.commands.CloseDayPollCommand;
 import com.cs446w18.a16.imadog.commands.CloseNightPollCommand;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.InitializeCommand;
+import com.cs446w18.a16.imadog.commands.KillPlayerCommand;
 import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
 import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
 import com.cs446w18.a16.imadog.commands.UpdateChatCommand;
@@ -91,8 +92,14 @@ public class PlayerController {
         String victimName = role.getVictimName();
         String victimRole = role.getVictimRole();
         String winner = role.getWinner();
+
         Command cmd = new CloseDayPollCommand(victimName, victimRole, winner);
         sendCommand(cmd);
+
+        if (role.isDead()) {
+            Command killCmd = new KillPlayerCommand();
+            sendCommand(killCmd);
+        }
     }
 
     public void startNightPoll() {
@@ -107,8 +114,14 @@ public class PlayerController {
         String victimRole = role.getVictimRole();
         String winner = role.getWinner();
         String question = getQuestion();
+
         Command cmd = new CloseNightPollCommand(victimName, victimRole, winner, question);
         sendCommand(cmd);
+
+        if (role.isDead()) {
+            Command killCmd = new KillPlayerCommand();
+            sendCommand(killCmd);
+        }
     }
 
     public void vote(String choice) {
