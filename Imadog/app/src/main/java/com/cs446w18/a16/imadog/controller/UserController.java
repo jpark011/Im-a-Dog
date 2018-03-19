@@ -10,9 +10,11 @@ import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.commands.SendMessageCommand;
 import com.cs446w18.a16.imadog.commands.SetUsernameCommand;
 import com.cs446w18.a16.imadog.commands.SubmitAnswerCommand;
 import com.cs446w18.a16.imadog.commands.VoteCommand;
+import com.cs446w18.a16.imadog.model.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ public class UserController {
     private PlayerController hostPlayer;
     private LobbyActivity lobby;
     private GameController gameController;
+    private boolean inGame;
 
     public UserController(String name) {
         userName = name;
@@ -36,6 +39,7 @@ public class UserController {
         client = null;
         server = null;
         clientName = null;
+        inGame = false;
     }
 
     public String getClientName() {
@@ -115,13 +119,12 @@ public class UserController {
     }
 
     public void initializeGame(String question) {
+        inGame = true;
         final String q = question;
         lobby.openGameActivity();
         if (!isServer) {
             client.setCommunicationCallback(new ClientCommunicationCallback());
         }
-//        Command cmd = new SetUsernameCommand(userName);
-//        sendCommand(cmd);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -201,6 +204,13 @@ public class UserController {
         Command cmd = new VoteCommand(choice);
         sendCommand(cmd);
     }
+
+    public void sendMessage(String text) {
+        Command cmd = new SendMessageCommand(text);
+        sendCommand(cmd);
+    }
+
+    public void updateChat(ArrayList<Message> history) {}
 
     public void sendCommand(Command cmd) {
         if (isServer) {

@@ -11,6 +11,9 @@ import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.InitializeCommand;
 import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
 import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
+import com.cs446w18.a16.imadog.commands.UpdateChatCommand;
+import com.cs446w18.a16.imadog.model.Chat;
+import com.cs446w18.a16.imadog.model.Message;
 import com.cs446w18.a16.imadog.model.Player;
 
 import java.util.ArrayList;
@@ -21,15 +24,35 @@ public class PlayerController {
     private Player role;
     private BluetoothServer server;
     private String clientName;
+    private Chat chat;
 
     public PlayerController(BluetoothServer server, String clientName) {
         this.clientName = clientName;
         this.server = server;
         role = null;
+        chat = null;
     }
 
     public void setUserName(String name) {
         this.username = name;
+    }
+
+    public String getUserName() {
+        return username;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    public void sendMessage(String text) {
+        this.chat.addMessage(text, getUserName());
+    }
+
+    public void updateChat() {
+        ArrayList<Message> history = chat.getMessages();
+        Command cmd = new UpdateChatCommand(history);
+        sendCommand(cmd);
     }
 
     public void initializeGame() {

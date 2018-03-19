@@ -23,12 +23,14 @@ public class Game {
     private String victimRole;
 
     public Game(ArrayList<PlayerController> names, GameController gameController) {
-        currentDay = 1;
-        night = false;
-        int n = names.size();
         this.gameController = gameController;
+        int n = names.size();
+
         assignRoles(names);
         setQuestions(n);
+
+        currentDay = 1;
+        night = false;
         deceased = new ArrayList<>();
         gameState = "CREATED";
         victimName = null;
