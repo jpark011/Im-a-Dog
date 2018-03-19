@@ -26,6 +26,6 @@ public class InitializeCommand implements Command, Serializable {
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.initializeGame(question);
+        this.receiver.initializeGame(question, role);
     }
 }

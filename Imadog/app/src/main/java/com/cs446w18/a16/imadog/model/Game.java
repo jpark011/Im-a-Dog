@@ -92,14 +92,12 @@ public class Game {
 
         if (getCats) {
             for (int i = 0; i < cats.size(); i++) {
-                System.out.println("Name: "+ cats.get(i).getName());
                 answers.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
             }
         }
 
         if (getDogs) {
             for (int i = 0; i < dogs.size(); i++) {
-                System.out.println("Name: "+ dogs.get(i).getName());
                 answers.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
             }
         }

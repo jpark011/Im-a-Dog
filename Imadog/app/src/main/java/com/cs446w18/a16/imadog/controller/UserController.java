@@ -14,15 +14,17 @@ import com.cs446w18.a16.imadog.commands.SendMessageCommand;
 import com.cs446w18.a16.imadog.commands.SetUsernameCommand;
 import com.cs446w18.a16.imadog.commands.SubmitAnswerCommand;
 import com.cs446w18.a16.imadog.commands.VoteCommand;
+import com.cs446w18.a16.imadog.model.GameConstants;
+import com.cs446w18.a16.imadog.model.GameState;
 import com.cs446w18.a16.imadog.model.Message;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class UserController {
-    private String clientName;
     private String userName;
     private GameActivity view;
     private Bluetooth client;
@@ -31,23 +33,17 @@ public class UserController {
     private PlayerController hostPlayer;
     private LobbyActivity lobby;
     private GameController gameController;
-    private boolean inGame;
+    private GameState gameState;
 
     public UserController(String name) {
-        userName = name;
+        this.userName = name;
         view = null;
         client = null;
         server = null;
-        clientName = null;
-        inGame = false;
-    }
-
-    public String getClientName() {
-        return clientName;
+        gameState = null;
     }
 
     public void setClientName(String clientName) {
-        this.clientName = clientName;
         Command cmd = new SetUsernameCommand(clientName, userName);
         client.send(cmd);
     }
@@ -57,7 +53,7 @@ public class UserController {
     }
 
     public void setUserName(String name) {
-        userName = name;
+        this.userName = name;
     }
 
     public Bluetooth getClient() {
@@ -118,8 +114,9 @@ public class UserController {
         gameController.readyToStart();
     }
 
-    public void initializeGame(String question) {
-        inGame = true;
+    public void initializeGame(String question, String role) {
+        gameState = new GameState(role);
+        gameState.setInGame(true);
         final String q = question;
         lobby.openGameActivity();
         if (!isServer) {
@@ -131,7 +128,7 @@ public class UserController {
             public void run() {
                 readyForDay(q);
             }
-        }, 5000);
+        }, GameConstants.introDuration);
     }
 
     public void setView(GameActivity view) {
@@ -142,62 +139,97 @@ public class UserController {
         this.lobby = lobby;
     }
 
+    public String getRole() {
+        return gameState.getRole();
+    }
+
     public void submitAnswer(String answer) {
         Command cmd = new SubmitAnswerCommand(answer);
         sendCommand(cmd);
     }
 
     public void readyForDay(String question) {
-        final String q = question;
+        gameState.setCurrentQuestion(question);
         view.showDayPage();
+        gameState.setGameFragment(GameConstants.DAY_PAGE);
+        gameState.setCurrentDuration(GameConstants.dayNightDuration);
+        gameState.setCurrentStartTimer();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
-                view.showQuestionPage(q);
+                view.showQuestionPage(gameState.getCurrentQuestion());
+                gameState.setGameFragment(GameConstants.QUESTION_PAGE);
+                gameState.setCurrentDuration(GameConstants.questionPageDuration);
+                gameState.setCurrentStartTimer();
             }
-        }, 5000);
+        }, GameConstants.dayNightDuration);
     }
 
     public void startPoll(String question, HashMap<String, String> answers) {
         view.showVotePage(question, answers);
+        gameState.setCurrentPollTitle(question);
+        gameState.setCurrentPollAnswers(answers);
+        gameState.setGameFragment(GameConstants.DAY_VOTE_PAGE);
+        gameState.setCurrentDuration(GameConstants.dayPollPageDuration);
+        gameState.setCurrentStartTimer();
     }
 
     public void closePoll(String name, String role, String winner) {
         final String result = winner;
+        gameState.setCurrentVictimName(name);
+        gameState.setCurrentVictimRole(role);
         view.showVictimPage(name, role);
+        gameState.setGameFragment(GameConstants.VICTIM_PAGE);
+        gameState.setCurrentDuration(GameConstants.victimPageDuration);
+        gameState.setCurrentStartTimer();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
                 if (result == null) {
                     view.showNightPage();
+                    gameState.setGameFragment(GameConstants.NIGHT_PAGE);
+                    gameState.setCurrentDuration(GameConstants.dayNightDuration);
+                    gameState.setCurrentStartTimer();
                 } else {
                     view.showOutro(result);
+                    gameState.setInGame(false);
                 }
             }
-        }, 5000);
+        }, GameConstants.victimPageDuration);
     }
 
     public void startNightPoll(String title, ArrayList<String> names) {
+        gameState.setCurrentPollTitle(title);
+        gameState.setCurrentPollNames(names);
         view.showNightVotePage(title, names);
+        gameState.setGameFragment(GameConstants.NIGHT_VOTE_PAGE);
+        gameState.setCurrentDuration(GameConstants.nightPollPageDuration);
+        gameState.setCurrentStartTimer();
     }
 
     public void closeNightPoll(String name,  String role, String winner, String question) {
-        final String q = question;
+        gameState.setCurrentQuestion(question);
+        gameState.setCurrentVictimName(name);
+        gameState.setCurrentVictimRole(role);
         final String result = winner;
         view.showVictimPage(name, role);
+        gameState.setGameFragment(GameConstants.VICTIM_PAGE);
+        gameState.setCurrentDuration(GameConstants.victimPageDuration);
+        gameState.setCurrentStartTimer();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
             public void run() {
                 if (result == null) {
-                    readyForDay(q);
+                    readyForDay(gameState.getCurrentQuestion());
                 } else {
                     view.showOutro(result);
+                    gameState.setInGame(false);
                 }
             }
-        }, 5000);
+        }, GameConstants.victimPageDuration);
     }
 
     public void vote(String choice) {
@@ -211,6 +243,31 @@ public class UserController {
     }
 
     public void updateChat(ArrayList<Message> history) {}
+
+    public void switchToGame() {
+        Date currentTime = new Date();
+        int remainingTime = (int)gameState.getCurrentStartTimer().getTime() - (int)currentTime.getTime();
+        switch (gameState.getGameFragment()) {
+            case GameConstants.DAY_PAGE:
+                view.showDayPage();
+                break;
+            case GameConstants.DAY_VOTE_PAGE:
+                view.showVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollAnswers());
+                break;
+            case GameConstants.NIGHT_PAGE:
+                view.showNightPage();
+                break;
+            case GameConstants.NIGHT_VOTE_PAGE:
+                view.showNightVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollNames());
+                break;
+            case GameConstants.QUESTION_PAGE:
+                view.showQuestionPage(gameState.getCurrentQuestion());
+                break;
+            case GameConstants.VICTIM_PAGE:
+                view.showVictimPage(gameState.getCurrentVictimName(), gameState.getCurrentVictimRole());
+                break;
+        }
+    }
 
     public void sendCommand(Command cmd) {
         if (isServer) {

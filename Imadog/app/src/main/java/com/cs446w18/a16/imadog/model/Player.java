@@ -21,7 +21,6 @@ public abstract class Player {
 
     public void setName(String name) {
         this.name = name;
-        System.out.println("ROLE SET NAME: " + name);
     }
 
     public String getAnswer(int day) {
@@ -36,7 +35,6 @@ public abstract class Player {
         if (answers.size() < day) {
             answers.add(ans);
         }
-        System.out.println("SET ANSWER: " + name + " : " + ans);
 
         answers.set(day-1, ans);
     }

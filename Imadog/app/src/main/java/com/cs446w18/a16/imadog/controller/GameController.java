@@ -41,7 +41,7 @@ public class GameController {
             public void run() {
                 readyToAskQuestion();
             }
-        }, 10000);
+        }, GameConstants.introDuration + GameConstants.dayNightDuration);
     }
 
     public void readyToAskQuestion() {
@@ -69,7 +69,7 @@ public class GameController {
                 poll = null;
             }
         }, duration);
-        duration += GameConstants.victimPageDuration;
+        duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
@@ -100,7 +100,7 @@ public class GameController {
                 game.nextDay();
             }
         }, duration);
-        duration += GameConstants.victimPageDuration;
+        duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
