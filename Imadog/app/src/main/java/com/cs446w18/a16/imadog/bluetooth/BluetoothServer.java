@@ -14,6 +14,7 @@ import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
 import com.cs446w18.a16.imadog.controller.GameController;
 import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.model.Chat;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -103,9 +104,17 @@ public class BluetoothServer extends Bluetooth {
             players.add(player);
         }
 
+        initializeChat(players);
         GameController game = new GameController(players);
         hostUser.setGameController(game);
         return host;
+    }
+
+    private void initializeChat(ArrayList<PlayerController> users) {
+        Chat chat = new Chat(new ArrayList<PlayerController>(users));
+        for (int i = 0; i < users.size(); i++) {
+            users.get(i).setChat(chat);
+        }
     }
 
     private class AcceptThread extends Thread {

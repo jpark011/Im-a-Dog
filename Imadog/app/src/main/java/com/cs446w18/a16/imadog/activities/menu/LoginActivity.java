@@ -11,6 +11,19 @@ import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
 import com.cs446w18.a16.imadog.controller.UserController;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * Created by Jean-Baptiste on 25/02/2018.
@@ -21,6 +34,9 @@ public class LoginActivity extends SuperActivity {
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
     EditText nameField;
+    private static final String EMAIL = "email";
+    private static final String PUBLIC_PROFILE = "public_profile";
+    private CallbackManager callbackManager;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -29,6 +45,10 @@ public class LoginActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        if (AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
 
         // Answer field
         nameField = findViewById(R.id.nameField);
@@ -66,10 +86,58 @@ public class LoginActivity extends SuperActivity {
         // Setups the fonts
         Global.initFonts(getApplicationContext());
 
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginButton loginButton = findViewById(R.id.login_button);
+        loginButton.setReadPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                String name = object.optString("name");
+
+                                if (Global.user == null) {
+                                    Global.user = new UserController(name);
+                                }
+                                Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(menuIntent);
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "name");
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+            @Override
+            public void onCancel() {
+                System.out.println("Cancel");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                System.out.println("Error");
+            }
+        });
     }
 
 
     /* ----------------------------- METHODS ----------------------------- */
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 }

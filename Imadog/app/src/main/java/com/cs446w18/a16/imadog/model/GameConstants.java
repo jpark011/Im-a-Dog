@@ -59,7 +59,16 @@ public class GameConstants {
     public static final int questionPageDuration = 15000;
     public static final int dayPollPageDuration = 15000;
     public static final int nightPollPageDuration = 15000;
-    public static final int victimPageDuration = 10000;
+    public static final int victimPageDuration = 5000;
+    public static final int introDuration = 5000;
+    public static final int dayNightDuration = 5000;
+
+    public static final String DAY_PAGE = "DAY_PAGE";
+    public static final String DAY_VOTE_PAGE = "DAY_VOTE_PAGE";
+    public static final String QUESTION_PAGE = "QUESTION_PAGE";
+    public static final String NIGHT_PAGE = "NIGHT_PAGE";
+    public static final String NIGHT_VOTE_PAGE = "NIGHT_VOTE_PAGE";
+    public static final String VICTIM_PAGE = "VICTIM_PAGE";
 
 
     // KAREN: I used this boolean to replace the call of the model to change the pages in the navigation.

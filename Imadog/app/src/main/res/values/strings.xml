@@ -20,5 +20,7 @@
     <string name="bluetooth_paired">Paired with </string>
     <string name="bluetooth_connect_fail">Failed to connect</string>
 
+    <string name="facebook_app_id">922983427866675</string>
+    <string name="fb_login_protocol_scheme">fb922983427866675</string>
 
 </resources>

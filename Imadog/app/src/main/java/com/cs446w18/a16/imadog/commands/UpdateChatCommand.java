@@ -1,22 +1,24 @@
 package com.cs446w18.a16.imadog.commands;
 
-import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.model.Message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class InitializeCommand implements Command, Serializable {
-    private String role;
-    private String question;
+/**
+ * Created by lacie on 2018-03-19.
+ */
+
+public class UpdateChatCommand implements Command, Serializable {
+    private ArrayList<Message> history;
     private UserController receiver;
 
-    public InitializeCommand(String question, String role) {
-        this.role = role;
-        this.question = question;
-        this.receiver = null;
+    public UpdateChatCommand(ArrayList<Message> history) {
+        this.history = history;
     }
 
     public void setReceiver(UserController user) {
@@ -26,6 +28,6 @@ public class InitializeCommand implements Command, Serializable {
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.initializeGame(question, role);
+        this.receiver.updateChat(history);
     }
 }

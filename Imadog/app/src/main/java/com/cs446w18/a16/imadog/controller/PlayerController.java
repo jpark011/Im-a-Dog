@@ -9,8 +9,12 @@ import com.cs446w18.a16.imadog.commands.CloseDayPollCommand;
 import com.cs446w18.a16.imadog.commands.CloseNightPollCommand;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.InitializeCommand;
+import com.cs446w18.a16.imadog.commands.KillPlayerCommand;
 import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
 import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
+import com.cs446w18.a16.imadog.commands.UpdateChatCommand;
+import com.cs446w18.a16.imadog.model.Chat;
+import com.cs446w18.a16.imadog.model.Message;
 import com.cs446w18.a16.imadog.model.Player;
 
 import java.util.ArrayList;
@@ -21,15 +25,35 @@ public class PlayerController {
     private Player role;
     private BluetoothServer server;
     private String clientName;
+    private Chat chat;
 
     public PlayerController(BluetoothServer server, String clientName) {
         this.clientName = clientName;
         this.server = server;
         role = null;
+        chat = null;
     }
 
     public void setUserName(String name) {
         this.username = name;
+    }
+
+    public String getUserName() {
+        return username;
+    }
+
+    public void setChat(Chat chat) {
+        this.chat = chat;
+    }
+
+    public void sendMessage(String text) {
+        this.chat.addMessage(text, getUserName());
+    }
+
+    public void updateChat() {
+        ArrayList<Message> history = chat.getMessages();
+        Command cmd = new UpdateChatCommand(history);
+        sendCommand(cmd);
     }
 
     public void initializeGame() {
@@ -68,8 +92,14 @@ public class PlayerController {
         String victimName = role.getVictimName();
         String victimRole = role.getVictimRole();
         String winner = role.getWinner();
+
         Command cmd = new CloseDayPollCommand(victimName, victimRole, winner);
         sendCommand(cmd);
+
+        if (role.isDead()) {
+            Command killCmd = new KillPlayerCommand();
+            sendCommand(killCmd);
+        }
     }
 
     public void startNightPoll() {
@@ -84,8 +114,14 @@ public class PlayerController {
         String victimRole = role.getVictimRole();
         String winner = role.getWinner();
         String question = getQuestion();
+
         Command cmd = new CloseNightPollCommand(victimName, victimRole, winner, question);
         sendCommand(cmd);
+
+        if (role.isDead()) {
+            Command killCmd = new KillPlayerCommand();
+            sendCommand(killCmd);
+        }
     }
 
     public void vote(String choice) {

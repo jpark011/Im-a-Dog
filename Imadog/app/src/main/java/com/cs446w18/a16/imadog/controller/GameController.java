@@ -1,5 +1,6 @@
 package com.cs446w18.a16.imadog.controller;
 
+import com.cs446w18.a16.imadog.model.Chat;
 import com.cs446w18.a16.imadog.model.Game;
 import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
@@ -12,24 +13,12 @@ import java.util.TimerTask;
 public class GameController {
     private ArrayList<PlayerController> observers;
     private Game game;
-    Poll poll;
+    private Poll poll;
 
     public GameController(ArrayList<PlayerController> users) {
         this.observers = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
-    }
-
-    public void registerObserver(PlayerController observer) {
-        if (!observers.contains(observer)) {
-            observers.add(observer);
-        }
-    }
-
-    public void unRegisterObserver(PlayerController observer) {
-        if (observers.contains(observer)) {
-            observers.remove(observer);
-        }
     }
 
     private void notifyObservers() {
@@ -52,7 +41,7 @@ public class GameController {
             public void run() {
                 readyToAskQuestion();
             }
-        }, 10000);
+        }, GameConstants.introDuration + GameConstants.dayNightDuration);
     }
 
     public void readyToAskQuestion() {
@@ -80,7 +69,7 @@ public class GameController {
                 poll = null;
             }
         }, duration);
-        duration += GameConstants.victimPageDuration;
+        duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {
@@ -111,7 +100,7 @@ public class GameController {
                 game.nextDay();
             }
         }, duration);
-        duration += GameConstants.victimPageDuration;
+        duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
         timer.schedule(new TimerTask() {
 
             public void run() {

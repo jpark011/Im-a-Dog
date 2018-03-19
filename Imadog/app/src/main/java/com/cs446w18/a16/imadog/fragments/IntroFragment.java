@@ -31,7 +31,7 @@ public class IntroFragment extends SuperFragment {
 
         // Title label
         TextView titleLabel = view.findViewById(R.id.titleLabel);
-        titleLabel.setText("Let's start the game!\nYou are a "+"cat"+"!"); // KAREN: replace the cat string by the user's role
+        titleLabel.setText("Let's start the game!\nYou are a "+ Global.user.getRole() +"!"); // KAREN: replace the cat string by the user's role
 
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();

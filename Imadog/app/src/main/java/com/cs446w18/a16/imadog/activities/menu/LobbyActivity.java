@@ -41,23 +41,21 @@ public class LobbyActivity extends SuperActivity {
         // Players list
         VoteListView playersList = findViewById(R.id.playersListView);
         ArrayList<String> players;
-        if (Global.user.isServer()) {
-             players = Global.user.getRoomMembers();
 
+        mPlayers = new ArrayList<>();
+        if (Global.user.isServer()) {
+            players = Global.user.getRoomMembers();
+            Global.user.getServer().setCommunicationCallback(new CommunicationCallbackServer());
         } else {
             players = new ArrayList<>();
             players.add("Loading room members...");
+            Global.user.getClient().setCommunicationCallback(new CommunicationCallbackClient());
+            Button startButton = findViewById(R.id.startButton);
+            startButton.setVisibility(View.GONE);
         }
 
         playersList.setup(players, null);
         playersList.isEnabled = false;
-
-        mPlayers = new ArrayList<>();
-        if (Global.user.isServer()) {
-            Global.user.getServer().setCommunicationCallback(new CommunicationCallbackServer());
-        } else {
-            Global.user.getClient().setCommunicationCallback(new CommunicationCallbackClient());
-        }
     }
 
 
@@ -69,7 +67,6 @@ public class LobbyActivity extends SuperActivity {
     }
 
     public void openGameActivity() {
-        System.out.println("OPEN GAME");
         Intent startGameIntent = new Intent(LobbyActivity.this, GameActivity.class);
         startActivity(startGameIntent);
     }

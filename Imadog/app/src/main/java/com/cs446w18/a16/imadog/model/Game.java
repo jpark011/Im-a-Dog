@@ -23,12 +23,14 @@ public class Game {
     private String victimRole;
 
     public Game(ArrayList<PlayerController> names, GameController gameController) {
-        currentDay = 1;
-        night = false;
-        int n = names.size();
         this.gameController = gameController;
+        int n = names.size();
+
         assignRoles(names);
         setQuestions(n);
+
+        currentDay = 1;
+        night = false;
         deceased = new ArrayList<>();
         gameState = "CREATED";
         victimName = null;
@@ -90,14 +92,12 @@ public class Game {
 
         if (getCats) {
             for (int i = 0; i < cats.size(); i++) {
-                System.out.println("Name: "+ cats.get(i).getName());
                 answers.put(cats.get(i).getName(), cats.get(i).getAnswer(currentDay));
             }
         }
 
         if (getDogs) {
             for (int i = 0; i < dogs.size(); i++) {
-                System.out.println("Name: "+ dogs.get(i).getName());
                 answers.put(dogs.get(i).getName(), dogs.get(i).getAnswer(currentDay));
             }
         }
