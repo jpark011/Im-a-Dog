@@ -59,7 +59,7 @@ public class QuestionFragment extends SuperFragment {
         answerField.setBackground(background);
 
         // Lock the view if player is dead
-        if (false) { // KAREN: Replace by "if player is dead"
+        if (Global.user.isDead()) {
             answerField.setEnabled(false);
         }
 

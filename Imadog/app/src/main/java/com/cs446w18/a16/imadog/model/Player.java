@@ -1,20 +1,16 @@
 package com.cs446w18.a16.imadog.model;
 
 import java.util.ArrayList;
-
-/**
- * A player of the game, either a cat or dog
- */
+import java.util.HashMap;
 
 public abstract class Player {
-    protected String name;
+    private String name;
     private boolean dead;
     protected Game game;
     private ArrayList<String> answers;
 
-    public Player(String n, Game g) {
+    public Player(Game g) {
         answers = new ArrayList<>();
-        name = n;
         game = g;
         dead = false;
     }
@@ -23,8 +19,12 @@ public abstract class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getAnswer(int day) {
-        if (answers.size() == day-1) {
+        if (answers.size() < day) {
             answers.add("");
         }
         return answers.get(day-1);
@@ -36,7 +36,7 @@ public abstract class Player {
             answers.add(ans);
         }
 
-        answers.add(day-1, ans);
+        answers.set(day-1, ans);
     }
 
     public void kill() {
@@ -47,9 +47,37 @@ public abstract class Player {
         return dead;
     }
 
+    public String getGameState() {
+        return game.getGameState();
+    }
+
+    public String getDayPollTitle() {
+        return game.getQuestion(true, game.getCurrentDay());
+    }
+
+    public HashMap<String, String> getDayPollAnswers() {
+        return game.getAnswers(true,true);
+    }
+
+    public String getVictimName() {
+        return game.getVictimName();
+    }
+
+    public String getVictimRole() {
+        return game.getVictimRole();
+    }
+
+    public String getWinner() {
+        return game.getWinner();
+    }
+
     abstract public String getQuestion();
 
     abstract public void vote(String choice);
 
     abstract  public String getRole();
+
+    abstract public String getNightPollTitle();
+
+    abstract public ArrayList<String> getNightPollChoices();
 }

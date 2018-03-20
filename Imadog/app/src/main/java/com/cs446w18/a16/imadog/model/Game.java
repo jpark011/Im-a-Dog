@@ -1,16 +1,13 @@
 package com.cs446w18.a16.imadog.model;
 
 import com.cs446w18.a16.imadog.controller.GameController;
+import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.HashMap;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Collections;
-
-/**
- * The game.
- */
 
 public class Game {
     private ArrayList<Dog> dogs;
@@ -21,18 +18,26 @@ public class Game {
     private int currentDay;
     private GameController gameController;
     private boolean night;
+    private String gameState;
+    private String victimName;
+    private String victimRole;
 
-    public Game(ArrayList<User> names, GameController gameController) {
-        currentDay = 1;
-        night = false;
-        int n = names.size();
+    public Game(ArrayList<PlayerController> names, GameController gameController) {
         this.gameController = gameController;
+        int n = names.size();
+
         assignRoles(names);
         setQuestions(n);
+
+        currentDay = 1;
+        night = false;
         deceased = new ArrayList<>();
+        gameState = "CREATED";
+        victimName = null;
+        victimRole = null;
     }
 
-    private void assignRoles(ArrayList<User> names) {
+    private void assignRoles(ArrayList<PlayerController> names) {
         dogs = new ArrayList<>();
         cats = new ArrayList<>();
         int total = names.size();
@@ -40,13 +45,12 @@ public class Game {
         Random r = new Random();
         while (total > 0) {
             int ind = r.nextInt(total);
-            String name = names.get(ind).getUserName();
             if (numSoFar % 5 == 0) {
-                Cat cat = new Cat(name, this);
+                Cat cat = new Cat(this);
                 cats.add(cat);
                 names.get(ind).setRole(cat);
             } else {
-                Dog dog = new Dog(name, this);
+                Dog dog = new Dog(this);
                 dogs.add(dog);
                 names.get(ind).setRole(dog);
             }
@@ -121,17 +125,19 @@ public class Game {
             }
         }
 
-        Collections.sort(names);
+        //Collections.sort(names);
         return names;
     }
 
-    public String killPlayer(String name) {
+    public void killPlayer(String name) {
+        if (name == null) {
+            return;
+        }
+
         int ind = -1;
-        String role = null;
         for (int i = 0; i < dogs.size(); i++) {
             if (dogs.get(i).getName() == name) {
                 ind = i;
-                role = "dog";
                 break;
             }
         }
@@ -144,7 +150,6 @@ public class Game {
             for (int i = 0; i < cats.size(); i++) {
                 if (cats.get(i).getName() == name) {
                     ind = i;
-                    role = "cat";
                     break;
                 }
             }
@@ -153,7 +158,8 @@ public class Game {
 
         dead.kill();
         deceased.add(dead);
-        return role;
+        victimName = name;
+        victimRole = dead.getRole();
     }
 
     public int getCurrentDay() {
@@ -186,5 +192,26 @@ public class Game {
         }
 
         return null;
+    }
+
+    public String getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(String gameState) {
+        this.gameState = gameState;
+    }
+
+    public void resetVictim() {
+        victimName = null;
+        victimRole = null;
+    }
+
+    public String getVictimName() {
+        return victimName;
+    }
+
+    public String getVictimRole() {
+        return victimRole;
     }
 }

@@ -1,9 +1,5 @@
 package com.cs446w18.a16.imadog.model;
 
-/**
- * Created by lacie on 2018-02-17.
- */
-
 public class GameConstants {
     public static final String[] dogQuestions = {
             "What did you have for breakfast today?",
@@ -58,6 +54,21 @@ public class GameConstants {
 
     // Duration of the vote during the night, displayed on a counter (in seconds)
     public static final int nightVoteDuration = 5;
+
+    // GameController Timer duration in milliseconds
+    public static final int questionPageDuration = 15000;
+    public static final int dayPollPageDuration = 15000;
+    public static final int nightPollPageDuration = 15000;
+    public static final int victimPageDuration = 5000;
+    public static final int introDuration = 5000;
+    public static final int dayNightDuration = 5000;
+
+    public static final String DAY_PAGE = "DAY_PAGE";
+    public static final String DAY_VOTE_PAGE = "DAY_VOTE_PAGE";
+    public static final String QUESTION_PAGE = "QUESTION_PAGE";
+    public static final String NIGHT_PAGE = "NIGHT_PAGE";
+    public static final String NIGHT_VOTE_PAGE = "NIGHT_VOTE_PAGE";
+    public static final String VICTIM_PAGE = "VICTIM_PAGE";
 
 
     // KAREN: I used this boolean to replace the call of the model to change the pages in the navigation.
