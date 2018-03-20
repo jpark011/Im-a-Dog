@@ -50,6 +50,7 @@ public class JoinGameActivity extends SuperActivity {
         roomsListView.setAdapter(new RoomsListAdapter(this));
         roomsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         roomsListView.setSelector(R.drawable.row_selector);
+        roomsListView.setDivider(null);
 
 
 

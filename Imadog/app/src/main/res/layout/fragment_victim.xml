@@ -1,29 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/nameLabel"
+        style="@style/BigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="77dp"
-        android:text="NAME has been killed"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:textStyle="normal" />
+        android:layout_marginTop="70dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="Name"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/roleLabel"
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/subtitleLabel"
+        style="@style/BigSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nameLabel"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/nameLabel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:text="He/she was... ROLE"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        android:textStyle="normal" />
+        android:text="has been killed."
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/separator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subtitleLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        app:srcCompat="@drawable/separator_white" />
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/youAreLabel"
+        style="@style/BigSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/separator"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:text="He/She was..."
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/roleImageView"
+        android:layout_width="126dp"
+        android:layout_height="200dp"
+        android:layout_below="@+id/youAreLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/cat" />
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/roleLabel"
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/roleImageView"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Role"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
 
 
 

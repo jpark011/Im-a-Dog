@@ -6,23 +6,22 @@
     <Button
         android:id="@+id/leftButton"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
+        android:layout_width="16dp"
+        android:layout_height="24dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="12dp"
-        android:onClick="leftBarButtonWasPressed"
-        android:text="Left" />
+        android:background="@drawable/help"
+        android:onClick="leftBarButtonWasPressed" />
 
     <Button
         android:id="@+id/rightButton"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_alignParentEnd="true"
+        android:layout_marginHorizontal="20dp"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="12dp"
-        android:onClick="rightBarButtonWasPressed"
-        android:text="Right" />
+        android:background="@drawable/profile"
+        android:onClick="rightBarButtonWasPressed" />
 
 </RelativeLayout>

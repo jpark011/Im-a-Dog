@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.Global;
@@ -29,21 +30,23 @@ public class IntroFragment extends SuperFragment {
 
         View view = inflater.inflate(R.layout.fragment_intro, container, false);
 
-        // Title label
-        TextView titleLabel = view.findViewById(R.id.titleLabel);
-        titleLabel.setText("Let's start the game!\nYou are a "+"cat"+"!"); // KAREN: replace the cat string by the user's role
+        String role = Global.user.getRole();
+
+        // Role image view
+        ImageView roleImageView = view.findViewById(R.id.roleImageView);
+        roleImageView.setImageResource(role.equalsIgnoreCase("CAT") ? R.drawable.cat : R.drawable.dog);
+
+        // Role label
+        TextView roleLabel = view.findViewById(R.id.roleLabel);
+        roleLabel.setText("A "+role+"!"); // KAREN: replace the cat string by the user's role
 
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (GameConstants.INTERFACE_TEST) {
-                    getGameActivity().showDayPage();
-                } else {
-                    System.out.println("ready to start view");
-                    Global.user.readyToStart();
-                }
+                System.out.println("ready to start view");
+                Global.user.readyToStart();
             }
         }, 4000);
 

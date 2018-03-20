@@ -5,9 +5,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
@@ -38,6 +41,26 @@ public class CreateGameActivity extends SuperActivity {
         GradientDrawable background = (GradientDrawable)nameField.getBackground().getConstantState().newDrawable().mutate();;
         background.setColor(ContextCompat.getColor(this, R.color.white));
         nameField.setBackground(background);
+
+
+        // Set the return action (just hide UI)
+        TextView.OnEditorActionListener fieldListener = new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH ||
+                        i == EditorInfo.IME_ACTION_DONE ||
+                        keyEvent != null &&
+                                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
+                                keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+
+                    // When the user press enter
+                    hideSystemUI();
+                }
+                return false;
+
+            }
+        };
+        nameField.setOnEditorActionListener(fieldListener);
 
     }
 

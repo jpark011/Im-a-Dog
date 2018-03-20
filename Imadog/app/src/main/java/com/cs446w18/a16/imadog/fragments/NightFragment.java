@@ -28,21 +28,6 @@ public class NightFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        // TEST: delay the transition to the next page. To be replaced by a direct call by the model.
-        if (GameConstants.INTERFACE_TEST) {
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ArrayList<String> players = new ArrayList<String>();
-                    players.add("Alice");
-                    players.add("Bob");
-                    players.add("Carol");
-                    getGameActivity().showNightVotePage("Vote to kill a dog...", players);
-                }
-            }, 2000);
-        }
-
         return inflater.inflate(R.layout.fragment_night, container, false);
     }
 

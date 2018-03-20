@@ -107,8 +107,8 @@ public class User {
         }, 5000);
     }
 
-    public void startPoll(String question, HashMap<String, String> answers) {
-        view.showVotePage(question, answers);
+    public void startPoll(String question, HashMap<String, String> answers, HashMap<String, Integer> votes) {
+        view.showVotePage(question, votes, answers);
     }
 
     public void closePoll(String name, String role, String winner) {
@@ -128,8 +128,8 @@ public class User {
         }, 5000);
     }
 
-    public void startNightPoll(String title, ArrayList<String> names) {
-        view.showNightVotePage(title, names);
+    public void startNightPoll(String title, HashMap<String, Integer> votes) {
+        view.showNightVotePage(title, votes);
     }
 
     public void closeNightPoll(String name,  String role, String winner) {

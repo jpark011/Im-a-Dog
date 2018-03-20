@@ -14,7 +14,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="60dp"
         android:text="@string/main_title"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textAlignment="center"/>
 
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/subtitleLabel"
@@ -25,7 +26,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="100dp"
         android:text="@string/main_subtitle"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textAlignment="center"/>
 
     <com.cs446w18.a16.imadog.views.CustomButton
         android:id="@+id/joinButton"

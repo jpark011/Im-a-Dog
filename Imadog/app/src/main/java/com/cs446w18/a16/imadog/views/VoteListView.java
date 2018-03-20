@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.cs446w18.a16.imadog.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,10 +32,15 @@ public class VoteListView extends ListView {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-    private List<String> mNames, mAnswers;
-    private RadioButton radioButton;
+    private List<String> mNames;
+    private List<String> mAnswers;
+    private List<Integer> mVotes;
 
     private Delegate delegate;
+
+    private VoteListAdapter adapter;
+
+    private boolean blackTheme = false;
 
     public boolean isEnabled;
 
@@ -45,23 +52,60 @@ public class VoteListView extends ListView {
     }
 
     /// Setups the list view with the players' names and answers (Day vote)
-    public void setup(Map<String, String> namesAndAnswers, Delegate delegate) {
-        mNames = new ArrayList<String>(namesAndAnswers.keySet());
-        mAnswers = new ArrayList<String>(namesAndAnswers.values());
+    public void setup(Map<String, Integer> votes, Map<String, String> answers, Delegate delegate) {
+
+        // Names
+        mNames = new ArrayList<>(votes.keySet());
+        java.util.Collections.sort(mNames);
+
+        // Answers
+        mAnswers = new ArrayList<>();
+        for (String name: mNames) {
+            mAnswers.add(answers.get(name));
+        }
+
+        // Votes
+        mVotes = new ArrayList<>();
+        for (String name: mNames) {
+            mVotes.add(votes.get(name));
+        }
+
         setup(delegate);
     }
 
     /// Setups the list view with only the players' names (Night vote)
-    public void setup(List<String> names, Delegate delegate) {
-        mNames = names;
+    public void setup(Map<String, Integer> votes, Delegate delegate) {
+
+        // Names
+        mNames = new ArrayList<>(votes.keySet());
+        java.util.Collections.sort(mNames);
+
+        // Votes
+        mVotes = new ArrayList<>();
+        for (String name: mNames) {
+            mVotes.add(votes.get(name));
+        }
+
+        setup(delegate);
+    }
+
+    /// Setups the list view with black text (Lobby)
+    public void setupBlackTheme(List<String> names) {
+        blackTheme = true;
+        isEnabled = false;
+
+        mNames = new ArrayList<>(names);
+
         setup(delegate);
     }
 
     private void setup(final Delegate delegate) {
-        setAdapter(new VoteListAdapter(getContext()));
+        adapter = new VoteListAdapter(getContext());
+        setAdapter(adapter);
         this.delegate = delegate;
         setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         setSelector(R.drawable.row_selector);
+        setDivider(null);
         isEnabled = true;
 
         // Set the row action
@@ -80,6 +124,22 @@ public class VoteListView extends ListView {
     public void lock() {
         Log.d("Imadog", "Lock");
         isEnabled = false;
+    }
+
+    /// Updates the values when get a new message
+    public void update(Map<String, Integer> votes) {
+
+        // Names
+        mNames = new ArrayList<>(votes.keySet());
+        java.util.Collections.sort(mNames);
+
+        // Votes
+        mVotes = new ArrayList<>();
+        for (String name: mNames) {
+            mVotes.add(votes.get(name));
+        }
+
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -128,8 +188,25 @@ public class VoteListView extends ListView {
                 answerLabel.setText(mAnswers.get(i));
             }
             else {
-                answerLabel.setAlpha(0);
+                answerLabel.setVisibility(View.INVISIBLE);
             }
+
+            // Change votes (if applicable)
+            TextView voteLabel = row.findViewById(R.id.voteLabel);
+            if (mVotes != null) {
+                voteLabel.setText(String.valueOf(mVotes.get(i)));
+            }
+            else {
+                voteLabel.setVisibility(View.INVISIBLE);
+            }
+
+            // Black theme
+            if (blackTheme) {
+                int blackColor = getResources().getColor(R.color.black);
+                nameLabel.setTextColor(blackColor);
+                answerLabel.setTextColor(blackColor);
+            }
+
 
             // Setup radio button
 //            radioButton = row.findViewById(R.id.radioButton);

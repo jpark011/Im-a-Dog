@@ -4,15 +4,17 @@
     android:layout_height="match_parent"
     android:background="@android:color/holo_purple">
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/titleLabel"
+        style="@style/BigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="77dp"
-        android:text="It's the day!"
-        android:textSize="36sp"
-        android:textStyle="normal" />
+        android:layout_marginTop="80dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="It's the day"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
 
 
 </RelativeLayout>

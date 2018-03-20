@@ -1,28 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/titleLabel"
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/subtitleLabel"
+        style="@style/Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
-        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="74dp"
         android:layout_centerHorizontal="true"
-        android:text="Question"
-        android:textSize="36sp"
-        android:textStyle="normal"/>
+        android:text="Answer the question"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
 
-    <EditText
-        android:id="@+id/answerField"
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/titleLabel"
+        style="@style/Title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="Here should be the question"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <ImageView
+        android:id="@+id/separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/titleLabel"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
-        android:ems="10"
-        android:hint="Answer"
-        android:inputType="text" />
+        android:layout_marginTop="40dp"
+        app:srcCompat="@drawable/separator_white" />
+
+    <EditText
+        android:id="@+id/answerField"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_below="@+id/separator"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/border_white"
+        android:hint="Answer here..."
+        android:paddingHorizontal="12dp"
+        android:imeOptions="actionDone"
+        android:singleLine="true"
+        android:textAlignment="viewStart"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <com.cs446w18.a16.imadog.views.CustomButton
+        android:id="@+id/submitButton"
+        style="@style/RectButton.White"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height"
+        android:layout_below="@+id/answerField"
+        android:layout_marginHorizontal="22dp"
+        android:layout_marginTop="20dp"
+        android:onClick="submit"
+        android:text="Submit" />
+
 
 
 </RelativeLayout>

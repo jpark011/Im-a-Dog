@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.model.GameConstants;
 
@@ -30,17 +32,6 @@ public class VictimFragment extends SuperFragment {
 
         View view = inflater.inflate(R.layout.fragment_victim, container, false);
 
-        if (GameConstants.INTERFACE_TEST) {
-            // Delay the transition to the next page. To be replaced by an animation
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    getGameActivity().showNightPage();
-                }
-            }, 5000);
-        }
-
         // Get arguments
         Bundle bundle = getArguments();
         String name = bundle.getString("victimName");
@@ -49,11 +40,15 @@ public class VictimFragment extends SuperFragment {
 
         // Set the name label
         nameLabel = view.findViewById(R.id.nameLabel);
-        nameLabel.setText(name+"\nhas been killed");
+        nameLabel.setText(name);
+
+        // Role image view
+        ImageView roleImageView = view.findViewById(R.id.roleImageView);
+        roleImageView.setImageResource(role.equalsIgnoreCase("CAT") ? R.drawable.cat : R.drawable.dog);
 
         // Set the role label
         roleLabel = view.findViewById(R.id.roleLabel);
-        roleLabel.setText("He/she was...\nA "+role+"!");
+        roleLabel.setText("A "+role+"!");
 
         // Case where nobody was killed
         if (name == "") {

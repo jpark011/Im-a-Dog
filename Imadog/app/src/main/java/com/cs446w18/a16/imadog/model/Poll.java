@@ -43,8 +43,8 @@ public class Poll {
         votes.put(userName, voteName);
     }
 
-    public int getVoteCount(String userName) {
-        return count.get(userName);
+    public HashMap<String, Integer> getVoteCount() {
+        return (HashMap<String, Integer>)count;
     }
 
     public String getResult() {

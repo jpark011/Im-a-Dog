@@ -2,17 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@android:color/holo_green_light">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="16dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/back"
+        android:onClick="back" />
 
     <com.cs446w18.a16.imadog.views.CustomLabel
-        android:id="@+id/titleLabel"
-        style="@style/Title"
+        android:id="@+id/nameLabel"
+        style="@style/BigTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
-        android:text="Welcome\nto the game"
+        android:layout_marginTop="70dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="Name"
         android:textColor="@color/white"
         android:textAlignment="center"/>
 
@@ -20,7 +30,7 @@
         android:id="@+id/separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleLabel"
+        android:layout_below="@+id/nameLabel"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         app:srcCompat="@drawable/separator_white" />
@@ -58,6 +68,5 @@
         android:text="Role"
         android:textColor="@color/white"
         android:textAlignment="center"/>
-
 
 </RelativeLayout>

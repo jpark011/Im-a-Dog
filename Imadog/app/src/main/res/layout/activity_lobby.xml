@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/button"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="16dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/back_black"
+        android:onClick="back" />
+
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/titleLabel"
         style="@style/Title"
@@ -14,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:text="@string/lobby_title"
         android:textColor="@color/black"
-        android:textStyle="normal"/>
+        android:textAlignment="center"/>
 
     <ImageView
         android:id="@+id/separator"

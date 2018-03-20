@@ -6,17 +6,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
+import com.cs446w18.a16.imadog.fragments.ChatFragment;
 import com.cs446w18.a16.imadog.fragments.DayFragment;
+import com.cs446w18.a16.imadog.fragments.HelpFragment;
 import com.cs446w18.a16.imadog.fragments.IntroFragment;
 import com.cs446w18.a16.imadog.fragments.NavigationBarFragment;
 import com.cs446w18.a16.imadog.fragments.NightFragment;
 import com.cs446w18.a16.imadog.fragments.OutroFragment;
+import com.cs446w18.a16.imadog.fragments.ProfileFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
 import com.cs446w18.a16.imadog.fragments.VictimFragment;
 import com.cs446w18.a16.imadog.fragments.VoteFragment;
@@ -24,6 +30,8 @@ import com.cs446w18.a16.imadog.model.GameConstants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Jean-Baptiste on 18/02/2018.
@@ -36,6 +44,13 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     // Stores the current fragment
     Fragment currentFragment;
 
+    // The view pager and page adapter for the tabs
+    private ViewPager mPager;
+    private PagerAdapter mPagerAdapter;
+
+    // The different tabs
+    private ArrayList<Fragment> tabs;
+
 
     /* ----------------------------- SETUP ----------------------------- */
 
@@ -44,6 +59,16 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         Global.user.setView(this);
+
+        // View pager
+        mPager = findViewById(R.id.pager);
+        mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+
+        tabs = new ArrayList<>();
+        tabs.add(new IntroFragment());
+        tabs.add(new ChatFragment());
+        tabs.add(new ProfileFragment());
+        tabs.add(new HelpFragment());
 
         switchToFragment(new IntroFragment(), null);
     }
@@ -55,11 +80,26 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     public void switchToFragment(Fragment frag, Bundle arguments) {
         currentFragment = frag;
         frag.setArguments(arguments);
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.mainContainer, frag);
-        transaction.commit();
+        tabs.remove(0);
+        tabs.add(0, frag);
 
+        mPager.setAdapter(mPagerAdapter);
+    }
+
+    private class TabPagerAdapter extends FragmentStatePagerAdapter {
+        public TabPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return tabs.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return tabs.size();
+        }
     }
 
 
@@ -100,13 +140,21 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      * @param question: the question to display (this question should always be the DOG question).
      * @param answers: a map of the answers on the form <playerName, answer>
      */
-    public void showVotePage(String question, HashMap<String, String> answers) {
+    public void showVotePage(String question, HashMap<String, Integer> votes, HashMap<String, String> answers) {
         Bundle arguments = new Bundle();
         arguments.putString("title", question);
         arguments.putBoolean("isNight", false);
+        arguments.putSerializable("votes", votes);
         arguments.putSerializable("answers", answers);
 
         switchToFragment(new VoteFragment(), arguments);
+    }
+
+    /**
+     *
+     */
+    public void updateVoteCounts(Map<String, Integer> votes) {
+
     }
 
     /**
@@ -138,13 +186,13 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      *
      * @param title: the title of the page. This might be for instance "Vote to kill a dog" for the cats,
      *             or "Vote for the best player" for the dogs
-     * @param players: a list of the remaining players' names
+     * @param votes: a list of the remaining players' names
      */
-    public void showNightVotePage(String title, ArrayList<String> players) {
+    public void showNightVotePage(String title, HashMap<String, Integer> votes) {
         Bundle arguments = new Bundle();
         arguments.putString("title", title);
         arguments.putBoolean("isNight", true);
-        arguments.putStringArrayList("players", players);
+        arguments.putSerializable("votes", votes);
 
         switchToFragment(new VoteFragment(), arguments);
     }
@@ -185,15 +233,6 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     @Override
     public void answeredQuestion(String answer) {
         Log.d("Imadog", "Question answered: "+answer);
-
-        // TEST: show next page with dummy values.
-        if (GameConstants.INTERFACE_TEST) {
-            HashMap<String, String> answers = new HashMap<String, String>();
-            answers.put("Alice", "Answer from Alice");
-            answers.put("Bob", "Answer from Bob");
-            answers.put("Carol", "Answer from Carol");
-            showVotePage(GameConstants.dogQuestions[0], answers);
-        }
 
         Global.user.submitAnswer(answer);
     }

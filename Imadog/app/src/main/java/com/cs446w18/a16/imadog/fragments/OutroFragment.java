@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.R;
@@ -31,6 +32,8 @@ public class OutroFragment extends SuperFragment {
         View view = inflater.inflate(R.layout.fragment_outro, container, false);
         Bundle bundle = getArguments();
 
+        String winner = bundle.getString("winner");
+
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -40,8 +43,11 @@ public class OutroFragment extends SuperFragment {
             }
         }, 2000);
 
+        // Role image view
+        ImageView roleImageView = view.findViewById(R.id.roleImageView);
+        roleImageView.setImageResource(winner.equalsIgnoreCase("CATS") ? R.drawable.cat : R.drawable.dog);
+
         // Set the title label
-        String winner = bundle.getString("winner");
         titleLabel = view.findViewById(R.id.titleLabel);
         titleLabel.setText("The "+winner+" won!");
 

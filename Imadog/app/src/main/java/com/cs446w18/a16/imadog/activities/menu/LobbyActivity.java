@@ -37,8 +37,7 @@ public class LobbyActivity extends SuperActivity {
         testList.add("Alice");
         testList.add("Bob");
         testList.add("Carol");
-        playersList.setup(testList, null);
-        playersList.isEnabled = false;
+        playersList.setupBlackTheme(testList);
 
 
     }

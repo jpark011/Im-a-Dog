@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="border_width">8dp</dimen>
+    <dimen name="border_width">10dp</dimen>
 
     <dimen name="button_height">60dp</dimen>
     <dimen name="separator_width">48dp</dimen>

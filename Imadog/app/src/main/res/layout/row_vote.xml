@@ -5,20 +5,36 @@
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/nameLabel"
         style="@style/SmallTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/voteLabel"
         android:text="Name"
-        android:textColor="@color/black"/>
+        android:textColor="@color/white"/>
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/answerLabel"
-        android:layout_width="wrap_content"
+        style="@style/Subtitle"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/nameLabel"
-        android:layout_marginTop="10dp"
-        android:text="Answer"
-        android:textStyle="italic" />
+        android:layout_toStartOf="@id/voteLabel"
+        android:text="Answer is displayed here"
+        android:textColor="@color/white"
+        android:singleLine="false"/>
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/voteLabel"
+        style="@style/SmallTitle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginHorizontal="10dp"
+        android:text="0"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
 
 </RelativeLayout>

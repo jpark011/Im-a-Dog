@@ -48,11 +48,13 @@ public class GameController {
                 poll = new Poll(names, names);
                 final String dogQuestion = game.getQuestion(true, game.getCurrentDay());
 
+                final HashMap<String, Integer> votes = poll.getVoteCount();
+
                 for (int i = 0; i < users.size(); i++) {
                     final User user = users.get(i);
                     new Thread() {
                         public void run() {
-                            user.startPoll(dogQuestion, answers);
+                            user.startPoll(dogQuestion, answers, votes);
                         }
                     }.start();
                 }
@@ -88,14 +90,18 @@ public class GameController {
         final ArrayList<String> dogNames = game.getPlayerNames(false, true, false);
         final ArrayList<String> names = game.getPlayerNames(true, true, false);
         poll = new Poll(names, names);
+
+        final HashMap<String, Integer> votes = poll.getVoteCount();
+
+
         for (int i = 0; i < users.size(); i++) {
             final User user = users.get(i);
             new Thread() {
                 public void run() {
                     if (user.getRole().equals("CAT")) {
-                        user.startNightPoll("Vote for the dog to kill", names);
+                        user.startNightPoll("Vote for the dog to kill", votes);
                     } else {
-                        user.startNightPoll("Vote for the best answer", names);
+                        user.startNightPoll("Vote for the best answer", votes);
                     }
                 }
             }.start();
