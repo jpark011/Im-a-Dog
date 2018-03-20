@@ -40,16 +40,6 @@ public class IntroFragment extends SuperFragment {
         TextView roleLabel = view.findViewById(R.id.roleLabel);
         roleLabel.setText("A "+role+"!"); // KAREN: replace the cat string by the user's role
 
-        // Delay the transition to the next page. To be replaced by an animation
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("ready to start view");
-                Global.user.readyToStart();
-            }
-        }, 4000);
-
 
         return view;
     }

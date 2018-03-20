@@ -11,11 +11,13 @@ import java.util.HashMap;
 public class StartDayPollCommand implements Command, Serializable {
     private String question;
     private HashMap<String, String> answers;
+    private HashMap<String, Integer> votes;
     private UserController receiver;
 
-    public StartDayPollCommand(String question, HashMap<String,String> answers) {
+    public StartDayPollCommand(String question, HashMap<String,String> answers, HashMap<String, Integer> votes) {
         this.question = question;
         this.answers = answers;
+        this.votes = votes;
     }
 
     public void setReceiver(UserController user) {
@@ -25,6 +27,6 @@ public class StartDayPollCommand implements Command, Serializable {
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.startPoll(question, answers);
+        this.receiver.startPoll(question, answers, votes);
     }
 }

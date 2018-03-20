@@ -52,13 +52,7 @@
 
         <activity android:name=".activities.menu.LobbyActivity" />
 
-        <activity  android:name=".activities.HelpActivity" />
-
         <activity android:name=".activities.GameActivity" />
-
-        <activity android:name=".activities.ProfileActivity" />
-
-
 
 
     </application>

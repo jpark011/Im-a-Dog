@@ -16,6 +16,7 @@ public class GameState {
     private String currentQuestion;
     private String currentPollTitle;
     private HashMap<String, String> currentPollAnswers;
+    private HashMap<String, Integer> currentPollCount;
     private ArrayList<String> currentPollNames;
     private String currentVictimName;
     private String currentVictimRole;
@@ -78,6 +79,12 @@ public class GameState {
 
     public void setCurrentPollAnswers(HashMap<String, String> currentPollAnswers) {
         this.currentPollAnswers = currentPollAnswers;
+    }
+
+    public HashMap<String, Integer> getCurrentPollCount() { return currentPollCount; }
+
+    public void setCurrentPollCount(HashMap<String, Integer> voteCount) {
+        currentPollCount = voteCount;
     }
 
     public ArrayList<String> getCurrentPollNames() {

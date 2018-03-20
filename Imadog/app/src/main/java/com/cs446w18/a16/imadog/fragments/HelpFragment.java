@@ -23,7 +23,10 @@ public class HelpFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_help, container, false);
+
+
+        return view;
     }
 
     /* ----------------------------- METHODS ----------------------------- */

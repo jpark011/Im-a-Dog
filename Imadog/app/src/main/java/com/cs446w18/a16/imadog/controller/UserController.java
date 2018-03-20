@@ -174,8 +174,8 @@ public class UserController {
         }, GameConstants.dayNightDuration);
     }
 
-    public void startPoll(String question, HashMap<String, String> answers) {
-        view.showVotePage(question, answers);
+    public void startPoll(String question, HashMap<String, String> answers, HashMap<String, Integer> votes) {
+        view.showVotePage(question, votes, answers);
         gameState.setCurrentPollTitle(question);
         gameState.setCurrentPollAnswers(answers);
         gameState.setGameFragment(GameConstants.DAY_VOTE_PAGE);
@@ -208,10 +208,9 @@ public class UserController {
         }, GameConstants.victimPageDuration);
     }
 
-    public void startNightPoll(String title, ArrayList<String> names) {
+    public void startNightPoll(String title, HashMap<String, Integer> votes) {
         gameState.setCurrentPollTitle(title);
-        gameState.setCurrentPollNames(names);
-        view.showNightVotePage(title, names);
+        view.showNightVotePage(title, votes);
         gameState.setGameFragment(GameConstants.NIGHT_VOTE_PAGE);
         gameState.setCurrentDuration(GameConstants.nightPollPageDuration);
         gameState.setCurrentStartTimer();
@@ -260,13 +259,13 @@ public class UserController {
                 view.showDayPage();
                 break;
             case GameConstants.DAY_VOTE_PAGE:
-                view.showVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollAnswers());
+                view.showVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollCount(), gameState.getCurrentPollAnswers());
                 break;
             case GameConstants.NIGHT_PAGE:
                 view.showNightPage();
                 break;
             case GameConstants.NIGHT_VOTE_PAGE:
-                view.showNightVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollNames());
+                view.showNightVotePage(gameState.getCurrentPollTitle(), gameState.getCurrentPollCount());
                 break;
             case GameConstants.QUESTION_PAGE:
                 view.showQuestionPage(gameState.getCurrentQuestion());

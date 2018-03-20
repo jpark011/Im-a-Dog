@@ -84,7 +84,8 @@ public class PlayerController {
     public void startPoll() {
         String question = role.getDayPollTitle();
         HashMap<String, String> answers = role.getDayPollAnswers();
-        Command cmd = new StartDayPollCommand(question, answers);
+        HashMap<String, Integer> count = role.getVoteCount();
+        Command cmd = new StartDayPollCommand(question, answers, count);
         sendCommand(cmd);
     }
 
@@ -104,8 +105,8 @@ public class PlayerController {
 
     public void startNightPoll() {
         String title = role.getNightPollTitle();
-        ArrayList<String> names = role.getNightPollChoices();
-        Command cmd = new StartNightPollCommand(title, names);
+        HashMap<String, Integer> votes = role.getNightVoteCount();
+        Command cmd = new StartNightPollCommand(title, votes);
         sendCommand(cmd);
     }
 

@@ -23,7 +23,11 @@ public class ChatFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+
+
+
+        return view;
     }
 
     /* ----------------------------- METHODS ----------------------------- */

@@ -54,7 +54,7 @@ public class LobbyActivity extends SuperActivity {
             startButton.setVisibility(View.GONE);
         }
 
-        playersList.setup(players, null);
+        playersList.setupBlackTheme(players);
         playersList.isEnabled = false;
     }
 
@@ -77,7 +77,7 @@ public class LobbyActivity extends SuperActivity {
             @Override
             public void run() {
                 VoteListView playersList = findViewById(R.id.playersListView);
-                playersList.setup(players, null);
+                playersList.setupBlackTheme(players);
                 playersList.isEnabled = false;
             }
         });

@@ -1,6 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Cat extends Player{
     public Cat(Game g) {
@@ -32,7 +33,7 @@ public class Cat extends Player{
         return "Vote for the dog to kill";
     }
 
-    public ArrayList<String> getNightPollChoices() {
-        return game.getPlayerNames(false, true, false);
+    public HashMap<String, Integer> getNightVoteCount() {
+        return game.getVoteCount();
     }
 }

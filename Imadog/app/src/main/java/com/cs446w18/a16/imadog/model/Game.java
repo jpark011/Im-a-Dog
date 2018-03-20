@@ -21,6 +21,7 @@ public class Game {
     private String gameState;
     private String victimName;
     private String victimRole;
+    private Poll poll;
 
     public Game(ArrayList<PlayerController> names, GameController gameController) {
         this.gameController = gameController;
@@ -179,7 +180,7 @@ public class Game {
     }
 
     public void vote(String name, String choice) {
-        gameController.vote(name, choice);
+        poll.setVote(name, choice);
     }
 
     public String getWinner() {
@@ -213,5 +214,23 @@ public class Game {
 
     public String getVictimRole() {
         return victimRole;
+    }
+
+    public Poll getPoll() { return poll; }
+    public void setPoll(Poll poll) {
+        this.poll = poll;
+    }
+
+    public void createPoll(ArrayList<String> names, ArrayList<String> choices) {
+        this.poll = new Poll(names, choices);
+    }
+
+    public void closePoll() {
+        String result = this.poll.closePoll();
+        killPlayer(result);
+    }
+
+    public HashMap<String, Integer> getVoteCount() {
+        return poll.getVoteCount();
     }
 }

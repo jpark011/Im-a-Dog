@@ -53,7 +53,8 @@ public class GameController {
 
             public void run() {
                 ArrayList<String> names = game.getPlayerNames(true,true, false);
-                poll = new Poll(names, names);
+                //poll = new Poll(names, names);
+                game.createPoll(names, names);
                 game.setGameState("STARTING_DAY_POLL");
                 notifyObservers();
             }
@@ -62,11 +63,10 @@ public class GameController {
         timer.schedule(new TimerTask() {
 
             public void run() {
-                final String result = poll.closePoll();
-                game.killPlayer(result);
+                game.closePoll();
                 game.setGameState("CLOSING_DAY_POLL");
                 notifyObservers();
-                poll = null;
+                //poll = null;
             }
         }, duration);
         duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
@@ -83,7 +83,7 @@ public class GameController {
         game.resetVictim();
         final ArrayList<String> dogNames = game.getPlayerNames(false, true, false);
         final ArrayList<String> names = game.getPlayerNames(true, true, false);
-        poll = new Poll(names, dogNames);
+        game.createPoll(names, dogNames);
         game.setGameState("STARTING_NIGHT_POLL");
         notifyObservers();
 
@@ -92,11 +92,11 @@ public class GameController {
         timer.schedule(new TimerTask() {
 
             public void run() {
-                final String result = poll.closePoll();
-                game.killPlayer(result);
+                //final String result = poll.closePoll();
+                game.closePoll();
                 game.setGameState("CLOSING_NIGHT_POLL");
                 notifyObservers();
-                poll = null;
+                //poll = null;
                 game.nextDay();
             }
         }, duration);

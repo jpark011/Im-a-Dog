@@ -77,13 +77,24 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     /* ----------------------------- METHODS ----------------------------- */
 
     /// Main method to switch between the different game states
-    public void switchToFragment(Fragment frag, Bundle arguments) {
-        currentFragment = frag;
-        frag.setArguments(arguments);
-        tabs.remove(0);
-        tabs.add(0, frag);
+    public void switchToFragment(final Fragment frag, final Bundle arguments) {
 
-        mPager.setAdapter(mPagerAdapter);
+        // Get a handler that can be used to post to the main thread
+        Handler mainHandler = new Handler(this.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                currentFragment = frag;
+                frag.setArguments(arguments);
+                tabs.remove(0);
+                tabs.add(0, frag);
+
+                mPager.setAdapter(mPagerAdapter);
+            }
+        };
+        mainHandler.post(myRunnable);
+
     }
 
     private class TabPagerAdapter extends FragmentStatePagerAdapter {
@@ -258,15 +269,11 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      * Called when the left button of the navigation bar is pressed
      */
     public void leftBarButtonWasPressed(View view) {
-        Intent helpIntent = new Intent(GameActivity.this, HelpActivity.class);
-        startActivity(helpIntent);
     }
 
     /**
      * Called when the right button of the navigation bar is pressed
      */
     public void rightBarButtonWasPressed(View view) {
-        Intent profileIntent = new Intent(GameActivity.this, ProfileActivity.class);
-        startActivity(profileIntent);
     }
 }

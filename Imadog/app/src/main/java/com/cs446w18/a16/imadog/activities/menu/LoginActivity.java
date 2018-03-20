@@ -1,8 +1,11 @@
 package com.cs446w18.a16.imadog.activities.menu;
 
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -53,6 +56,11 @@ public class LoginActivity extends SuperActivity {
         // Answer field
         nameField = findViewById(R.id.nameField);
         nameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        nameField.setTypeface(Global.fonts.get("OSSemibold"));
+
+        GradientDrawable background = (GradientDrawable)nameField.getBackground().getConstantState().newDrawable().mutate();;
+        background.setColor(ContextCompat.getColor(this, R.color.white));
+        nameField.setBackground(background);
 
         // Set the return action
         TextView.OnEditorActionListener fieldListener = new TextView.OnEditorActionListener() {
@@ -66,15 +74,6 @@ public class LoginActivity extends SuperActivity {
 
                     // When the user press enter
                     hideSystemUI();
-
-                    String name = textView.getText().toString();
-                    if (Global.user == null) {
-                        Global.user = new UserController(name);
-                    }
-
-
-                    Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(menuIntent);
 
                 }
                 return false;
@@ -139,5 +138,24 @@ public class LoginActivity extends SuperActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    /// CALLBACK: when the Continue button is pressed
+    public void continueWasPressed(View view) {
+        hideSystemUI();
+
+        String name = nameField.getText().toString();
+        if (Global.user == null) {
+            Global.user = new UserController(name);
+        }
+
+
+        Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(menuIntent);
+    }
+
+
+
+
+
 
 }
