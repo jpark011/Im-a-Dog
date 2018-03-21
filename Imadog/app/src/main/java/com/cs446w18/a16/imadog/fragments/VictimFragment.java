@@ -37,6 +37,9 @@ public class VictimFragment extends SuperFragment {
         String name = bundle.getString("victimName");
         String role = bundle.getString("victimRole");
 
+        if (role == null) {
+            return view;
+        }
 
         // Set the name label
         nameLabel = view.findViewById(R.id.nameLabel);

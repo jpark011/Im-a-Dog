@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import com.cs446w18.a16.imadog.Global;
@@ -37,7 +38,7 @@ import java.util.Map;
  * Created by Jean-Baptiste on 18/02/2018.
  */
 
-public class GameActivity extends SuperActivity implements QuestionFragment.Delegate, VoteFragment.Delegate {
+public class GameActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
@@ -50,6 +51,9 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
 
     // The different tabs
     private ArrayList<Fragment> tabs;
+
+    // The chat fragment (special reference for update)
+    private ChatFragment chat;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -64,9 +68,11 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
 
+        chat = new ChatFragment();
+
         tabs = new ArrayList<>();
         tabs.add(new IntroFragment());
-        tabs.add(new ChatFragment());
+        tabs.add(chat);
         tabs.add(new ProfileFragment());
         tabs.add(new HelpFragment());
 
@@ -209,7 +215,7 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     }
 
     /**
-     * Show the outro page.
+     * Shows the outro page.
      *
      * @param winner: the team winning the game, e.g. "Dogs" or "Cats"
      *
@@ -223,12 +229,28 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
     }
 
     /**
-     * Finish the game and go back to lobby.
+     * Finishes the game and go back to lobby.
      */
     public void finishGame() {
         finish();
     }
 
+    /**
+     * Updates the chat with the last messages
+     * @param messages: a list of all the messages to display
+     */
+    public void updateChat(final ArrayList<Pair<String, String>> messages) {
+        // Get a handler that can be used to post to the main thread
+        Handler mainHandler = new Handler(this.getMainLooper());
+
+        Runnable myRunnable = new Runnable() {
+            @Override
+            public void run() {
+                chat.update(messages);
+            }
+        };
+        mainHandler.post(myRunnable);
+    }
 
     /* ----------------------------- CONTROLLER METHODS ----------------------------- */
 
@@ -241,7 +263,6 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      *
      * @param answer: the text the user entered
      */
-    @Override
     public void answeredQuestion(String answer) {
         Log.d("Imadog", "Question answered: "+answer);
 
@@ -252,17 +273,23 @@ public class GameActivity extends SuperActivity implements QuestionFragment.Dele
      * Called when the user voted for someone by selecting in the list.
      * This method might be called several times, every time the user tap on a name.
      *
-     * NOTE: I did not implement the lists yet, so I created a dummy vote.
-     * This method will be called after 2 seconds, with the first name of the given list in
-     * showVotePage(...) or showNightVotePage(...)
-     *
      * @param playerName: the name of the player voted for
      */
-    @Override
     public void changedVoteFor(String playerName) {
         Log.d("Imadog", "Voted for: "+playerName);
 
         Global.user.vote(playerName);
+    }
+
+    /**
+     * Called when the user wrote a message in the chat
+     *
+     * @param message: the written message to send
+     */
+    public void wroteMessage(String message) {
+        Log.d("Imadog", "Wrote message: "+message);
+
+        Global.user.sendMessage(message);
     }
 
     /**

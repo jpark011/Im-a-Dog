@@ -51,15 +51,11 @@ public class JoinGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
 
+        mRooms =  new ArrayList<>();
+        adapter = new RoomsListAdapter(this);
+
         // List view
         roomsListView = findViewById(R.id.roomsListView);
-
-        // TODO: Replace with real rooms
-        ArrayList<BluetoothDevice> testList = new ArrayList<>();
-//        testList.add("Alice's Room");
-//        testList.add("Room 45");
-        mRooms = testList;
-        adapter = new RoomsListAdapter(this);
         roomsListView.setAdapter(adapter);
         roomsListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         roomsListView.setSelector(R.drawable.row_selector);

@@ -24,10 +24,6 @@ import com.cs446w18.a16.imadog.R;
 
 public class QuestionFragment extends SuperFragment {
 
-    public interface Delegate {
-        void answeredQuestion(String answer);
-    }
-
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
     TextView questionLabel;

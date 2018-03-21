@@ -28,10 +28,6 @@ import java.util.Map;
 
 public class VoteFragment extends SuperFragment implements VoteListView.Delegate {
 
-    public interface Delegate {
-        void changedVoteFor(String playerName);
-    }
-
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
     TextView questionLabel;

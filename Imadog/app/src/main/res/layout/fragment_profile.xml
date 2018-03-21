@@ -4,16 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/button"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="16dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/back"
-        android:onClick="back" />
-
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/nameLabel"
         style="@style/BigTitle"

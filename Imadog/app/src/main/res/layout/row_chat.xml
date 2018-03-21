@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/nameLabel"
+        style="@style/SmallTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@id/voteLabel"
+        android:text="Name"
+        android:textColor="@color/white"/>
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/messageLabel"
+        style="@style/Subtitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameLabel"
+        android:layout_toStartOf="@id/voteLabel"
+        android:text="Answer is displayed here"
+        android:textColor="@color/white"
+        android:singleLine="false"/>
+
+</RelativeLayout>

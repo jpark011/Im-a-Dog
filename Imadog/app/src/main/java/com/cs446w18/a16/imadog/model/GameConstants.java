@@ -57,8 +57,8 @@ public class GameConstants {
 
     // GameController Timer duration in milliseconds
     public static final int questionPageDuration = 15000;
-    public static final int dayPollPageDuration = 15000;
-    public static final int nightPollPageDuration = 15000;
+    public static final int dayPollPageDuration = 30000;
+    public static final int nightPollPageDuration = 30000;
     public static final int victimPageDuration = 5000;
     public static final int introDuration = 5000;
     public static final int dayNightDuration = 5000;

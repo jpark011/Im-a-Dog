@@ -2,6 +2,7 @@ package com.cs446w18.a16.imadog.controller;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
+import android.util.Pair;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.activities.GameActivity;
@@ -249,7 +250,16 @@ public class UserController {
         sendCommand(cmd);
     }
 
-    public void updateChat(ArrayList<Message> history) {}
+    public void updateChat(ArrayList<Message> history) {
+
+        ArrayList<Pair<String, String>> messages = new ArrayList<>();
+
+        for (Message message: history) {
+            messages.add(new Pair<>(message.getName(), message.getText()));
+        }
+
+        view.updateChat(messages);
+    }
 
     public void switchToGame() {
         Date currentTime = new Date();
