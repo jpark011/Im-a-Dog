@@ -1,7 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
 import com.cs446w18.a16.imadog.controller.GamePresenter;
-import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.PlayerPresenter;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +21,7 @@ public class Game {
     private String victimRole;
     private Poll poll;
 
-    public Game(ArrayList<PlayerController> names, GamePresenter gamePresenter) {
+    public Game(ArrayList<PlayerPresenter> names, GamePresenter gamePresenter) {
         this.gamePresenter = gamePresenter;
         int n = names.size();
 
@@ -36,7 +36,7 @@ public class Game {
         victimRole = null;
     }
 
-    private void assignRoles(ArrayList<PlayerController> names) {
+    private void assignRoles(ArrayList<PlayerPresenter> names) {
         dogs = new ArrayList<>();
         cats = new ArrayList<>();
         int total = names.size();

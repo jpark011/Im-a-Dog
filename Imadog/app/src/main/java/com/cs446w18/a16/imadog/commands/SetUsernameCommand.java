@@ -1,8 +1,7 @@
 package com.cs446w18.a16.imadog.commands;
 
-import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
-import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.PlayerPresenter;
 import com.cs446w18.a16.imadog.controller.UserController;
 
 import java.io.Serializable;
@@ -18,7 +17,7 @@ public class SetUsernameCommand implements Command, Serializable {
     }
 
     public void setReceiver(UserController user) {}
-    public void setReceiver(PlayerController player) {}
+    public void setReceiver(PlayerPresenter player) {}
     public void setReceiver(BluetoothServer server) {
         this.receiver = server;
     }

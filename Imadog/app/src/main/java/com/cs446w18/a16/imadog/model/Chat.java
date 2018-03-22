@@ -1,6 +1,6 @@
 package com.cs446w18.a16.imadog.model;
 
-import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.PlayerPresenter;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,10 @@ import java.util.ArrayList;
  */
 
 public class Chat {
-    ArrayList<PlayerController> members;
+    ArrayList<PlayerPresenter> members;
     ArrayList<Message> messages;
 
-    public Chat(ArrayList<PlayerController> members) {
+    public Chat(ArrayList<PlayerPresenter> members) {
         this.members = members;
         messages = new ArrayList<>();
     }
@@ -25,7 +25,7 @@ public class Chat {
         }
     }
 
-    public ArrayList<PlayerController> getMembers() {
+    public ArrayList<PlayerPresenter> getMembers() {
         return members;
     }
 

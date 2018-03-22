@@ -11,11 +11,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GamePresenter {
-    private ArrayList<PlayerController> observers;
+    private ArrayList<PlayerPresenter> observers;
     private Game game;
     private Poll poll;
 
-    public GamePresenter(ArrayList<PlayerController> users) {
+    public GamePresenter(ArrayList<PlayerPresenter> users) {
         this.observers = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
@@ -23,7 +23,7 @@ public class GamePresenter {
 
     private void notifyObservers() {
         for (int i = 0; i < observers.size(); i++) {
-            final PlayerController observer = observers.get(i);
+            final PlayerPresenter observer = observers.get(i);
             new Thread() {
                 public void run() {
                     observer.update();

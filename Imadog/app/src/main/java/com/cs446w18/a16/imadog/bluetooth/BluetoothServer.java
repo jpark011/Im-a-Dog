@@ -12,7 +12,7 @@ import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
 import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
 import com.cs446w18.a16.imadog.controller.GamePresenter;
-import com.cs446w18.a16.imadog.controller.PlayerController;
+import com.cs446w18.a16.imadog.controller.PlayerPresenter;
 import com.cs446w18.a16.imadog.controller.UserController;
 import com.cs446w18.a16.imadog.model.Chat;
 
@@ -90,16 +90,16 @@ public class BluetoothServer extends Bluetooth {
         send(cmd);
     }
 
-    public PlayerController startGame() {
-        ArrayList<PlayerController> players = new ArrayList<>();
-        PlayerController host = new PlayerController(null, null);
+    public PlayerPresenter startGame() {
+        ArrayList<PlayerPresenter> players = new ArrayList<>();
+        PlayerPresenter host = new PlayerPresenter(null, null);
         host.setUserName(hostUser.getUserName());
         players.add(host);
 
         Iterator it = clients.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
-            PlayerController player = new PlayerController(this, (String)pair.getKey());
+            PlayerPresenter player = new PlayerPresenter(this, (String)pair.getKey());
             player.setUserName(clientNames.get(pair.getKey()));
             players.add(player);
         }
@@ -110,7 +110,7 @@ public class BluetoothServer extends Bluetooth {
         return host;
     }
 
-    private void initializeChat(ArrayList<PlayerController> users) {
+    private void initializeChat(ArrayList<PlayerPresenter> users) {
         Chat chat = new Chat(new ArrayList<>(users));
         for (int i = 0; i < users.size(); i++) {
             users.get(i).setChat(chat);

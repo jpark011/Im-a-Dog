@@ -31,7 +31,7 @@ public class UserController {
     private Bluetooth client;
     private BluetoothServer server;
     private boolean isServer;
-    private PlayerController hostPlayer;
+    private PlayerPresenter hostPlayer;
     private LobbyActivity lobby;
     private GamePresenter gamePresenter;
     private GameState gameState;
