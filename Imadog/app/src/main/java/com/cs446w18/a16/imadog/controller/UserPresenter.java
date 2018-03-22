@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UserController {
+public class UserPresenter {
     private String userName;
     private GameActivity view;
     private Bluetooth client;
@@ -36,7 +36,7 @@ public class UserController {
     private GamePresenter gamePresenter;
     private GameState gameState;
 
-    public UserController(String name) {
+    public UserPresenter(String name) {
         this.userName = name;
         view = null;
         client = null;

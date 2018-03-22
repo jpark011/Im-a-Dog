@@ -2,7 +2,7 @@ package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.controller.PlayerPresenter;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.controller.UserPresenter;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,14 +10,14 @@ import java.util.HashMap;
 public class StartNightPollCommand implements Command, Serializable {
     private String title;
     private HashMap<String, Integer> votes;
-    private UserController receiver;
+    private UserPresenter receiver;
 
     public StartNightPollCommand(String title, HashMap<String, Integer> votes) {
         this.title = title;
         this.votes = votes;
     }
 
-    public void setReceiver(UserController user) {
+    public void setReceiver(UserPresenter user) {
         this.receiver = user;
     }
     public void setReceiver(PlayerPresenter player) {}

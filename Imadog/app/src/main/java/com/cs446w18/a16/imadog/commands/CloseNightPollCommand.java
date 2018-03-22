@@ -1,9 +1,8 @@
 package com.cs446w18.a16.imadog.commands;
 
-import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.controller.PlayerPresenter;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.controller.UserPresenter;
 
 import java.io.Serializable;
 
@@ -12,7 +11,7 @@ public class CloseNightPollCommand implements Command, Serializable {
     private String role;
     private String winner;
     private String question;
-    private UserController receiver;
+    private UserPresenter receiver;
 
     public CloseNightPollCommand(String name,  String role, String winner, String question) {
         this.name = name;
@@ -21,7 +20,7 @@ public class CloseNightPollCommand implements Command, Serializable {
         this.question = question;
     }
 
-    public void setReceiver(UserController user) {
+    public void setReceiver(UserPresenter user) {
         this.receiver = user;
     }
     public void setReceiver(PlayerPresenter player) {}

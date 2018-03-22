@@ -13,7 +13,7 @@ import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
 import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
 import com.cs446w18.a16.imadog.controller.GamePresenter;
 import com.cs446w18.a16.imadog.controller.PlayerPresenter;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.controller.UserPresenter;
 import com.cs446w18.a16.imadog.model.Chat;
 
 import java.io.IOException;
@@ -31,12 +31,12 @@ public class BluetoothServer extends Bluetooth {
     private BluetoothServerSocket serverSocket;
     private HashMap<String, ObjectOutputStream> clients;
     private HashMap<String, String> clientNames;
-    private UserController hostUser;
+    private UserPresenter hostUser;
     private CommunicationCallback serverCallback;
     private HashMap<String, CommunicationCallback> communicationCallbacks;
     int clientCount; // TODO: Need to change to some kind of Player format
 
-    public BluetoothServer(Context context, UserController hostUser) {
+    public BluetoothServer(Context context, UserPresenter hostUser) {
         super(context);
         serverSocket = null;
         clients = new HashMap();

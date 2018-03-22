@@ -252,7 +252,7 @@ public class GameActivity extends SuperActivity {
         mainHandler.post(myRunnable);
     }
 
-    /* ----------------------------- CONTROLLER METHODS ----------------------------- */
+    /* ----------------------------- PRESENTER METHODS ----------------------------- */
 
     // KAREN: These methods are called by a user input.
     // You should call methods in the model in these methods.
