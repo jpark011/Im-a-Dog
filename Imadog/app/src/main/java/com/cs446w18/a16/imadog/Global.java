@@ -3,7 +3,7 @@ package com.cs446w18.a16.imadog;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import com.cs446w18.a16.imadog.controller.UserPresenter;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.util.HashMap;
 

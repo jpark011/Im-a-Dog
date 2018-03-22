@@ -1,6 +1,6 @@
 package com.cs446w18.a16.imadog.model;
 
-import com.cs446w18.a16.imadog.controller.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 
 import java.util.ArrayList;
 

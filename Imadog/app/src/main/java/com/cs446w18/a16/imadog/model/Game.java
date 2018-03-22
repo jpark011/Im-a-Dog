@@ -1,7 +1,7 @@
 package com.cs446w18.a16.imadog.model;
 
-import com.cs446w18.a16.imadog.controller.GamePresenter;
-import com.cs446w18.a16.imadog.controller.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.GamePresenter;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 
 import java.util.HashMap;
 import java.util.Random;

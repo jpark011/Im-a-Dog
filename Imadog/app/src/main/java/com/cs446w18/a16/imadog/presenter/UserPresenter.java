@@ -1,4 +1,4 @@
-package com.cs446w18.a16.imadog.controller;
+package com.cs446w18.a16.imadog.presenter;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;

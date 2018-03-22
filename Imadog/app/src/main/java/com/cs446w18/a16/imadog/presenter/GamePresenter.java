@@ -1,12 +1,10 @@
-package com.cs446w18.a16.imadog.controller;
+package com.cs446w18.a16.imadog.presenter;
 
-import com.cs446w18.a16.imadog.model.Chat;
 import com.cs446w18.a16.imadog.model.Game;
 import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 

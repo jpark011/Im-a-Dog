@@ -1,8 +1,8 @@
 package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
-import com.cs446w18.a16.imadog.controller.PlayerPresenter;
-import com.cs446w18.a16.imadog.controller.UserPresenter;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
 
