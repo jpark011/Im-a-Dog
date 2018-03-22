@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameController {
+public class GamePresenter {
     private ArrayList<PlayerController> observers;
     private Game game;
     private Poll poll;
 
-    public GameController(ArrayList<PlayerController> users) {
+    public GamePresenter(ArrayList<PlayerController> users) {
         this.observers = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;

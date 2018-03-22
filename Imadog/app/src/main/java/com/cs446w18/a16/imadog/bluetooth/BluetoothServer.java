@@ -11,7 +11,7 @@ import android.content.Intent;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
 import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
-import com.cs446w18.a16.imadog.controller.GameController;
+import com.cs446w18.a16.imadog.controller.GamePresenter;
 import com.cs446w18.a16.imadog.controller.PlayerController;
 import com.cs446w18.a16.imadog.controller.UserController;
 import com.cs446w18.a16.imadog.model.Chat;
@@ -105,13 +105,13 @@ public class BluetoothServer extends Bluetooth {
         }
 
         initializeChat(players);
-        GameController game = new GameController(players);
-        hostUser.setGameController(game);
+        GamePresenter game = new GamePresenter(players);
+        hostUser.setGamePresenter(game);
         return host;
     }
 
     private void initializeChat(ArrayList<PlayerController> users) {
-        Chat chat = new Chat(new ArrayList<PlayerController>(users));
+        Chat chat = new Chat(new ArrayList<>(users));
         for (int i = 0; i < users.size(); i++) {
             users.get(i).setChat(chat);
         }

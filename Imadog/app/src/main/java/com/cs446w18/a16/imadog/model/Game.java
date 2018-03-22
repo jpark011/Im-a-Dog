@@ -1,13 +1,11 @@
 package com.cs446w18.a16.imadog.model;
 
-import com.cs446w18.a16.imadog.controller.GameController;
+import com.cs446w18.a16.imadog.controller.GamePresenter;
 import com.cs446w18.a16.imadog.controller.PlayerController;
-import com.cs446w18.a16.imadog.controller.User;
 
 import java.util.HashMap;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Game {
     private ArrayList<Dog> dogs;
@@ -16,15 +14,15 @@ public class Game {
     private ArrayList<String> catQuestions;
     private ArrayList<Player> deceased;
     private int currentDay;
-    private GameController gameController;
+    private GamePresenter gamePresenter;
     private boolean night;
     private String gameState;
     private String victimName;
     private String victimRole;
     private Poll poll;
 
-    public Game(ArrayList<PlayerController> names, GameController gameController) {
-        this.gameController = gameController;
+    public Game(ArrayList<PlayerController> names, GamePresenter gamePresenter) {
+        this.gamePresenter = gamePresenter;
         int n = names.size();
 
         assignRoles(names);

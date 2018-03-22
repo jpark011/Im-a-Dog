@@ -33,7 +33,7 @@ public class UserController {
     private boolean isServer;
     private PlayerController hostPlayer;
     private LobbyActivity lobby;
-    private GameController gameController;
+    private GamePresenter gamePresenter;
     private GameState gameState;
 
     public UserController(String name) {
@@ -102,8 +102,8 @@ public class UserController {
         lobby.updateLobbyMembers(members);
     }
 
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
+    public void setGamePresenter(GamePresenter gamePresenter) {
+        this.gamePresenter = gamePresenter;
     }
 
     public void createGame(String roomName) {
@@ -112,7 +112,7 @@ public class UserController {
 
     public void startGame() {
         hostPlayer = this.server.startGame();
-        gameController.readyToStart();
+        gamePresenter.readyToStart();
     }
 
     public void initializeGame(String question, String role) {
