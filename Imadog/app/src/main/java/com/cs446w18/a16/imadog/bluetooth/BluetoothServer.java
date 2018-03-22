@@ -11,9 +11,9 @@ import android.content.Intent;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
 import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
-import com.cs446w18.a16.imadog.controller.GameController;
-import com.cs446w18.a16.imadog.controller.PlayerController;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.presenter.GamePresenter;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 import com.cs446w18.a16.imadog.model.Chat;
 
 import java.io.IOException;
@@ -31,12 +31,12 @@ public class BluetoothServer extends Bluetooth {
     private BluetoothServerSocket serverSocket;
     private HashMap<String, ObjectOutputStream> clients;
     private HashMap<String, String> clientNames;
-    private UserController hostUser;
+    private UserPresenter hostUser;
     private CommunicationCallback serverCallback;
     private HashMap<String, CommunicationCallback> communicationCallbacks;
     int clientCount; // TODO: Need to change to some kind of Player format
 
-    public BluetoothServer(Context context, UserController hostUser) {
+    public BluetoothServer(Context context, UserPresenter hostUser) {
         super(context);
         serverSocket = null;
         clients = new HashMap();
@@ -90,28 +90,28 @@ public class BluetoothServer extends Bluetooth {
         send(cmd);
     }
 
-    public PlayerController startGame() {
-        ArrayList<PlayerController> players = new ArrayList<>();
-        PlayerController host = new PlayerController(null, null);
+    public PlayerPresenter startGame() {
+        ArrayList<PlayerPresenter> players = new ArrayList<>();
+        PlayerPresenter host = new PlayerPresenter(null, null);
         host.setUserName(hostUser.getUserName());
         players.add(host);
 
         Iterator it = clients.entrySet().iterator();
         while (it.hasNext()) {
             HashMap.Entry pair = (HashMap.Entry)it.next();
-            PlayerController player = new PlayerController(this, (String)pair.getKey());
+            PlayerPresenter player = new PlayerPresenter(this, (String)pair.getKey());
             player.setUserName(clientNames.get(pair.getKey()));
             players.add(player);
         }
 
         initializeChat(players);
-        GameController game = new GameController(players);
-        hostUser.setGameController(game);
+        GamePresenter game = new GamePresenter(players);
+        hostUser.setGamePresenter(game);
         return host;
     }
 
-    private void initializeChat(ArrayList<PlayerController> users) {
-        Chat chat = new Chat(new ArrayList<PlayerController>(users));
+    private void initializeChat(ArrayList<PlayerPresenter> users) {
+        Chat chat = new Chat(new ArrayList<>(users));
         for (int i = 0; i < users.size(); i++) {
             users.get(i).setChat(chat);
         }

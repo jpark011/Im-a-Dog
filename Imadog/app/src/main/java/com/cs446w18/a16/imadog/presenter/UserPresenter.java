@@ -1,4 +1,4 @@
-package com.cs446w18.a16.imadog.controller;
+package com.cs446w18.a16.imadog.presenter;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
@@ -25,18 +25,18 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UserController {
+public class UserPresenter {
     private String userName;
     private GameActivity view;
     private Bluetooth client;
     private BluetoothServer server;
     private boolean isServer;
-    private PlayerController hostPlayer;
+    private PlayerPresenter hostPlayer;
     private LobbyActivity lobby;
-    private GameController gameController;
+    private GamePresenter gamePresenter;
     private GameState gameState;
 
-    public UserController(String name) {
+    public UserPresenter(String name) {
         this.userName = name;
         view = null;
         client = null;
@@ -102,8 +102,8 @@ public class UserController {
         lobby.updateLobbyMembers(members);
     }
 
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
+    public void setGamePresenter(GamePresenter gamePresenter) {
+        this.gamePresenter = gamePresenter;
     }
 
     public void createGame(String roomName) {
@@ -112,7 +112,7 @@ public class UserController {
 
     public void startGame() {
         hostPlayer = this.server.startGame();
-        gameController.readyToStart();
+        gamePresenter.readyToStart();
     }
 
     public void initializeGame(String question, String role) {

@@ -1,21 +1,19 @@
-package com.cs446w18.a16.imadog.controller;
+package com.cs446w18.a16.imadog.presenter;
 
-import com.cs446w18.a16.imadog.model.Chat;
 import com.cs446w18.a16.imadog.model.Game;
 import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GameController {
-    private ArrayList<PlayerController> observers;
+public class GamePresenter {
+    private ArrayList<PlayerPresenter> observers;
     private Game game;
     private Poll poll;
 
-    public GameController(ArrayList<PlayerController> users) {
+    public GamePresenter(ArrayList<PlayerPresenter> users) {
         this.observers = new ArrayList<>(users);
         game = new Game(users, this);
         poll = null;
@@ -23,7 +21,7 @@ public class GameController {
 
     private void notifyObservers() {
         for (int i = 0; i < observers.size(); i++) {
-            final PlayerController observer = observers.get(i);
+            final PlayerPresenter observer = observers.get(i);
             new Thread() {
                 public void run() {
                     observer.update();

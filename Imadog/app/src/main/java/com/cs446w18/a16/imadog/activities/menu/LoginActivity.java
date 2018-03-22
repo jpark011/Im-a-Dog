@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.activities.SuperActivity;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -106,7 +106,7 @@ public class LoginActivity extends SuperActivity {
                                 String name = object.optString("name");
 
                                 if (Global.user == null) {
-                                    Global.user = new UserController(name);
+                                    Global.user = new UserPresenter(name);
                                 }
                                 Intent menuIntent = new Intent(LoginActivity.this, MainActivity.class);
                                 startActivity(menuIntent);
@@ -145,7 +145,7 @@ public class LoginActivity extends SuperActivity {
 
         String name = nameField.getText().toString();
         if (Global.user == null) {
-            Global.user = new UserController(name);
+            Global.user = new UserPresenter(name);
         }
 
 

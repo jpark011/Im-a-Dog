@@ -1,4 +1,4 @@
-package com.cs446w18.a16.imadog.controller;
+package com.cs446w18.a16.imadog.presenter;
 
 import android.bluetooth.BluetoothDevice;
 
@@ -20,14 +20,14 @@ import com.cs446w18.a16.imadog.model.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PlayerController {
+public class PlayerPresenter {
     private String username;
     private Player role;
     private BluetoothServer server;
     private String clientName;
     private Chat chat;
 
-    public PlayerController(BluetoothServer server, String clientName) {
+    public PlayerPresenter(BluetoothServer server, String clientName) {
         this.clientName = clientName;
         this.server = server;
         role = null;
@@ -58,7 +58,7 @@ public class PlayerController {
 
     public void initializeGame() {
         if (server != null) {
-            server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback(this));
+            server.setCommunicationCallbacks(clientName, new ServerCommunicationCallback());
         }
         Command cmd = new InitializeCommand(getQuestion(), role.getRole());
         sendCommand(cmd);
@@ -159,10 +159,8 @@ public class PlayerController {
     }
 
     private class ServerCommunicationCallback implements CommunicationCallback {
-        PlayerController playerController;
 
-        public ServerCommunicationCallback(PlayerController playerController) {
-            this.playerController = playerController;
+        public ServerCommunicationCallback() {
         }
 
         @Override
@@ -177,7 +175,7 @@ public class PlayerController {
 
         @Override
         public void onMessage(Command command) {
-            command.setReceiver(PlayerController.this);
+            command.setReceiver(PlayerPresenter.this);
             command.execute();
         }
 
