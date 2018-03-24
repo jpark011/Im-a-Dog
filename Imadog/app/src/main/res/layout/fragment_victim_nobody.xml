@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/nameLabel"
+        style="@style/BigTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="210dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="Nobody"
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/subtitleLabel"
+        style="@style/BigSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/nameLabel"
+        android:layout_centerHorizontal="true"
+        android:text="was killed."
+        android:textColor="@color/white"
+        android:textAlignment="center"/>
+
+
+</RelativeLayout>

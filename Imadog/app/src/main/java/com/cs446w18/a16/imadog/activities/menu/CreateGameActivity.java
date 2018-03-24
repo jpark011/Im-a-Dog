@@ -1,5 +1,6 @@
 package com.cs446w18.a16.imadog.activities.menu;
 
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cs446w18.a16.imadog.Global;
@@ -26,9 +28,8 @@ public class CreateGameActivity extends SuperActivity {
 
     /* ----------------------------- ATTRIBUTES ----------------------------- */
 
-    // Name field
-    EditText nameField;
     Toast mToast;
+
 
     /* ----------------------------- SETUP ----------------------------- */
 
@@ -37,12 +38,12 @@ public class CreateGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
-        nameField = findViewById(R.id.nameField);
-        nameField.setTypeface(Global.fonts.get("OSSemibold"));
+        BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
+        String deviceName = myDevice.getName();
 
-        GradientDrawable background = (GradientDrawable)nameField.getBackground().getConstantState().newDrawable().mutate();;
-        background.setColor(ContextCompat.getColor(this, R.color.white));
-        nameField.setBackground(background);
+        // Name label
+        TextView nameLabel = findViewById(R.id.nameLabel);
+        nameLabel.setText(deviceName);
 
         Global.user.getServer().setDiscoveryCallback(new DiscoveryCallbackServer());
     }
@@ -84,8 +85,7 @@ public class CreateGameActivity extends SuperActivity {
 
         @Override
         public void onDiscoverable() {
-            String roomName = nameField.getText().toString();
-            Global.user.createGame(roomName);
+            Global.user.createGame("");
 
             Intent createIntent = new Intent(CreateGameActivity.this, LobbyActivity.class);
             startActivity(createIntent);

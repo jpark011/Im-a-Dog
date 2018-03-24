@@ -42,6 +42,8 @@ public class VoteListView extends ListView {
 
     private boolean blackTheme = false;
 
+    private int currentSelected = -1;
+
     public boolean isEnabled;
 
 
@@ -104,7 +106,7 @@ public class VoteListView extends ListView {
         setAdapter(adapter);
         this.delegate = delegate;
         setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        setSelector(R.drawable.row_selector);
+        setSelector(android.R.color.transparent);
         setDivider(null);
         isEnabled = true;
 
@@ -112,7 +114,9 @@ public class VoteListView extends ListView {
         this.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                currentSelected = i;
                 delegate.playerWasSelected(mNames.get(i));
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -199,6 +203,11 @@ public class VoteListView extends ListView {
             else {
                 voteLabel.setVisibility(View.INVISIBLE);
             }
+
+            if (i == currentSelected) {
+                voteLabel.setBackgroundResource(R.drawable.circle_white);
+            }
+
 
             // Black theme
             if (blackTheme) {

@@ -89,7 +89,6 @@ public class LoginActivity extends SuperActivity {
 
         LoginButton loginButton = findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(PUBLIC_PROFILE, EMAIL));
-        // If you are using in a fragment, call loginButton.setFragment(this);
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

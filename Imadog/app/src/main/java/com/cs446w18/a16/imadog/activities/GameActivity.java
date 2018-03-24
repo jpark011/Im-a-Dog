@@ -1,5 +1,6 @@
 package com.cs446w18.a16.imadog.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
@@ -66,6 +69,8 @@ public class GameActivity extends SuperActivity {
         setContentView(R.layout.activity_game);
         Global.user.setView(this);
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         // View pager
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
@@ -93,6 +98,17 @@ public class GameActivity extends SuperActivity {
         Runnable myRunnable = new Runnable() {
             @Override
             public void run() {
+
+                // Check if no view has focus:
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
+                hideSystemUI();
+
+
                 currentFragment = frag;
                 frag.setArguments(arguments);
                 tabs.remove(0);

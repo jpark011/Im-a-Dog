@@ -30,16 +30,17 @@ public class VictimFragment extends SuperFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_victim, container, false);
-
         // Get arguments
         Bundle bundle = getArguments();
         String name = bundle.getString("victimName");
         String role = bundle.getString("victimRole");
 
-        if (role == null) {
-            return view;
+        if (name == null) {
+            return inflater.inflate(R.layout.fragment_victim_nobody, container, false);
         }
+
+        View view = inflater.inflate(R.layout.fragment_victim, container, false);
+
 
         // Set the name label
         nameLabel = view.findViewById(R.id.nameLabel);
@@ -52,13 +53,6 @@ public class VictimFragment extends SuperFragment {
         // Set the role label
         roleLabel = view.findViewById(R.id.roleLabel);
         roleLabel.setText("A "+role+"!");
-
-        // Case where nobody was killed
-        if (name == null) {
-            nameLabel.setText("Nobody\nwas killed");
-            roleLabel.setText("");
-        }
-
 
         return view;
     }

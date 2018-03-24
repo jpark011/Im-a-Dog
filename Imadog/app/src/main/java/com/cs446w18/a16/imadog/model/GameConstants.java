@@ -49,12 +49,6 @@ public class GameConstants {
 
     public static final int minPlayers = 4;
 
-    // Duration of the vote during the day, displayed on a counter (in seconds)
-    public static final int dayVoteDuration = 10;
-
-    // Duration of the vote during the night, displayed on a counter (in seconds)
-    public static final int nightVoteDuration = 5;
-
     // GamePresenter Timer duration in milliseconds
     public static final int questionPageDuration = 15000;
     public static final int dayPollPageDuration = 30000;
@@ -69,11 +63,5 @@ public class GameConstants {
     public static final String NIGHT_PAGE = "NIGHT_PAGE";
     public static final String NIGHT_VOTE_PAGE = "NIGHT_VOTE_PAGE";
     public static final String VICTIM_PAGE = "VICTIM_PAGE";
-
-
-    // KAREN: I used this boolean to replace the call of the model to change the pages in the navigation.
-    // When you start to link the model to the interface, set this to false.
-    // This will disable all the dummy calls I do in different places.
-    // If this is set to false and the model is not implemented, the app will just be stuck on one page, waiting...
 
 }
