@@ -6,21 +6,25 @@ import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
 
-public class SetClientNameCommand implements Command, Serializable {
-    private String clientName;
-    private UserPresenter user;
+/**
+ * Created by lacie on 2018-03-24.
+ */
 
-    public SetClientNameCommand(String clientName) {
+public class LeaveLobbyCommand implements Command, Serializable {
+    private String clientName;
+    private BluetoothServer receiver;
+
+    public LeaveLobbyCommand(String clientName) {
         this.clientName = clientName;
     }
 
-    public void setReceiver(UserPresenter user) {
-        this.user = user;
-    }
+    public void setReceiver(UserPresenter user) {}
     public void setReceiver(PlayerPresenter player) {}
-    public void setReceiver(BluetoothServer server) {}
+    public void setReceiver(BluetoothServer server) {
+        this.receiver = server;
+    }
 
     public void execute() {
-        user.setClientName(clientName);
+        this.receiver.removeMember(clientName);
     }
 }

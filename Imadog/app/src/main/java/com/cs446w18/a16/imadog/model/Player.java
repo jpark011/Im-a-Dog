@@ -51,10 +51,6 @@ public abstract class Player {
         return game.getGameState();
     }
 
-    public String getDayPollTitle() {
-        return game.getQuestion(true, game.getCurrentDay());
-    }
-
     public HashMap<String, String> getDayPollAnswers() {
         return game.getAnswers(true,true);
     }
@@ -71,17 +67,13 @@ public abstract class Player {
         return game.getWinner();
     }
 
-    public HashMap<String, Integer> getVoteCount() {
-        return game.getVoteCount();
-    }
-
     abstract public String getQuestion();
 
     abstract public void vote(String choice);
 
     abstract  public String getRole();
 
-    abstract public String getNightPollTitle();
+    abstract public HashMap<String, Integer> getVoteCount();
 
-    abstract public HashMap<String, Integer> getNightVoteCount();
+    abstract public String getPollTitle();
 }

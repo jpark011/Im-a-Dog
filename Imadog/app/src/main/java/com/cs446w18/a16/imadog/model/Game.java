@@ -1,13 +1,11 @@
 package com.cs446w18.a16.imadog.model;
 
-import com.cs446w18.a16.imadog.controller.GameController;
-import com.cs446w18.a16.imadog.controller.PlayerController;
-import com.cs446w18.a16.imadog.controller.User;
+import com.cs446w18.a16.imadog.presenter.GamePresenter;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 
 import java.util.HashMap;
 import java.util.Random;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Game {
     private ArrayList<Dog> dogs;
@@ -16,15 +14,15 @@ public class Game {
     private ArrayList<String> catQuestions;
     private ArrayList<Player> deceased;
     private int currentDay;
-    private GameController gameController;
+    private GamePresenter gamePresenter;
     private boolean night;
     private String gameState;
     private String victimName;
     private String victimRole;
     private Poll poll;
 
-    public Game(ArrayList<PlayerController> names, GameController gameController) {
-        this.gameController = gameController;
+    public Game(ArrayList<PlayerPresenter> names, GamePresenter gamePresenter) {
+        this.gamePresenter = gamePresenter;
         int n = names.size();
 
         assignRoles(names);
@@ -38,7 +36,7 @@ public class Game {
         victimRole = null;
     }
 
-    private void assignRoles(ArrayList<PlayerController> names) {
+    private void assignRoles(ArrayList<PlayerPresenter> names) {
         dogs = new ArrayList<>();
         cats = new ArrayList<>();
         int total = names.size();
@@ -126,7 +124,6 @@ public class Game {
             }
         }
 
-        //Collections.sort(names);
         return names;
     }
 
@@ -181,6 +178,7 @@ public class Game {
 
     public void vote(String name, String choice) {
         poll.setVote(name, choice);
+        gamePresenter.updatePoll();
     }
 
     public String getWinner() {
@@ -214,11 +212,6 @@ public class Game {
 
     public String getVictimRole() {
         return victimRole;
-    }
-
-    public Poll getPoll() { return poll; }
-    public void setPoll(Poll poll) {
-        this.poll = poll;
     }
 
     public void createPoll(ArrayList<String> names, ArrayList<String> choices) {

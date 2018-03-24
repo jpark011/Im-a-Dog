@@ -43,6 +43,8 @@ public class JoinGameActivity extends SuperActivity {
 
     private Toast mToast;
 
+    private List<BluetoothDevice> mPairedDevices;
+
 
     /* ----------------------------- SETUP ----------------------------- */
 
@@ -65,16 +67,15 @@ public class JoinGameActivity extends SuperActivity {
         roomsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // try joining
                 Global.user.joinRoom(mRooms.get(i));
-                Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
-                startActivity(joinIntent);
             }
         });
 
         Bluetooth client = Global.user.getClient();
         client.setDiscoveryCallback(new DiscoveryCallBackClient());
-        List<BluetoothDevice> pairedDevices = client.getPairedDevices();
-        mRooms.addAll(pairedDevices);
+        mPairedDevices = client.getPairedDevices();
+        mRooms.addAll(mPairedDevices);
         Global.user.searchRoom(this);
     }
 
@@ -120,7 +121,8 @@ public class JoinGameActivity extends SuperActivity {
             // Change the name
             TextView nameLabel = row.findViewById(R.id.nameLabel);
             BluetoothDevice device = mRooms.get(i);
-            nameLabel.setText(device.getName() + "\n" + device.getAddress());
+            String label = (device.getName() == null)? device.getAddress() : device.getName();
+            nameLabel.setText(label);
 
             return row;
         }
@@ -129,12 +131,17 @@ public class JoinGameActivity extends SuperActivity {
     private class DiscoveryCallBackClient implements DiscoveryCallback {
         @Override
         public void onFinish() {
+            Intent joinIntent = new Intent(JoinGameActivity.this, LobbyActivity.class);
+            startActivity(joinIntent);
         }
 
         @Override
         public void onDevice(BluetoothDevice device) {
-            mRooms.add(device);
-            adapter.notifyDataSetChanged();
+            if (device.getType() == BluetoothDevice.DEVICE_TYPE_CLASSIC &&
+                    !mPairedDevices.contains(device)) {
+                mRooms.add(device);
+                adapter.notifyDataSetChanged();
+            }
 
         }
 

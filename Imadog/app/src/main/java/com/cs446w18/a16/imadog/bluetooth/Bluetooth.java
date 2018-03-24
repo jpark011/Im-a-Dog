@@ -333,6 +333,7 @@ public class Bluetooth {
                 else{
                     Bluetooth.this.socket = device.createRfcommSocketToServiceRecord(uuid);
                 }
+                discoveryCallback.onFinish();
             } catch (IOException e) {
                 if(communicationCallback!=null){
                     communicationCallback.onError(e.getMessage());

@@ -5,13 +5,17 @@ import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
-public class SetClientNameCommand implements Command, Serializable {
-    private String clientName;
+/**
+ * Created by lacie on 2018-03-24.
+ */
+
+public class CloseLobbyCommand implements Command, Serializable {
     private UserPresenter user;
 
-    public SetClientNameCommand(String clientName) {
-        this.clientName = clientName;
+    public CloseLobbyCommand() {
+
     }
 
     public void setReceiver(UserPresenter user) {
@@ -21,6 +25,6 @@ public class SetClientNameCommand implements Command, Serializable {
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        user.setClientName(clientName);
+        this.user.closeRoom();
     }
 }

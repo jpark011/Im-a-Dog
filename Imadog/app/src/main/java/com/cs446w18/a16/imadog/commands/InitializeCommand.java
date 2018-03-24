@@ -1,17 +1,15 @@
 package com.cs446w18.a16.imadog.commands;
 
-import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
-import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
-import com.cs446w18.a16.imadog.controller.PlayerController;
-import com.cs446w18.a16.imadog.controller.UserController;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
 
 public class InitializeCommand implements Command, Serializable {
     private String role;
     private String question;
-    private UserController receiver;
+    private UserPresenter receiver;
 
     public InitializeCommand(String question, String role) {
         this.role = role;
@@ -19,10 +17,10 @@ public class InitializeCommand implements Command, Serializable {
         this.receiver = null;
     }
 
-    public void setReceiver(UserController user) {
+    public void setReceiver(UserPresenter user) {
         this.receiver = user;
     }
-    public void setReceiver(PlayerController player) {}
+    public void setReceiver(PlayerPresenter player) {}
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {

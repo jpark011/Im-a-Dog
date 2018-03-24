@@ -5,22 +5,27 @@ import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
-public class SetClientNameCommand implements Command, Serializable {
-    private String clientName;
-    private UserPresenter user;
+/**
+ * Created by lacie on 2018-03-23.
+ */
 
-    public SetClientNameCommand(String clientName) {
-        this.clientName = clientName;
+public class UpdatePollCommand implements Command, Serializable {
+    private HashMap<String, Integer> votes;
+    private UserPresenter receiver;
+
+    public UpdatePollCommand(HashMap<String, Integer> votes) {
+        this.votes = votes;
     }
 
     public void setReceiver(UserPresenter user) {
-        this.user = user;
+        this.receiver = user;
     }
     public void setReceiver(PlayerPresenter player) {}
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        user.setClientName(clientName);
+        this.receiver.updatePoll(votes);
     }
 }

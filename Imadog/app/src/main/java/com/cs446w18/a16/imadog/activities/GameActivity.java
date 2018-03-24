@@ -28,9 +28,11 @@ import com.cs446w18.a16.imadog.fragments.NightFragment;
 import com.cs446w18.a16.imadog.fragments.OutroFragment;
 import com.cs446w18.a16.imadog.fragments.ProfileFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
+import com.cs446w18.a16.imadog.fragments.SuperFragment;
 import com.cs446w18.a16.imadog.fragments.VictimFragment;
 import com.cs446w18.a16.imadog.fragments.VoteFragment;
 import com.cs446w18.a16.imadog.model.GameConstants;
+import com.cs446w18.a16.imadog.views.VoteListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,8 +188,15 @@ public class GameActivity extends SuperActivity {
     /**
      *
      */
-    public void updateVoteCounts(Map<String, Integer> votes) {
-
+    public void updatePollVotes(HashMap<String, Integer> votes) {
+        final HashMap<String, Integer> count = votes;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VoteFragment frag = (VoteFragment)tabs.get(0);
+                frag.updatePollVotes(count);
+            }
+        });
     }
 
     /**
@@ -268,7 +277,7 @@ public class GameActivity extends SuperActivity {
         mainHandler.post(myRunnable);
     }
 
-    /* ----------------------------- CONTROLLER METHODS ----------------------------- */
+    /* ----------------------------- PRESENTER METHODS ----------------------------- */
 
     // KAREN: These methods are called by a user input.
     // You should call methods in the model in these methods.

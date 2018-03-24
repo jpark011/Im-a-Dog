@@ -81,7 +81,6 @@ public class ChatFragment extends SuperFragment {
             }
         });
 
-
         messages = new ArrayList<>();
         adapter = new ChatFragment.ChatListAdapter(getGameActivity());
 
@@ -89,8 +88,8 @@ public class ChatFragment extends SuperFragment {
         chatListView = view.findViewById(R.id.chatListView);
         chatListView.setAdapter(adapter);
         chatListView.setDivider(null);
-        chatListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-
+      
+        update(Global.user.getChatHistory());
 
         return view;
     }

@@ -1,33 +1,29 @@
 package com.cs446w18.a16.imadog.commands;
 
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
-import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
-import com.cs446w18.a16.imadog.controller.PlayerController;
-import com.cs446w18.a16.imadog.controller.UserController;
-import com.cs446w18.a16.imadog.model.Message;
+import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
+import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by lacie on 2018-03-19.
- */
-
 public class UpdateChatCommand implements Command, Serializable {
-    private ArrayList<Message> history;
-    private UserController receiver;
+    private ArrayList<String> names;
+    private ArrayList<String> messages;
+    private UserPresenter receiver;
 
-    public UpdateChatCommand(ArrayList<Message> history) {
-        this.history = history;
+    public UpdateChatCommand(ArrayList<String> names, ArrayList<String> messages) {
+        this.names = names;
+        this.messages = messages;
     }
 
-    public void setReceiver(UserController user) {
+    public void setReceiver(UserPresenter user) {
         this.receiver = user;
     }
-    public void setReceiver(PlayerController player) {}
+    public void setReceiver(PlayerPresenter player) {}
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.updateChat(history);
+        this.receiver.updateChat(names, messages);
     }
 }

@@ -11,7 +11,6 @@ import com.cs446w18.a16.imadog.activities.SuperActivity;
 import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothCallback;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
-import com.cs446w18.a16.imadog.controller.User;
 import com.cs446w18.a16.imadog.views.CustomButton;
 
 public class MainActivity extends SuperActivity {
