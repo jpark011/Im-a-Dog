@@ -1,6 +1,5 @@
 package com.cs446w18.a16.imadog.model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,8 +23,12 @@ public class Dog extends Player {
         }
     }
 
-    public String getNightPollTitle() {
-        return "Vote for the best answer";
+    public String getPollTitle() {
+        if (game.isNight()) {
+            return "Vote for the best answer";
+        } else {
+            return game.getQuestion(true, game.getCurrentDay());
+        }
     }
 
     public HashMap<String, Integer> getVoteCount() {

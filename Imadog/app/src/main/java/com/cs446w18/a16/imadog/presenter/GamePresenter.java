@@ -2,24 +2,21 @@ package com.cs446w18.a16.imadog.presenter;
 
 import com.cs446w18.a16.imadog.model.Game;
 import com.cs446w18.a16.imadog.model.GameConstants;
-import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class GamePresenter {
     private ArrayList<PlayerPresenter> observers;
     private Game game;
-    private Poll poll;
 
     public GamePresenter(ArrayList<PlayerPresenter> users) {
         this.observers = new ArrayList<>(users);
         game = new Game(users, this);
-        poll = null;
     }
 
+    // Notifies all the player presenters there is a change in the game state
     private void notifyObservers() {
         for (int i = 0; i < observers.size(); i++) {
             final PlayerPresenter observer = observers.get(i);
@@ -31,6 +28,7 @@ public class GamePresenter {
         }
     }
 
+    // Start the timer to start the intro, once timer runs out, we are ready to go ask a question
     public void readyToStart() {
         game.setGameState("INITIALIZE");
         notifyObservers();
@@ -43,6 +41,9 @@ public class GamePresenter {
         }, GameConstants.introDuration + GameConstants.dayNightDuration);
     }
 
+    // Start the timer for asking a question. After questionPageDuration seconds,
+    // we will start the voting for the day. After dayPollPageDuration seconds,
+    // we will end the voting, show the results, and either go to the Night (readyForNight()) or end the game
     public void readyToAskQuestion() {
         game.setNight(false);
         game.resetVictim();
@@ -75,6 +76,9 @@ public class GamePresenter {
         }, duration);
     }
 
+    // Start the voting for the night. After nightPollPageDuration second,
+    // we will end the voting, show the results, and go to either go to
+    // the next Day(readyToAskQuestion()) or end the game
     public void readyForNight() {
         game.setNight(true);
         game.resetVictim();
@@ -89,11 +93,9 @@ public class GamePresenter {
         timer.schedule(new TimerTask() {
 
             public void run() {
-                //final String result = poll.closePoll();
                 game.closePoll();
                 game.setGameState("CLOSING_NIGHT_POLL");
                 notifyObservers();
-                //poll = null;
                 game.nextDay();
             }
         }, duration);
@@ -106,12 +108,9 @@ public class GamePresenter {
         }, duration);
     }
 
-    public void updatePoll(HashMap<String, Integer> votes) {
+    // The poll has been updated, update everyone's voting pages
+    public void updatePoll() {
         game.setGameState("UPDATING_POLL");
         notifyObservers();
-    }
-
-    public void vote(String name, String choice) {
-        poll.setVote(name, choice);
     }
 }

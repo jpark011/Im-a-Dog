@@ -73,6 +73,7 @@ public class ChatFragment extends SuperFragment {
                     // When the user press enter
                     getGameActivity().hideSystemUI();
                     getGameActivity().wroteMessage(textView.getText().toString());
+                    textView.setText("");
 
 
                 }
@@ -91,6 +92,7 @@ public class ChatFragment extends SuperFragment {
         chatListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         chatListView.setSelector(R.drawable.row_selector);
         chatListView.setDivider(null);
+        update(Global.user.getChatHistory());
 
 
         return view;

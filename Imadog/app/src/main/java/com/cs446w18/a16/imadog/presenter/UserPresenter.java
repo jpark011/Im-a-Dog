@@ -36,6 +36,7 @@ public class UserPresenter {
     private String currentRole;
     private boolean currentDead;
     private HashMap<String, String> currentPollAnswers;
+    private ArrayList<Pair<String, String>> chatHistory;
 
     public UserPresenter(String name) {
         this.userName = name;
@@ -141,6 +142,7 @@ public class UserPresenter {
     }
 
     public void initializeGame(String question, String role) {
+        this.chatHistory = new ArrayList<>();
         this.currentRole = role;
         this.currentDead = false;
         final String q = question;
@@ -263,11 +265,16 @@ public class UserPresenter {
         sendCommand(cmd);
     }
 
+    public ArrayList<Pair<String, String>> getChatHistory() {
+        return this.chatHistory;
+    }
+
     public void updateChat(ArrayList<String> names, ArrayList<String> messages) {
         ArrayList<Pair<String, String>> history = new ArrayList<>();
         for (int i = 0; i < names.size(); i++) {
             history.add(new Pair<>(names.get(i), messages.get(i)));
         }
+        this.chatHistory = history;
         view.updateChat(history);
     }
 

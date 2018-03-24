@@ -1,7 +1,6 @@
 package com.cs446w18.a16.imadog.presenter;
 
 import android.bluetooth.BluetoothDevice;
-import android.util.Pair;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
@@ -92,7 +91,7 @@ public class PlayerPresenter {
     }
 
     public void startPoll() {
-        String question = role.getDayPollTitle();
+        String question = role.getPollTitle();
         HashMap<String, String> answers = role.getDayPollAnswers();
         HashMap<String, Integer> count = role.getVoteCount();
         Command cmd = new StartDayPollCommand(question, answers, count);
@@ -114,7 +113,7 @@ public class PlayerPresenter {
     }
 
     public void startNightPoll() {
-        String title = role.getNightPollTitle();
+        String title = role.getPollTitle();
         HashMap<String, Integer> votes = role.getVoteCount();
         Command cmd = new StartNightPollCommand(title, votes);
         sendCommand(cmd);
