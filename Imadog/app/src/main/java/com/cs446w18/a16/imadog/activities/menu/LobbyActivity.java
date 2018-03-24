@@ -81,6 +81,15 @@ public class LobbyActivity extends SuperActivity {
         });
     }
 
+    public void leaveRoom(View view) {
+        Global.user.leaveRoom();
+    }
+
+    public void toMainActivity() {
+        Intent mainIntent = new Intent(LobbyActivity.this, MainActivity.class);
+        startActivity(mainIntent);
+    }
+
     private class CommunicationCallbackServer implements CommunicationCallback {
         @Override
         public void onConnect(BluetoothDevice device) {

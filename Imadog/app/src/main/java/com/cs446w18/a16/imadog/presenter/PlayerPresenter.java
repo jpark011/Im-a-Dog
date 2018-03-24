@@ -135,6 +135,10 @@ public class PlayerPresenter {
         }
     }
 
+    public void endGame() {
+        server.endGame();
+    }
+
     public void vote(String choice) {
         role.vote(choice);
     }

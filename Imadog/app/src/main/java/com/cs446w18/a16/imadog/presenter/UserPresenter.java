@@ -11,6 +11,7 @@ import com.cs446w18.a16.imadog.bluetooth.Bluetooth;
 import com.cs446w18.a16.imadog.bluetooth.BluetoothServer;
 import com.cs446w18.a16.imadog.bluetooth.CommunicationCallback;
 import com.cs446w18.a16.imadog.commands.Command;
+import com.cs446w18.a16.imadog.commands.LeaveLobbyCommand;
 import com.cs446w18.a16.imadog.commands.SendMessageCommand;
 import com.cs446w18.a16.imadog.commands.SetUsernameCommand;
 import com.cs446w18.a16.imadog.commands.SubmitAnswerCommand;
@@ -24,6 +25,7 @@ import java.util.TimerTask;
 
 public class UserPresenter {
     private String userName;
+    private String clientName;
     private GameActivity view;
     private Bluetooth client;
     private BluetoothServer server;
@@ -42,9 +44,15 @@ public class UserPresenter {
         server = null;
         currentPollAnswers = null;
         currentRole = null;
+        clientName = null;
     }
 
     public void setClientName(String clientName) {
+        this.clientName = clientName;
+        if (userName == null) {
+            this.userName = clientName;
+        }
+
         Command cmd = new SetUsernameCommand(clientName, userName);
         client.send(cmd);
     }
@@ -88,10 +96,27 @@ public class UserPresenter {
 
     }
 
-    public void leaveRoom() {}
+    public void leaveRoom() {
+        if (isServer()) {
+            server.leaveRoom();
+            server = null;
+        } else {
+            Command cmd = new LeaveLobbyCommand(this.clientName);
+            sendCommand(cmd);
+            clientName = null;
+            client = null;
+        }
+        lobby.toMainActivity();
+    }
 
     public void openRoom(Activity activity) {
         server.open(activity);
+    }
+
+    public void closeRoom() {
+        this.client = null;
+        this.currentRole = null;
+        lobby.toMainActivity();
     }
 
     public ArrayList<String> getRoomMembers() {
@@ -189,6 +214,7 @@ public class UserPresenter {
                     view.showNightPage();
                 } else {
                     view.showOutro(result);
+                    endGame();
                 }
             }
         }, GameConstants.victimPageDuration);
@@ -211,9 +237,16 @@ public class UserPresenter {
                     readyForDay(q);
                 } else {
                     view.showOutro(result);
+                    endGame();
                 }
             }
         }, GameConstants.victimPageDuration);
+    }
+
+    public void endGame() {
+        if (isServer()) {
+            hostPlayer.endGame();
+        }
     }
 
     public void vote(String choice) {

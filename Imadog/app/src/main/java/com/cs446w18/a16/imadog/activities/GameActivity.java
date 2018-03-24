@@ -179,14 +179,6 @@ public class GameActivity extends SuperActivity {
             public void run() {
                 VoteFragment frag = (VoteFragment)tabs.get(0);
                 frag.updatePollVotes(count);
-//                VoteListView playersListView = findViewById(R.id.voteListView);
-//                HashMap<String, String> answers = Global.user.getPollAnswers();
-//                System.out.println("UPDATING POLL VOTES");
-//                if (answers != null) {
-//                    playersListView.setup(count, answers, (VoteFragment)tabs.get(0));
-//                } else {
-//                    playersListView.setup(count, (VoteFragment)tabs.get(0));
-//                }
             }
         });
     }

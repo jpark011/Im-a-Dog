@@ -8,6 +8,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
 
+import com.cs446w18.a16.imadog.commands.CloseLobbyCommand;
 import com.cs446w18.a16.imadog.commands.Command;
 import com.cs446w18.a16.imadog.commands.SetClientNameCommand;
 import com.cs446w18.a16.imadog.commands.UpdateLobbyCommand;
@@ -115,6 +116,25 @@ public class BluetoothServer extends Bluetooth {
         for (int i = 0; i < users.size(); i++) {
             users.get(i).setChat(chat);
         }
+    }
+
+    public void endGame() {
+        for (String clientName : communicationCallbacks.keySet()) {
+            communicationCallbacks.put(clientName, serverCallback);
+        }
+    }
+
+    public void leaveRoom() {
+        Command cmd = new CloseLobbyCommand();
+        send(cmd);
+    }
+
+    public void removeMember(String clientName) {
+        clients.remove(clientName);
+        clientNames.remove(clientName);
+        ArrayList<String> names = getMembers();
+        Command cmd = new UpdateLobbyCommand(names);
+        send(cmd);
     }
 
     private class AcceptThread extends Thread {
