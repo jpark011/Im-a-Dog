@@ -57,8 +57,10 @@ public class GameActivity extends SuperActivity {
     // The different tabs
     private ArrayList<Fragment> tabs;
 
-    // The chat fragment (special reference for update)
+    // The different fragments
     private ChatFragment chat;
+    private ProfileFragment profile;
+    private HelpFragment rules;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -91,12 +93,14 @@ public class GameActivity extends SuperActivity {
         });
 
         chat = new ChatFragment();
+        profile = new ProfileFragment();
+        rules = new HelpFragment();
 
         tabs = new ArrayList<>();
         tabs.add(new IntroFragment());
         tabs.add(chat);
-        tabs.add(new ProfileFragment());
-        tabs.add(new HelpFragment());
+        tabs.add(profile);
+        tabs.add(rules);
 
         switchToFragment(new IntroFragment(), null);
     }
