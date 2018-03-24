@@ -35,29 +35,25 @@
         android:layout_marginTop="40dp"
         app:srcCompat="@drawable/separator" />
 
-    <EditText
-        android:id="@+id/nameField"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
-        android:layout_below="@+id/separator"
+    <com.cs446w18.a16.imadog.views.CustomLabel
+        android:id="@+id/nameLabel"
+        style="@style/BigSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/separator"
+        android:layout_marginTop="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="130dp"
-        android:background="@drawable/border_black"
-        android:hint="@string/create_game_placeholder"
-        android:inputType="textPersonName"
-        android:paddingHorizontal="12dp"
-        android:textAlignment="viewStart"
+        android:text="Device's name"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textAlignment="center"/>
 
     <com.cs446w18.a16.imadog.views.CustomButton
         android:id="@+id/createButton"
         style="@style/RectButton.Black"
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_height"
-        android:layout_below="@+id/nameField"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/nameLabel"
+        android:layout_marginTop="60dp"
         android:layout_marginHorizontal="32dp"
         android:onClick="createGame"
         android:text="Create" />

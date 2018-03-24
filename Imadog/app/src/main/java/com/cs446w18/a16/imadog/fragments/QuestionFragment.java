@@ -3,6 +3,7 @@ package com.cs446w18.a16.imadog.fragments;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
+import com.cs446w18.a16.imadog.model.GameConstants;
 
 /**
  * Created by Jean-Baptiste on 18/02/2018.
@@ -29,6 +31,8 @@ public class QuestionFragment extends SuperFragment {
     TextView questionLabel;
 
     EditText answerField;
+
+    TextView timerLabel;
 
 
     /* ----------------------------- SETUP ----------------------------- */
@@ -89,12 +93,35 @@ public class QuestionFragment extends SuperFragment {
             }
         });
 
+        // Set the countdown timer
+        long duration = GameConstants.questionPageDuration;
+        timerLabel = view.findViewById(R.id.timerLabel);
+        setTimerLabel(duration);
+
+        CountDownTimer timer = new CountDownTimer(duration, 1000) {
+            @Override
+            public void onTick(long l) {
+                setTimerLabel(l);
+            }
+
+            @Override
+            public void onFinish() {}
+        }.start();
+
+
 
         return view;
     }
 
 
     /* ----------------------------- METHODS ----------------------------- */
+
+    /// Updates the timer label with the given time
+    private void setTimerLabel(long time) {
+        int minutes = (int) time / 60000;
+        int seconds = (int) time % 60000 / 1000;
+        timerLabel.setText(minutes + ":" + String.format("%02d", seconds));
+    }
 
 
 }

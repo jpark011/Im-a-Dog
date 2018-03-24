@@ -8,25 +8,44 @@
         android:id="@+id/chatListView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_above="@id/messageField"
+        android:layout_above="@id/chatbox"
         android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginHorizontal="20dp"/>
 
-    <EditText
-        android:id="@+id/messageField"
+
+    <RelativeLayout
+        android:id="@+id/chatbox"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/button_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/border_width"
-        android:background="@drawable/border_white"
-        android:hint="Write a message..."
-        android:paddingHorizontal="12dp"
-        android:imeOptions="actionDone"
-        android:singleLine="true"
-        android:textAlignment="viewStart"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:layout_marginHorizontal="@dimen/border_width"
+        android:layout_marginBottom="20dp">
+
+
+        <EditText
+            android:id="@+id/messageField"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/sendButton"
+            android:minHeight="@dimen/button_height"
+            android:background="@drawable/border_white"
+            android:hint="Write a message..."
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:maxLines="6"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_width="@dimen/button_height"
+            android:layout_height="@dimen/button_height"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/send" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

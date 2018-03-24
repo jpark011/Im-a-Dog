@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,27 +62,25 @@ public class ChatFragment extends SuperFragment {
         background.setColor(ContextCompat.getColor(getActivity(), R.color.white));
         messageField.setBackground(background);
 
-        // Set the return action
-        TextView.OnEditorActionListener fieldListener = new TextView.OnEditorActionListener() {
+        // Send button
+        Button sendButton = view.findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH ||
-                        i == EditorInfo.IME_ACTION_DONE ||
-                        keyEvent != null &&
-                                keyEvent.getAction() == KeyEvent.ACTION_DOWN &&
-                                keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+            public void onClick(View view) {
 
-                    // When the user press enter
-                    getGameActivity().hideSystemUI();
-                    getGameActivity().wroteMessage(textView.getText().toString());
-
-
+                // Check if no view has focus:
+                View focusView = getGameActivity().getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getGameActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(focusView.getWindowToken(), 0);
                 }
-                return false;
 
+                getGameActivity().hideSystemUI();
+                getGameActivity().wroteMessage(messageField.getText().toString());
+                messageField.setText("");
             }
-        };
-        messageField.setOnEditorActionListener(fieldListener);
+        });
+
 
         messages = new ArrayList<>();
         adapter = new ChatFragment.ChatListAdapter(getGameActivity());
@@ -88,9 +88,8 @@ public class ChatFragment extends SuperFragment {
         // List view
         chatListView = view.findViewById(R.id.chatListView);
         chatListView.setAdapter(adapter);
-        chatListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        chatListView.setSelector(R.drawable.row_selector);
         chatListView.setDivider(null);
+        chatListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 
 
         return view;
@@ -102,6 +101,8 @@ public class ChatFragment extends SuperFragment {
         messages = newMessages;
         chatListView.setAdapter(adapter);
     }
+
+
 
     /* ----------------------------- LIST ADAPTER ----------------------------- */
 

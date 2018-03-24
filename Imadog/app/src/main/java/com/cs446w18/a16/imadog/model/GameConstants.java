@@ -49,12 +49,6 @@ public class GameConstants {
 
     public static final int minPlayers = 4;
 
-    // Duration of the vote during the day, displayed on a counter (in seconds)
-    public static final int dayVoteDuration = 10;
-
-    // Duration of the vote during the night, displayed on a counter (in seconds)
-    public static final int nightVoteDuration = 5;
-
     // GameController Timer duration in milliseconds
     public static final int questionPageDuration = 15000;
     public static final int dayPollPageDuration = 30000;
