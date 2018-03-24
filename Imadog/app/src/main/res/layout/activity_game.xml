@@ -8,14 +8,4 @@
         android:layout_height="fill_parent"
         android:layout_margin="@dimen/border_width" />
 
-    <!--<fragment-->
-        <!--android:id="@+id/navigationBar"-->
-        <!--android:name="com.cs446w18.a16.imadog.fragments.NavigationBarFragment"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="64dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginHorizontal="@dimen/border_width"-->
-        <!--android:layout_marginTop="@dimen/border_width" />-->
-
 </RelativeLayout>

@@ -87,8 +87,12 @@ public class LobbyActivity extends SuperActivity {
 
     public void toMainActivity() {
         Intent mainIntent = new Intent(LobbyActivity.this, MainActivity.class);
+        mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(mainIntent);
     }
+
+
+    /* ----------------------------- BLUETOOTH ----------------------------- */
 
     private class CommunicationCallbackServer implements CommunicationCallback {
         @Override

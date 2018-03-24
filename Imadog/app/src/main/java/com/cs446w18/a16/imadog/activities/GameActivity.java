@@ -74,6 +74,21 @@ public class GameActivity extends SuperActivity {
         // View pager
         mPager = findViewById(R.id.pager);
         mPagerAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+            // optional
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Check if no view has focus:
+                View view = getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+
+                hideSystemUI();
+            }
+        });
 
         chat = new ChatFragment();
 
@@ -140,12 +155,6 @@ public class GameActivity extends SuperActivity {
 
     /* ----------------------------- VIEW METHODS ----------------------------- */
 
-    // KAREN: These methods are the methods you should call from the model to update the view.
-    // These methods transition to different pages.
-    // The pages correspond to the one in the picture I sent on the group.
-    //
-    // The model should have a property linked to this class (GameActivity).
-    // This is the only class the model needs to know.
 
     /**
      * Shows the day page.
@@ -186,15 +195,19 @@ public class GameActivity extends SuperActivity {
     }
 
     /**
+     * Updates the number of votes in the vote page.
      *
+     * @param votes: the map of votes
      */
     public void updatePollVotes(HashMap<String, Integer> votes) {
         final HashMap<String, Integer> count = votes;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                VoteFragment frag = (VoteFragment)tabs.get(0);
-                frag.updatePollVotes(count);
+                if (currentFragment instanceof VoteFragment) {
+                    VoteFragment frag = (VoteFragment)currentFragment;
+                    frag.updatePollVotes(count);
+                }
             }
         });
     }
@@ -261,7 +274,8 @@ public class GameActivity extends SuperActivity {
     }
 
     /**
-     * Updates the chat with the last messages
+     * Updates the chat with the last messages.
+     *
      * @param messages: a list of all the messages to display
      */
     public void updateChat(final ArrayList<Pair<String, String>> messages) {
@@ -278,9 +292,6 @@ public class GameActivity extends SuperActivity {
     }
 
     /* ----------------------------- PRESENTER METHODS ----------------------------- */
-
-    // KAREN: These methods are called by a user input.
-    // You should call methods in the model in these methods.
 
     /**
      * Called when the user entered an answer and pressed Enter.
@@ -317,15 +328,4 @@ public class GameActivity extends SuperActivity {
         Global.user.sendMessage(message);
     }
 
-    /**
-     * Called when the left button of the navigation bar is pressed
-     */
-    public void leftBarButtonWasPressed(View view) {
-    }
-
-    /**
-     * Called when the right button of the navigation bar is pressed
-     */
-    public void rightBarButtonWasPressed(View view) {
-    }
 }
