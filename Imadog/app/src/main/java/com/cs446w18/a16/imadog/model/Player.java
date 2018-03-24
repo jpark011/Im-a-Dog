@@ -71,10 +71,6 @@ public abstract class Player {
         return game.getWinner();
     }
 
-    public HashMap<String, Integer> getVoteCount() {
-        return game.getVoteCount();
-    }
-
     abstract public String getQuestion();
 
     abstract public void vote(String choice);
@@ -83,5 +79,5 @@ public abstract class Player {
 
     abstract public String getNightPollTitle();
 
-    abstract public HashMap<String, Integer> getNightVoteCount();
+    abstract public HashMap<String, Integer> getVoteCount();
 }

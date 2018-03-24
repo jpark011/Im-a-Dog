@@ -179,6 +179,7 @@ public class Game {
 
     public void vote(String name, String choice) {
         poll.setVote(name, choice);
+        gamePresenter.updatePoll(getVoteCount());
     }
 
     public String getWinner() {

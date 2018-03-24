@@ -13,7 +13,7 @@ public class Chat {
     ArrayList<Message> messages;
 
     public Chat(ArrayList<PlayerPresenter> members) {
-        this.members = members;
+        this.members = new ArrayList<>(members);
         messages = new ArrayList<>();
     }
 
@@ -21,7 +21,12 @@ public class Chat {
         Message m = new Message(text, name);
         messages.add(m);
         for (int i = 0; i < members.size(); i++) {
-            members.get(i).updateChat();
+            final PlayerPresenter member = members.get(i);
+            new Thread() {
+                public void run() {
+                    member.updateChat();
+                }
+            }.start();
         }
     }
 
@@ -30,6 +35,6 @@ public class Chat {
     }
 
     public ArrayList<Message> getMessages() {
-        return messages;
+        return new ArrayList<>(messages);
     }
 }

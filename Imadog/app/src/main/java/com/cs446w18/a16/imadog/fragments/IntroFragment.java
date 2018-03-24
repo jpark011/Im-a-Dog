@@ -38,7 +38,7 @@ public class IntroFragment extends SuperFragment {
 
         // Role label
         TextView roleLabel = view.findViewById(R.id.roleLabel);
-        roleLabel.setText("A "+role+"!"); // KAREN: replace the cat string by the user's role
+        roleLabel.setText("A "+role+"!");
 
 
         return view;

@@ -33,7 +33,7 @@ public class Cat extends Player{
         return "Vote for the dog to kill";
     }
 
-    public HashMap<String, Integer> getNightVoteCount() {
+    public HashMap<String, Integer> getVoteCount() {
         return game.getVoteCount();
     }
 }

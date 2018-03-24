@@ -25,9 +25,11 @@ import com.cs446w18.a16.imadog.fragments.NightFragment;
 import com.cs446w18.a16.imadog.fragments.OutroFragment;
 import com.cs446w18.a16.imadog.fragments.ProfileFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
+import com.cs446w18.a16.imadog.fragments.SuperFragment;
 import com.cs446w18.a16.imadog.fragments.VictimFragment;
 import com.cs446w18.a16.imadog.fragments.VoteFragment;
 import com.cs446w18.a16.imadog.model.GameConstants;
+import com.cs446w18.a16.imadog.views.VoteListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -170,8 +172,23 @@ public class GameActivity extends SuperActivity {
     /**
      *
      */
-    public void updateVoteCounts(Map<String, Integer> votes) {
-
+    public void updatePollVotes(HashMap<String, Integer> votes) {
+        final HashMap<String, Integer> count = votes;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                VoteFragment frag = (VoteFragment)tabs.get(0);
+                frag.updatePollVotes(count);
+//                VoteListView playersListView = findViewById(R.id.voteListView);
+//                HashMap<String, String> answers = Global.user.getPollAnswers();
+//                System.out.println("UPDATING POLL VOTES");
+//                if (answers != null) {
+//                    playersListView.setup(count, answers, (VoteFragment)tabs.get(0));
+//                } else {
+//                    playersListView.setup(count, (VoteFragment)tabs.get(0));
+//                }
+            }
+        });
     }
 
     /**

@@ -5,6 +5,7 @@ import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.model.Poll;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -51,7 +52,6 @@ public class GamePresenter {
 
             public void run() {
                 ArrayList<String> names = game.getPlayerNames(true,true, false);
-                //poll = new Poll(names, names);
                 game.createPoll(names, names);
                 game.setGameState("STARTING_DAY_POLL");
                 notifyObservers();
@@ -64,7 +64,6 @@ public class GamePresenter {
                 game.closePoll();
                 game.setGameState("CLOSING_DAY_POLL");
                 notifyObservers();
-                //poll = null;
             }
         }, duration);
         duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
@@ -105,6 +104,11 @@ public class GamePresenter {
                 if (game.getWinner() == null) readyToAskQuestion();
             }
         }, duration);
+    }
+
+    public void updatePoll(HashMap<String, Integer> votes) {
+        game.setGameState("UPDATING_POLL");
+        notifyObservers();
     }
 
     public void vote(String name, String choice) {

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,6 +107,17 @@ public class VoteFragment extends SuperFragment implements VoteListView.Delegate
         int minutes = (int) time / 60000;
         int seconds = (int) time % 60000 / 1000;
         timerLabel.setText(minutes + ":" + String.format("%02d", seconds));
+    }
+
+    public void updatePollVotes(Map<String, Integer> votes) {
+        Map<String, String> answers = Global.user.getPollAnswers();
+        VoteListView v = getGameActivity().findViewById(R.id.voteListView);
+        System.out.println("UPDATING POLL VOTES");
+        if (answers != null) {
+            v.setup(votes, answers, this);
+        } else {
+            v.setup(votes, this);
+        }
     }
 
     @Override
