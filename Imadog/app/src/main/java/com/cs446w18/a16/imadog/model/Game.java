@@ -124,7 +124,6 @@ public class Game {
             }
         }
 
-        //Collections.sort(names);
         return names;
     }
 
@@ -179,6 +178,7 @@ public class Game {
 
     public void vote(String name, String choice) {
         poll.setVote(name, choice);
+        gamePresenter.updatePoll();
     }
 
     public String getWinner() {
@@ -212,11 +212,6 @@ public class Game {
 
     public String getVictimRole() {
         return victimRole;
-    }
-
-    public Poll getPoll() { return poll; }
-    public void setPoll(Poll poll) {
-        this.poll = poll;
     }
 
     public void createPoll(ArrayList<String> names, ArrayList<String> choices) {

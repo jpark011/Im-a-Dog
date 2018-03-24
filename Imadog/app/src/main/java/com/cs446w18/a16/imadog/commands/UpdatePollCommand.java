@@ -5,16 +5,18 @@ import com.cs446w18.a16.imadog.presenter.PlayerPresenter;
 import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public class UpdateChatCommand implements Command, Serializable {
-    private ArrayList<String> names;
-    private ArrayList<String> messages;
+/**
+ * Created by lacie on 2018-03-23.
+ */
+
+public class UpdatePollCommand implements Command, Serializable {
+    private HashMap<String, Integer> votes;
     private UserPresenter receiver;
 
-    public UpdateChatCommand(ArrayList<String> names, ArrayList<String> messages) {
-        this.names = names;
-        this.messages = messages;
+    public UpdatePollCommand(HashMap<String, Integer> votes) {
+        this.votes = votes;
     }
 
     public void setReceiver(UserPresenter user) {
@@ -24,6 +26,6 @@ public class UpdateChatCommand implements Command, Serializable {
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.updateChat(names, messages);
+        this.receiver.updatePoll(votes);
     }
 }

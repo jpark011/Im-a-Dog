@@ -13,6 +13,7 @@ import com.cs446w18.a16.imadog.commands.KillPlayerCommand;
 import com.cs446w18.a16.imadog.commands.StartDayPollCommand;
 import com.cs446w18.a16.imadog.commands.StartNightPollCommand;
 import com.cs446w18.a16.imadog.commands.UpdateChatCommand;
+import com.cs446w18.a16.imadog.commands.UpdatePollCommand;
 import com.cs446w18.a16.imadog.model.Chat;
 import com.cs446w18.a16.imadog.model.Message;
 import com.cs446w18.a16.imadog.model.Player;
@@ -52,7 +53,15 @@ public class PlayerPresenter {
 
     public void updateChat() {
         ArrayList<Message> history = chat.getMessages();
-        Command cmd = new UpdateChatCommand(history);
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<String> messages = new ArrayList<>();
+
+        for (Message message: history) {
+            names.add(message.getName());
+            messages.add(message.getText());
+        }
+
+        Command cmd = new UpdateChatCommand(names, messages);
         sendCommand(cmd);
     }
 
@@ -82,7 +91,7 @@ public class PlayerPresenter {
     }
 
     public void startPoll() {
-        String question = role.getDayPollTitle();
+        String question = role.getPollTitle();
         HashMap<String, String> answers = role.getDayPollAnswers();
         HashMap<String, Integer> count = role.getVoteCount();
         Command cmd = new StartDayPollCommand(question, answers, count);
@@ -104,8 +113,8 @@ public class PlayerPresenter {
     }
 
     public void startNightPoll() {
-        String title = role.getNightPollTitle();
-        HashMap<String, Integer> votes = role.getNightVoteCount();
+        String title = role.getPollTitle();
+        HashMap<String, Integer> votes = role.getVoteCount();
         Command cmd = new StartNightPollCommand(title, votes);
         sendCommand(cmd);
     }
@@ -125,8 +134,17 @@ public class PlayerPresenter {
         }
     }
 
+    public void endGame() {
+        server.endGame();
+    }
+
     public void vote(String choice) {
         role.vote(choice);
+    }
+
+    public void updatePoll() {
+        Command cmd = new UpdatePollCommand(role.getVoteCount());
+        sendCommand(cmd);
     }
 
     public void sendCommand(Command cmd) {
@@ -154,6 +172,9 @@ public class PlayerPresenter {
                 break;
             case "CLOSING_NIGHT_POLL":
                 closeNightPoll();
+                break;
+            case "UPDATING_POLL":
+                updatePoll();
                 break;
         }
     }

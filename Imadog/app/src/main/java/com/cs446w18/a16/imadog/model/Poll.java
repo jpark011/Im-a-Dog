@@ -41,7 +41,7 @@ public class Poll {
     }
 
     public HashMap<String, Integer> getVoteCount() {
-        return (HashMap<String, Integer>)count;
+        return new HashMap<>(count);
     }
 
     public String getResult() {

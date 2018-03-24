@@ -23,12 +23,24 @@ public class Dog extends Player {
         }
     }
 
-    public String getNightPollTitle() {
-        return "Vote for the best answer";
+    public String getPollTitle() {
+        if (game.isNight()) {
+            return "Vote for the best answer";
+        } else {
+            return game.getQuestion(true, game.getCurrentDay());
+        }
     }
 
-    public HashMap<String, Integer> getNightVoteCount() {
-        //return game.getPlayerNames(true, true, false);
+    public HashMap<String, Integer> getVoteCount() {
+        if (game.isNight()) {
+            ArrayList<String> names = game.getPlayerNames(true, true, false);
+            HashMap<String, Integer> count = new HashMap<>();
+            for (int i = 0; i < names.size(); i++) {
+                count.put(names.get(i), -1);
+            }
+            return count;
+        }
+
         return game.getVoteCount();
     }
 }

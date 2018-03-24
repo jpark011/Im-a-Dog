@@ -7,23 +7,24 @@ import com.cs446w18.a16.imadog.presenter.UserPresenter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UpdateChatCommand implements Command, Serializable {
-    private ArrayList<String> names;
-    private ArrayList<String> messages;
-    private UserPresenter receiver;
+/**
+ * Created by lacie on 2018-03-24.
+ */
 
-    public UpdateChatCommand(ArrayList<String> names, ArrayList<String> messages) {
-        this.names = names;
-        this.messages = messages;
+public class CloseLobbyCommand implements Command, Serializable {
+    private UserPresenter user;
+
+    public CloseLobbyCommand() {
+
     }
 
     public void setReceiver(UserPresenter user) {
-        this.receiver = user;
+        this.user = user;
     }
     public void setReceiver(PlayerPresenter player) {}
     public void setReceiver(BluetoothServer server) {}
 
     public void execute() {
-        this.receiver.updateChat(names, messages);
+        this.user.closeRoom();
     }
 }
