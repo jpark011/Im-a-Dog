@@ -127,6 +127,9 @@ public class BluetoothServer extends Bluetooth {
     public void leaveRoom() {
         Command cmd = new CloseLobbyCommand();
         send(cmd);
+        clients = new HashMap<>();
+        clientNames = new HashMap<>();
+        communicationCallbacks = new HashMap<>();
     }
 
     public void removeMember(String clientName) {

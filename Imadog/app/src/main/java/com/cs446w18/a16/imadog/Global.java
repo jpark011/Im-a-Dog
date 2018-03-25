@@ -2,6 +2,7 @@ package com.cs446w18.a16.imadog;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.CountDownTimer;
 
 import com.cs446w18.a16.imadog.presenter.UserPresenter;
 
@@ -29,6 +30,38 @@ public class Global {
         fontsMap.put("OSSemiboldItalic", Typeface.createFromAsset(context.getAssets(), "fonts/OSSemiboldItalic.ttf"));
 
         Global.fonts = fontsMap;
+    }
+
+    private static boolean countDownStarted = false;
+    private static long currentTime;
+    public static CountDownTimer timer;
+
+    public static void startTimer(long t) {
+        countDownStarted = true;
+        currentTime = t;
+    }
+
+    public static void endTimer() {
+        if (countDownStarted) {
+            timer.cancel();
+            countDownStopped();
+        }
+    }
+
+    public static long getCurrentTime() {
+        return currentTime;
+    }
+
+    public static void setCurrentTime(long t) {
+        currentTime = t;
+    }
+
+    public static boolean isCountDownStarted() {
+        return countDownStarted;
+    }
+
+    public static void countDownStopped() {
+        countDownStarted = false;
     }
 
 }

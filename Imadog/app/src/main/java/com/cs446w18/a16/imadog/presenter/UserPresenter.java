@@ -99,13 +99,18 @@ public class UserPresenter {
 
     public void leaveRoom() {
         if (isServer()) {
-            server.leaveRoom();
-            server = null;
+            if (server != null) {
+                server.leaveRoom();
+                server = null;
+            }
         } else {
-            Command cmd = new LeaveLobbyCommand(this.clientName);
-            sendCommand(cmd);
-            clientName = null;
-            client = null;
+            if (client != null) {
+                Command cmd = new LeaveLobbyCommand(this.clientName);
+                sendCommand(cmd);
+                client.disconnect();
+                clientName = null;
+                client = null;
+            }
         }
         lobby.toMainActivity();
     }
@@ -115,6 +120,7 @@ public class UserPresenter {
     }
 
     public void closeRoom() {
+        this.client.disconnect();
         this.client = null;
         this.currentRole = null;
         lobby.toMainActivity();
@@ -247,7 +253,7 @@ public class UserPresenter {
 
     public void endGame() {
         if (isServer()) {
-            hostPlayer.endGame();
+            server.endGame();
         }
     }
 
