@@ -25,58 +25,59 @@
         android:layout_marginTop="20dp"
         app:srcCompat="@drawable/separator_white" />
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/helpRulesText"
         android:text="@string/help_rules"
         style="@style/Subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="40dp"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:layout_below="@id/separator"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:layout_below="@id/separator"/>
 
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/dayLabel"
-        style="@style/BigSubtitle"
-        android:layout_width="wrap_content"
+        style="@style/SmallTitle"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Day"
         android:textColor="@color/white"
         android:layout_below="@id/helpRulesText"/>
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/dayRulesText"
         android:text="@string/day_rules"
         style="@style/Subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:layout_below="@id/dayLabel"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:layout_below="@id/dayLabel"/>
 
     <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/nightLabel"
-        style="@style/BigSubtitle"
-        android:layout_width="wrap_content"
+        style="@style/SmallTitle"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Night"
         android:textColor="@color/white"
         android:layout_below="@id/dayRulesText"/>
 
-    <TextView
+    <com.cs446w18.a16.imadog.views.CustomLabel
         android:id="@+id/nightRulesText"
         android:text="@string/night_rules"
         style="@style/Subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="40dp"
         android:textColor="@color/white"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nightLabel"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:layout_below="@id/nightLabel"/>
 
 </RelativeLayout>

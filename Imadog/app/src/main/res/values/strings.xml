@@ -24,17 +24,18 @@
     <string name="fb_login_protocol_scheme">fb922983427866675</string>
 
     <string name="help_rules">
-        - There are 2 groups: Cats and Dogs.\n
-        - There are 2 stages: Day and Night.
+        There players are divided into two groups: Cats and Dogs.\n
+        There are two phases in the game: the days and the nights.
     </string>
     <string name="day_rules">
-        - Each cats and dogs get two different questions.\n
-        - Answers are shared by everyone and players vote for the one who is most likely a cat.\n
-        - The one with the most votes gets executed with his/her identity revealed.
+        The players get to answer questions, depending on their role (cat or dog).\n
+        Answers are then shown to everyone and the players vote to kill someone.\n
+        The goal of the dogs here is to find the cats, based on their answers.\n
+        The goal of the cats is to act as if they were dogs, and try to justify their answer.
     </string>
     <string name="night_rules">
-        - Cats now vote to kill one dog and dogs get to vote for the best answer.\n
-        - Selected dog is executed and another day comes.
+        During the nights, the cats gather and vote to kill a dog.\n
+        The game continue until one of the two teams is eliminated...
     </string>
     <!-- Game Pages -->
 
