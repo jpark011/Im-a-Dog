@@ -25,6 +25,8 @@ public class MainActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().getDecorView().setBackgroundResource(R.drawable.bg_dog_sand);
+
         CustomButton joinButton = (CustomButton) findViewById(R.id.joinButton);
         joinButton.updateBackgroundColor(this, R.color.yellow);
 

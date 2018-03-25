@@ -23,6 +23,10 @@ public class SettingsActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        // Page background
+        changeBackgroudColor(R.color.light_red);
+
     }
 
 }

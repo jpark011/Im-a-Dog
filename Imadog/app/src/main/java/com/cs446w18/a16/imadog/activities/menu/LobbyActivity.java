@@ -36,6 +36,8 @@ public class LobbyActivity extends SuperActivity {
         setContentView(R.layout.activity_lobby);
         Global.user.setLobby(this);
 
+        getWindow().getDecorView().setBackgroundResource(R.drawable.bg_cat_sand);
+
         // Players list
         VoteListView playersList = findViewById(R.id.playersListView);
         ArrayList<String> players;

@@ -49,6 +49,9 @@ public class LoginActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Page background
+        changeBackgroudColor(R.color.light_green);
+
         if (AccessToken.getCurrentAccessToken() != null) {
             LoginManager.getInstance().logOut();
         }

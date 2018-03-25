@@ -33,6 +33,9 @@ public class OutroFragment extends SuperFragment {
         Bundle bundle = getArguments();
 
         String winner = bundle.getString("winner");
+        boolean catsWon = winner.equalsIgnoreCase("CATS");
+
+        getView().setBackgroundResource(catsWon ? R.drawable.bg_cat_purple : R.drawable.bg_dog_purple);
 
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();
@@ -45,7 +48,7 @@ public class OutroFragment extends SuperFragment {
 
         // Role image view
         ImageView roleImageView = view.findViewById(R.id.roleImageView);
-        roleImageView.setImageResource(winner.equalsIgnoreCase("CATS") ? R.drawable.cat : R.drawable.dog);
+        roleImageView.setImageResource(catsWon ? R.drawable.cat : R.drawable.dog);
 
         // Set the title label
         titleLabel = view.findViewById(R.id.titleLabel);

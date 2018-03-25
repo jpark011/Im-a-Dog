@@ -2,11 +2,13 @@ package com.cs446w18.a16.imadog.activities;
 
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Fade;
 import android.transition.Transition;
@@ -62,6 +64,14 @@ public class SuperActivity extends AppCompatActivity {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
+
+    /// Changes the background color while keeping the borders
+    protected void changeBackgroudColor(int color) {
+        GradientDrawable background = (GradientDrawable)getWindow().getDecorView().getBackground().getConstantState().newDrawable().mutate();;
+        background.setColor(ContextCompat.getColor(this, color));
+        getWindow().getDecorView().setBackground(background);
+    }
+
 
     /// CALLBACK
     public void back(View view) {

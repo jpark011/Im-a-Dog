@@ -53,6 +53,9 @@ public class JoinGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
 
+        // Page background
+        changeBackgroudColor(R.color.light_yellow);
+
         mRooms =  new ArrayList<>();
         adapter = new RoomsListAdapter(this);
 
