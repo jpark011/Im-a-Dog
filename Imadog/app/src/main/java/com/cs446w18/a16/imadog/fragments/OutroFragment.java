@@ -35,7 +35,7 @@ public class OutroFragment extends SuperFragment {
         String winner = bundle.getString("winner");
         boolean catsWon = winner.equalsIgnoreCase("CATS");
 
-        getView().setBackgroundResource(catsWon ? R.drawable.bg_cat_purple : R.drawable.bg_dog_purple);
+        view.setBackgroundResource(catsWon ? R.drawable.bg_cat_purple : R.drawable.bg_dog_purple);
 
         // Delay the transition to the next page. To be replaced by an animation
         final Handler handler = new Handler();
