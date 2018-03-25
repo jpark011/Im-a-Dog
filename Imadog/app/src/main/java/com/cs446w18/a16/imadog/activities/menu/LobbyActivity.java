@@ -109,10 +109,15 @@ public class LobbyActivity extends SuperActivity {
 
         @Override
         public void onConnectError(BluetoothDevice device, String message) {
-            mToast = Toast.makeText(LobbyActivity.this,
-                    getText(R.string.bluetooth_connect_fail),
-                    Toast.LENGTH_SHORT);
-            mToast.show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mToast = Toast.makeText(LobbyActivity.this,
+                            getText(R.string.bluetooth_connect_fail),
+                            Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+            });
         }
 
         @Override
@@ -141,10 +146,16 @@ public class LobbyActivity extends SuperActivity {
 
         @Override
         public void onConnectError(BluetoothDevice device, String message) {
-            mToast = Toast.makeText(LobbyActivity.this,
-                    getText(R.string.bluetooth_connect_fail),
-                    Toast.LENGTH_SHORT);
-            mToast.show();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mToast = Toast.makeText(LobbyActivity.this,
+                            getText(R.string.bluetooth_connect_fail),
+                            Toast.LENGTH_SHORT);
+                    mToast.show();
+                }
+            });
+            System.out.println("Connect ERROR: "+ message);
         }
 
         @Override

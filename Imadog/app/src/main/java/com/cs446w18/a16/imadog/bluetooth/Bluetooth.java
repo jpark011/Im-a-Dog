@@ -219,7 +219,19 @@ public class Bluetooth {
     }
 
     public void send(Command cmd){
-        send(cmd, this.out);
+        if (this.out != null) {
+            send(cmd, this.out);
+        } else {
+            connected=false;
+            if(communicationCallback!=null){
+                ThreadHelper.run(runOnUi, activity, new Runnable() {
+                    @Override
+                    public void run() {
+                        communicationCallback.onDisconnect(device, "Null outputstream");
+                    }
+                });
+            }
+        }
     }
 
     public List<BluetoothDevice> getPairedDevices(){
@@ -413,7 +425,7 @@ public class Bluetooth {
                             ThreadHelper.run(runOnUi, activity, new Runnable() {
                                 @Override
                                 public void run() {
-                                    discoveryCallback.onFinish();
+                                    //discoveryCallback.onFinish();
                                 }
                             });
                         }
