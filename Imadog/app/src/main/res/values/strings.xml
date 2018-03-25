@@ -23,6 +23,19 @@
     <string name="facebook_app_id">922983427866675</string>
     <string name="fb_login_protocol_scheme">fb922983427866675</string>
 
+    <string name="help_rules">
+        - There are 2 groups: Cats and Dogs.\n
+        - There are 2 stages: Day and Night.
+    </string>
+    <string name="day_rules">
+        - Each cats and dogs get two different questions.\n
+        - Answers are shared by everyone and players vote for the one who is most likely a cat.\n
+        - The one with the most votes gets executed with his/her identity revealed.
+    </string>
+    <string name="night_rules">
+        - Cats now vote to kill one dog and dogs get to vote for the best answer.\n
+        - Selected dog is executed and another day comes.
+    </string>
     <!-- Game Pages -->
 
 
