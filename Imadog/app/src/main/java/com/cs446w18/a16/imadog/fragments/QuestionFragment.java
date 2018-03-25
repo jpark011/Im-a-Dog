@@ -15,9 +15,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cs446w18.a16.imadog.Global;
 import com.cs446w18.a16.imadog.R;
+import com.cs446w18.a16.imadog.activities.menu.LobbyActivity;
 import com.cs446w18.a16.imadog.model.GameConstants;
 
 /**
@@ -89,6 +91,12 @@ public class QuestionFragment extends SuperFragment {
             @Override
             public void onClick(View view) {
                 getGameActivity().hideSystemUI();
+
+                Toast submittedToast = Toast.makeText(getGameActivity(),
+                        "Answer submitted.",
+                        Toast.LENGTH_SHORT);
+                submittedToast.show();
+
                 getGameActivity().answeredQuestion(answerField.getText().toString());
             }
         });

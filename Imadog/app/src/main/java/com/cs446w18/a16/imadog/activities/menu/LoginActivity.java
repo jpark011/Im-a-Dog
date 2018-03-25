@@ -49,11 +49,14 @@ public class LoginActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Page background
+        changeBackgroudColor(R.color.light_green);
+
         if (AccessToken.getCurrentAccessToken() != null) {
             LoginManager.getInstance().logOut();
         }
 
-        // Answer field
+        // Name field
         nameField = findViewById(R.id.nameField);
         nameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
         nameField.setTypeface(Global.fonts.get("OSSemibold"));

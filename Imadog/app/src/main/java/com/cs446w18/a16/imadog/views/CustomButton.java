@@ -27,7 +27,6 @@ public class CustomButton extends AppCompatButton {
         Typeface font = Typeface.createFromAsset(context.getApplicationContext().getAssets(), "fonts/LeagueSpartan.otf");
         setTypeface(font);
 
-        System.out.println("Button setup");
     }
 
 

@@ -1,14 +1,11 @@
 package com.cs446w18.a16.imadog.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -23,21 +20,16 @@ import com.cs446w18.a16.imadog.fragments.ChatFragment;
 import com.cs446w18.a16.imadog.fragments.DayFragment;
 import com.cs446w18.a16.imadog.fragments.HelpFragment;
 import com.cs446w18.a16.imadog.fragments.IntroFragment;
-import com.cs446w18.a16.imadog.fragments.NavigationBarFragment;
 import com.cs446w18.a16.imadog.fragments.NightFragment;
 import com.cs446w18.a16.imadog.fragments.OutroFragment;
 import com.cs446w18.a16.imadog.fragments.ProfileFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
-import com.cs446w18.a16.imadog.fragments.SuperFragment;
 import com.cs446w18.a16.imadog.fragments.VictimFragment;
 import com.cs446w18.a16.imadog.fragments.VoteFragment;
-import com.cs446w18.a16.imadog.model.GameConstants;
-import com.cs446w18.a16.imadog.views.VoteListView;
+import com.cs446w18.a16.imadog.views.TabBarFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Jean-Baptiste on 18/02/2018.
@@ -57,6 +49,8 @@ public class GameActivity extends SuperActivity {
     // The different tabs
     private ArrayList<Fragment> tabs;
 
+    private TabBarFragment tabBar;
+
     // The different fragments
     private ChatFragment chat;
     private ProfileFragment profile;
@@ -72,6 +66,9 @@ public class GameActivity extends SuperActivity {
         Global.user.setView(this);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        // Tab bar
+        tabBar = (TabBarFragment)getSupportFragmentManager().findFragmentById(R.id.tab_bar);
 
         // View pager
         mPager = findViewById(R.id.pager);
@@ -89,6 +86,8 @@ public class GameActivity extends SuperActivity {
                 }
 
                 hideSystemUI();
+                System.out.print(position);
+                tabBar.setPage(position);
             }
         });
 

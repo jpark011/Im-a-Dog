@@ -110,14 +110,7 @@ public class VoteFragment extends SuperFragment implements VoteListView.Delegate
     }
 
     public void updatePollVotes(Map<String, Integer> votes) {
-        Map<String, String> answers = Global.user.getPollAnswers();
-        VoteListView v = getGameActivity().findViewById(R.id.voteListView);
-        System.out.println("UPDATING POLL VOTES");
-        if (answers != null) {
-            v.setup(votes, answers, this);
-        } else {
-            v.setup(votes, this);
-        }
+        playersListView.update(votes);
     }
 
     @Override

@@ -8,10 +8,16 @@
     <color name="white">#FFFFFF</color>
     <color name="sand">#EDE7D9</color>
 
-    <color name="yellow">#FDC850</color>
-    <color name="green">#5AD4BC</color>
-    <color name="red">#F0856F</color>
+    <color name="light_yellow">#FDC850</color>
+    <color name="light_green">#5AD4BC</color>
+    <color name="light_red">#F0856F</color>
+    <color name="light_purple">#BE7CD6</color>
+
+    <color name="yellow">#F0BC43</color>
+    <color name="green">#4EC7AF</color>
+    <color name="red">#E67760</color>
     <color name="purple">#BE7CD6</color>
 
+    <color name="yellow_selected">#F7CF6F</color>
 
 </resources>

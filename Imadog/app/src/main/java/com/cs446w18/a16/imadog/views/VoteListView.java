@@ -106,7 +106,7 @@ public class VoteListView extends ListView {
         setAdapter(adapter);
         this.delegate = delegate;
         setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        setSelector(android.R.color.transparent);
+        setSelector(R.drawable.row_selector);
         setDivider(null);
         isEnabled = true;
 
@@ -116,7 +116,6 @@ public class VoteListView extends ListView {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 currentSelected = i;
                 delegate.playerWasSelected(mNames.get(i));
-                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -144,6 +143,7 @@ public class VoteListView extends ListView {
         }
 
         adapter.notifyDataSetChanged();
+        setSelection(currentSelected);
     }
 
 
@@ -204,23 +204,12 @@ public class VoteListView extends ListView {
                 voteLabel.setVisibility(View.INVISIBLE);
             }
 
-            if (i == currentSelected) {
-                voteLabel.setBackgroundResource(R.drawable.circle_white);
-            }
-
-
             // Black theme
             if (blackTheme) {
                 int blackColor = getResources().getColor(R.color.black);
                 nameLabel.setTextColor(blackColor);
                 answerLabel.setTextColor(blackColor);
             }
-
-
-            // Setup radio button
-//            radioButton = row.findViewById(R.id.radioButton);
-//            radioButton.setClickable(false);
-//            radioButton.setChecked(false);
 
             return row;
         }

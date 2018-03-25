@@ -38,6 +38,9 @@ public class CreateGameActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_game);
 
+        // Page background
+        changeBackgroudColor(R.color.light_green);
+
         BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
         String deviceName = myDevice.getName();
 
