@@ -26,6 +26,7 @@ import com.cs446w18.a16.imadog.fragments.ProfileFragment;
 import com.cs446w18.a16.imadog.fragments.QuestionFragment;
 import com.cs446w18.a16.imadog.fragments.VictimFragment;
 import com.cs446w18.a16.imadog.fragments.VoteFragment;
+import com.cs446w18.a16.imadog.views.TabBarFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +49,8 @@ public class GameActivity extends SuperActivity {
     // The different tabs
     private ArrayList<Fragment> tabs;
 
+    private TabBarFragment tabBar;
+
     // The different fragments
     private ChatFragment chat;
     private ProfileFragment profile;
@@ -63,6 +66,9 @@ public class GameActivity extends SuperActivity {
         Global.user.setView(this);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        // Tab bar
+        tabBar = (TabBarFragment)getSupportFragmentManager().findFragmentById(R.id.tab_bar);
 
         // View pager
         mPager = findViewById(R.id.pager);
@@ -80,6 +86,8 @@ public class GameActivity extends SuperActivity {
                 }
 
                 hideSystemUI();
+                System.out.print(position);
+                tabBar.setPage(position);
             }
         });
 

@@ -56,7 +56,7 @@ public class LoginActivity extends SuperActivity {
             LoginManager.getInstance().logOut();
         }
 
-        // Answer field
+        // Name field
         nameField = findViewById(R.id.nameField);
         nameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
         nameField.setTypeface(Global.fonts.get("OSSemibold"));
