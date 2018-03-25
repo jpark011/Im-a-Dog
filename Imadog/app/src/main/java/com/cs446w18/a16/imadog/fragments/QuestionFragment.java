@@ -96,17 +96,25 @@ public class QuestionFragment extends SuperFragment {
         // Set the countdown timer
         long duration = GameConstants.questionPageDuration;
         timerLabel = view.findViewById(R.id.timerLabel);
-        setTimerLabel(duration);
 
-        CountDownTimer timer = new CountDownTimer(duration, 1000) {
-            @Override
-            public void onTick(long l) {
-                setTimerLabel(l);
-            }
+        if (!Global.isCountDownStarted()) {
+            setTimerLabel(duration);
+            Global.timer = new CountDownTimer(duration, 1000) {
+                @Override
+                public void onTick(long l) {
+                    Global.setCurrentTime(l);
+                    setTimerLabel(l);
+                }
 
-            @Override
-            public void onFinish() {}
-        }.start();
+                @Override
+                public void onFinish() {
+                    Global.countDownStopped();
+                }
+            }.start();
+            Global.startTimer(duration);
+        } else {
+            setTimerLabel(Global.getCurrentTime());
+        }
 
 
 

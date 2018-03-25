@@ -76,18 +76,25 @@ public class VoteFragment extends SuperFragment implements VoteListView.Delegate
         // Set the countdown timer
         long duration = isNightVote ? GameConstants.nightPollPageDuration : GameConstants.dayPollPageDuration;
         timerLabel = view.findViewById(R.id.timerLabel);
-        setTimerLabel(duration);
 
+        if (!Global.isCountDownStarted()) {
+            setTimerLabel(duration);
+            Global.timer = new CountDownTimer(duration, 1000) {
+                @Override
+                public void onTick(long l) {
+                    Global.setCurrentTime(l);
+                    setTimerLabel(l);
+                }
 
-        CountDownTimer timer = new CountDownTimer(duration, 1000) {
-            @Override
-            public void onTick(long l) {
-                setTimerLabel(l);
-            }
-
-            @Override
-            public void onFinish() {}
-        }.start();
+                @Override
+                public void onFinish() {
+                    Global.countDownStopped();
+                }
+            }.start();
+            Global.startTimer(duration);
+        } else {
+            setTimerLabel(Global.getCurrentTime());
+        }
 
         return view;
     }

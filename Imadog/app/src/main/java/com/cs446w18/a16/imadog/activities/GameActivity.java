@@ -165,6 +165,7 @@ public class GameActivity extends SuperActivity {
         Bundle arguments = new Bundle();
         arguments.putString("question", question);
 
+        Global.endTimer();
         switchToFragment(new QuestionFragment(), arguments);
     }
 
@@ -182,6 +183,7 @@ public class GameActivity extends SuperActivity {
         arguments.putSerializable("votes", votes);
         arguments.putSerializable("answers", answers);
 
+        Global.endTimer();
         switchToFragment(new VoteFragment(), arguments);
     }
 
@@ -236,6 +238,7 @@ public class GameActivity extends SuperActivity {
         arguments.putBoolean("isNight", true);
         arguments.putSerializable("votes", votes);
 
+        Global.endTimer();
         switchToFragment(new VoteFragment(), arguments);
     }
 
