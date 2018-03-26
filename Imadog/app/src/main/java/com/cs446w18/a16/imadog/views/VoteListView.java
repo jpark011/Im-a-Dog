@@ -197,7 +197,7 @@ public class VoteListView extends ListView {
 
             // Change votes (if applicable)
             TextView voteLabel = row.findViewById(R.id.voteLabel);
-            if (mVotes != null) {
+            if (mVotes != null && mVotes.get(i) != -1) {
                 voteLabel.setText(String.valueOf(mVotes.get(i)));
             }
             else {

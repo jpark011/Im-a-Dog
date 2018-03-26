@@ -18,9 +18,6 @@ import com.cs446w18.a16.imadog.R;
 import com.cs446w18.a16.imadog.model.GameConstants;
 import com.cs446w18.a16.imadog.views.VoteListView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -57,7 +54,7 @@ public class VoteFragment extends SuperFragment implements VoteListView.Delegate
         subtitleLabel.setText(isNightVote ? "It’s time for the night vote" : "The dog question was");
 
         // Set the people/answers list
-        Map<String, Integer> votes = (Map<String, Integer>) bundle.getSerializable("votes");
+        Map<String, Integer> votes = Global.user.getPollVotes();
 
         playersListView = view.findViewById(R.id.voteListView);
         if (isNightVote) {
