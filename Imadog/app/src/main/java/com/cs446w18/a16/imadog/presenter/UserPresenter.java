@@ -35,7 +35,7 @@ public class UserPresenter {
     private GamePresenter gamePresenter;
     private String currentRole;
     private boolean currentDead;
-    private HashMap<String, String> currentPollAnswers;
+    private HashMap<String, Integer> currentPollVotes;
     private ArrayList<Pair<String, String>> chatHistory;
 
     public UserPresenter(String name) {
@@ -43,7 +43,7 @@ public class UserPresenter {
         view = null;
         client = null;
         server = null;
-        currentPollAnswers = null;
+        currentPollVotes = null;
         currentRole = null;
         clientName = null;
     }
@@ -185,8 +185,8 @@ public class UserPresenter {
         this.currentDead = true;
     }
 
-    public HashMap<String, String> getPollAnswers() {
-        return currentPollAnswers;
+    public HashMap<String, Integer> getPollVotes() {
+        return currentPollVotes;
     }
 
     public void submitAnswer(String answer) {
@@ -207,13 +207,14 @@ public class UserPresenter {
     }
 
     public void startPoll(String question, HashMap<String, String> answers, HashMap<String, Integer> votes) {
+        this.currentPollVotes = votes;
         view.showVotePage(question, votes, answers);
-        this.currentPollAnswers = answers;
     }
 
     public void closePoll(String name, String role, String winner) {
         final String result = winner;
         view.showVictimPage(name, role);
+        currentPollVotes = null;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -229,14 +230,15 @@ public class UserPresenter {
     }
 
     public void startNightPoll(String title, HashMap<String, Integer> votes) {
+        this.currentPollVotes = votes;
         view.showNightVotePage(title, votes);
-        this.currentPollAnswers = null;
     }
 
     public void closeNightPoll(String name,  String role, String winner, String question) {
         final String q = question;
         final String result = winner;
         view.showVictimPage(name, role);
+        this.currentPollVotes = null;
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -263,6 +265,7 @@ public class UserPresenter {
     }
 
     public void updatePoll(HashMap<String, Integer> votes) {
+        this.currentPollVotes = votes;
         view.updatePollVotes(votes);
     }
 

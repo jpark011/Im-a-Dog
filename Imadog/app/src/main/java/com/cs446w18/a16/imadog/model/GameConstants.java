@@ -31,7 +31,7 @@ public class GameConstants {
     public static final String[] catQuestions = {
             "What did you have for dinner last night?",
             "Name the last song you listened to",
-            "What is your least favourite food?",
+            "Name any food dish",
             "Name a random person in this room",
             "Name any singer or band",
             "Name a random person in this room",
