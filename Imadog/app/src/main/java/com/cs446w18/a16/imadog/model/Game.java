@@ -44,6 +44,7 @@ public class Game {
         Random r = new Random();
         while (total > 0) {
             int ind = r.nextInt(total);
+            System.out.println(ind);
             if (numSoFar % 5 == 0) {
                 Cat cat = new Cat(this);
                 cats.add(cat);

@@ -95,8 +95,8 @@ public class GamePresenter {
             public void run() {
                 game.closePoll();
                 game.setGameState("CLOSING_NIGHT_POLL");
-                notifyObservers();
                 game.nextDay();
+                notifyObservers();
             }
         }, duration);
         duration += GameConstants.victimPageDuration + GameConstants.dayNightDuration;
