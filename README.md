@@ -26,5 +26,9 @@ The game consists of three repeating phases:
 * In the **secret phase**, the cats will gather and vote to kill someone. 
 
 
+## Demo
+
+[1 minute demo](https://www.youtube.com/watch?v=X0iLyfH67kc)
+
 
 
